@@ -5,8 +5,7 @@
   import { loadData, renderBlockText } from "../sanity.js";
 
   // *** COMPONENTS
-  import ArielLogo from "../Components/ArielLogo.svelte";
-  import AriLogo from "../Components/AriLogo.svelte";
+  import ArielVerticalLogo from "../Components/ArielVerticalLogo.svelte";
 
   //   export let title = "";
   export const location = {};
@@ -109,14 +108,15 @@
     .inner {
       position: absolute;
       top: 0;
-      left: 80px;
-      width: 100vh;
-      height: 80px;
+      left: 0px;
+      height: 100vh;
+      width: 80px;
       display: block;
       transform-origin: 0% 0%;
-      transform: rotateZ(90deg);
+      //   transform: rotateZ(90deg);
       line-height: 80px;
-      padding-left: 30px;
+      padding-left: 15px;
+      padding-top: 30px;
       font-size: 42px;
     }
   }
@@ -142,14 +142,14 @@
   .about-pane {
     position: fixed;
     top: 0;
-    left: 0;
+    right: 0;
     height: 100vh;
     width: calc(50vw - 30px);
     background: $grey;
     z-index: 10000;
-    transform: translateX(-100%);
+    transform: translateX(100%);
     background: $red-gradient;
-    opacity: 0;
+    opacity: 1;
 
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
@@ -167,7 +167,7 @@
 
     .close {
       position: absolute;
-      right: 20px;
+      left: 20px;
       top: 20px;
       font-size: $font-size-large;
     }
@@ -208,7 +208,7 @@
     <!-- TOP BAR -->
     <div class="top-bar left" use:links>
       <div class="left">
-        <span on:click={() => (showAbout = true)} class="pseudo-link">
+        <span on:click={() => (showAbout = !showAbout)} class="pseudo-link">
           ABOUT YGRG
         </span>
       </div>
@@ -264,7 +264,9 @@
   </div>
 
   <div class="side-bar left" use:links>
-    <a href="/" class="inner">ARIEL</a>
+    <a href="/" class="inner">
+      <ArielVerticalLogo />
+    </a>
   </div>
 
   <div class="about-pane" class:open={showAbout}>
