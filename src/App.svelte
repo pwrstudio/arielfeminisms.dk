@@ -24,6 +24,12 @@
 
   a {
     color: $black;
+    &:hover {
+      color: $black;
+    }
+    &:visited {
+      color: $black;
+    }
   }
 
   * {
