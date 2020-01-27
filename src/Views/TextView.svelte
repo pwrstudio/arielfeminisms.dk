@@ -57,7 +57,7 @@
   }
 </style>
 
-<div class="text-view">
+<div class="text-view" use:links>
 
   <!-- BOTTOM META-->
   {#await text then text}
