@@ -21,12 +21,16 @@
     margin: 0;
     padding: 0;
     color: $black;
+    font-family: $font-stack-ariel;
   }
 
   a {
     color: $black;
+    text-decoration: none;
+
     &:hover {
       color: $black;
+      text-decoration: none;
     }
     &:visited {
       color: $black;
