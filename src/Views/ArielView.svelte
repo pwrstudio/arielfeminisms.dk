@@ -1,0 +1,311 @@
+<script>
+  // *** IMPORT
+  import { onMount } from "svelte";
+  import { Route, links } from "svelte-routing";
+  import { loadData, renderBlockText } from "../sanity.js";
+
+  // *** COMPONENTS
+  import ArielLogo from "../Components/ArielLogo.svelte";
+  import AriLogo from "../Components/AriLogo.svelte";
+
+  export let title = "";
+  export const location = {};
+
+  let showAbout = false;
+
+  const isAriel = title === "ariel";
+  const isAri = title === "ari";
+
+  const aboutAriel = loadData('*[_id == "aboutAriel"][0]', {});
+  const aboutAri = loadData('*[_id == "aboutAri"][0]', {});
+  const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
+  const program = loadData('*[_type in [ "program"]]', {});
+  const readings = loadData('*[_type in [ "reading"]]', {});
+</script>
+
+<style lang="scss">
+  @import "../variables.scss";
+
+  main {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: calc(100vw - 80px);
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: $font-stack-ariel;
+  }
+
+  .half-pane {
+    position: absolute;
+    top: 0;
+    height: 100vh;
+    width: 50%;
+    overflow-y: auto;
+    @include hide-scroll;
+
+    &.left {
+      //   background: $red;
+      left: 0;
+    }
+
+    &.right {
+      //   background: $purple;
+      right: 0;
+    }
+
+    .inner-container {
+      margin-top: $top-bar-height + 20px;
+      margin-right: 30px;
+      margin-left: 30px;
+      font-size: $font-size-medium;
+      font-weight: bold;
+    }
+
+    .bottom-meta {
+      margin-top: 30px;
+      text-align: center;
+    }
+  }
+
+  .top-bar {
+    position: absolute;
+    top: 0;
+    height: $top-bar-height;
+    width: 100%;
+    line-height: $top-bar-height;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-weight: bold;
+    font-size: $font-size-large;
+
+    &.left {
+      //   background: $black;
+      left: 0;
+      //   background: red;
+      box-sizing: border-box;
+    }
+
+    &.right {
+      //   background: white;
+      right: 0;
+      //   background: green;
+      box-sizing: border-box;
+    }
+
+    .left {
+      float: left;
+    }
+
+    .right {
+      float: right;
+    }
+  }
+
+  .side-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 80px;
+    background: $grey;
+    border-left: $line-style;
+
+    .inner {
+      position: absolute;
+      top: 0;
+      left: 80px;
+      width: 100vh;
+      height: 80px;
+      display: block;
+      transform-origin: 0% 0%;
+      transform: rotateZ(90deg);
+      line-height: 80px;
+      padding-left: 30px;
+      font-size: 36px;
+      font-family: $font-stack-ygrg-extended;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+
+  .program {
+    .title {
+      text-align: center;
+    }
+    .date {
+      text-align: center;
+    }
+    .artist {
+      text-align: center;
+    }
+  }
+
+  .active {
+    font-style: italic;
+  }
+
+  .about-pane {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: calc(50vw - 30px);
+    background: pink;
+    z-index: 10000;
+    transform: translateX(-100%);
+    background: $purple-gradient;
+    opacity: 0;
+
+    &.open {
+      transition: transform 0.2s $easing, opacity 0.3s $easing;
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .inner-container {
+      margin-top: $top-bar-height + 20px;
+      margin-right: 30px;
+      margin-left: 30px;
+      font-size: $font-size-medium;
+      font-weight: bold;
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: $font-size-large;
+    }
+  }
+  .pseudo-link {
+    cursor: pointer;
+  }
+</style>
+
+<main>
+  <div class="half-pane left">
+
+    <!-- TOP BAR -->
+    <div class="top-bar left" use:links>
+      <div class="left">
+        <a href="/" class:active={isAriel}>ARIEL</a>
+        |
+        <a href="ari" class:active={isAri}>ARI</a>
+      </div>
+      <div class="right">
+        <span on:click={() => (showAbout = true)} class="pseudo-link">
+          ABOUT
+        </span>
+      </div>
+    </div>
+
+    <!-- INNER CONTAINER -->
+    <div class="inner-container">
+
+      <!-- LOGO -->
+      {#if isAriel}
+        <ArielLogo />
+      {/if}
+      {#if isAri}
+        <AriLogo />
+      {/if}
+
+      <!-- BOTTOM META-->
+      {#await generalInformation then generalInformation}
+        <div class="bottom-meta">
+          <div class="tagline">{generalInformation.tagline}</div>
+          <div class="address">
+            {@html generalInformation.address}
+          </div>
+        </div>
+      {/await}
+    </div>
+
+  </div>
+
+  <div class="half-pane right">
+    <!-- TOP BAR -->
+    <div class="top-bar right">
+      {#if isAriel}
+        <div class="left active">ARIEL PROGRAM</div>
+        <!-- <div class="right">XXX</div> -->
+      {/if}
+      {#if isAri}
+        <div class="left active">ARI READINGS</div>
+      {/if}
+    </div>
+
+    <!-- INNER CONTAINER -->
+    <div class="inner-container">
+
+      {#if isAriel}
+        {#await program then program}
+          {#each program as p}
+            <div class="program">
+              <div class="title">{p.title}</div>
+              <div class="artist">XXX</div>
+              <div class="date">
+                {p.startDate.substring(0, 9)} – {p.endDate.substring(0, 9)}
+              </div>
+              <div class="text">
+                {@html renderBlockText(p.content)}
+              </div>
+            </div>
+          {/each}
+        {/await}
+      {/if}
+
+      {#if isAri}
+        {#await readings then readings}
+          {#each readings as r}
+            <div class="program">
+              <div class="title">{r.title}</div>
+              <div class="artist">MATHILDE CARBEL</div>
+              <div class="date">{r.date.substring(0, 9)}</div>
+              <div class="text">
+                {@html renderBlockText(r.content)}
+              </div>
+            </div>
+          {/each}
+
+        {/await}
+      {/if}
+
+    </div>
+
+  </div>
+
+  <div class="side-bar left" use:links>
+    <a href="/ygrg" class="inner">YGRG Archive</a>
+  </div>
+
+  <div class="about-pane" class:open={showAbout}>
+    <div class="inner-container">
+
+      {#if isAriel}
+        {#await aboutAriel then aboutAriel}
+          <div class="text">
+            {@html renderBlockText(aboutAriel.content)}
+          </div>
+        {/await}
+      {/if}
+
+      {#if isAri}
+        {#await aboutAri then aboutAri}
+          <div class="text">
+            {@html renderBlockText(aboutAri.content)}
+          </div>
+        {/await}
+      {/if}
+
+    </div>
+
+    <div class="close" on:click={() => (showAbout = false)}>X</div>
+
+  </div>
+
+</main>
