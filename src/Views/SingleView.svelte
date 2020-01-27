@@ -7,6 +7,7 @@
   // *** COMPONENTS
   import ArielLogo from "../Components/ArielLogo.svelte";
   import AriLogo from "../Components/AriLogo.svelte";
+  import SlideShow from "../Components/SlideShow.svelte";
 
   export let title = "";
   export let slug = "";
@@ -47,12 +48,10 @@
     @include hide-scroll;
 
     &.left {
-      //   background: $red;
       left: 0;
     }
 
     &.right {
-      //   background: $purple;
       right: 0;
     }
 
@@ -216,6 +215,25 @@
   .pseudo-link {
     cursor: pointer;
   }
+
+  .bottom-text {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .date {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .artist {
+      text-align: center;
+      text-transform: uppercase;
+    }
+  }
 </style>
 
 <main>
@@ -226,7 +244,7 @@
       <div class="left">
         <a href="/" class:active={isAriel}>ARIEL</a>
         |
-        <a href="ari" class:active={isAri}>ARI</a>
+        <a href="/ari" class:active={isAri}>ARI</a>
       </div>
       <div class="right">
         <span on:click={() => (showAbout = true)} class="pseudo-link">
@@ -259,7 +277,6 @@
     <div class="top-bar right">
       {#if isAriel}
         <div class="left active">ARIEL PROGRAM</div>
-        <!-- <div class="right">XXX</div> -->
       {/if}
       {#if isAri}
         <div class="left active">ARI READINGS</div>
@@ -270,24 +287,21 @@
     <div class="inner-container" use:links>
 
       {#await single then single}
-        <div class="title">{single.title}</div>
-        <div class="artist">
-          {#each single.artists as a}
-            <span>{a},</span>
-          {/each}
-        </div>
-        <div class="date">
-          {single.startDate.substring(0, 9)} – {single.endDate.substring(0, 9)}
+
+        <SlideShow slideArray={single.slideshow} />
+
+        <div class="bottom-text">
+          <div class="title">{single.title}</div>
+          <div class="artist">
+            {#each single.artists as a}
+              <span>{a},</span>
+            {/each}
+          </div>
+          <div class="date">
+            {single.startDate.substring(0, 9)} – {single.endDate.substring(0, 9)}
+          </div>
         </div>
 
-        {#each single.imageArray as img}
-          <img
-            src={urlFor(img)
-              .width(400)
-              .quality(80)
-              .auto('format')
-              .url()} />
-        {/each}
       {/await}
 
     </div>
@@ -302,21 +316,11 @@
   <div class="about-pane" class:open={showAbout}>
     <div class="inner-container">
 
-      {#if isAriel}
-        {#await aboutAriel then aboutAriel}
-          <div class="text">
-            {@html renderBlockText(aboutAriel.content)}
-          </div>
-        {/await}
-      {/if}
-
-      {#if isAri}
-        {#await aboutAri then aboutAri}
-          <div class="text">
-            {@html renderBlockText(aboutAri.content)}
-          </div>
-        {/await}
-      {/if}
+      {#await aboutAriel then aboutAriel}
+        <div class="text">
+          {@html renderBlockText(aboutAriel.content)}
+        </div>
+      {/await}
 
     </div>
 
