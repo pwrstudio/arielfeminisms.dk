@@ -121,6 +121,28 @@
       padding-top: 30px;
       font-size: 42px;
     }
+
+    .side-bar-background {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 78px;
+      background: $grey;
+      background: $purple-gradient;
+      pointer-events: none;
+      transform: translateX(-100%);
+      transition: transform 1s $easing, opacity 1s $easing;
+      opacity: 0;
+    }
+
+    &:hover {
+      .side-bar-background {
+        transform: translateX(0);
+        transition: transform 0.3s $easing, opacity 0.5s $easing;
+        opacity: 1;
+      }
+    }
   }
 
   .program {
@@ -276,6 +298,7 @@
   </div>
 
   <div class="side-bar left" use:links>
+    <div class="side-bar-background" />
     <a href="/" class="inner">
       <ArielVerticalLogo />
     </a>

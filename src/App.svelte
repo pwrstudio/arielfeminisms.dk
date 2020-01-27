@@ -1,7 +1,5 @@
 <script>
   // *** IMPORT
-  import { onMount } from "svelte";
-  import { fade } from "svelte/transition";
   import { Router, Route, links } from "svelte-routing";
 
   // ** VIEWS
@@ -41,10 +39,6 @@
   * {
     box-sizing: border-box;
   }
-
-  /*! Flickity v2.2.1
-https://flickity.metafizzy.co
----------------------------------------------- */
 
   .slideshow {
     width: 100%;
