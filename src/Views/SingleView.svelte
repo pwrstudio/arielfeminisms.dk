@@ -2,14 +2,17 @@
   // *** IMPORT
   import { onMount } from "svelte";
   import { Route, links } from "svelte-routing";
-  import { loadData, renderBlockText } from "../sanity.js";
+  import { loadData, renderBlockText, urlFor } from "../sanity.js";
 
   // *** COMPONENTS
   import ArielLogo from "../Components/ArielLogo.svelte";
   import AriLogo from "../Components/AriLogo.svelte";
 
   export let title = "";
-  export const location = {};
+  export let slug = "";
+  export let location = {};
+
+  const single = loadData("*[slug.current == $slug][0]", { slug: slug });
 
   let showAbout = false;
 
@@ -19,8 +22,6 @@
   const aboutAriel = loadData('*[_id == "aboutAriel"][0]', {});
   const aboutAri = loadData('*[_id == "aboutAri"][0]', {});
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
-  const program = loadData('*[_type in [ "program"]]', {});
-  const readings = loadData('*[_type in [ "reading"]]', {});
 </script>
 
 <style lang="scss">
@@ -46,10 +47,12 @@
     @include hide-scroll;
 
     &.left {
+      //   background: $red;
       left: 0;
     }
 
     &.right {
+      //   background: $purple;
       right: 0;
     }
 
@@ -236,12 +239,7 @@
     <div class="inner-container">
 
       <!-- LOGO -->
-      {#if isAriel}
-        <ArielLogo />
-      {/if}
-      {#if isAri}
-        <AriLogo />
-      {/if}
+      <ArielLogo />
 
       <!-- BOTTOM META-->
       {#await generalInformation then generalInformation}
@@ -271,40 +269,26 @@
     <!-- INNER CONTAINER -->
     <div class="inner-container" use:links>
 
-      {#if isAriel}
-        {#await program then program}
-          {#each program as p}
-            <a href="/program/{p.slug.current}" class="program">
-              <div class="title">{p.title}</div>
-              <div class="artist">
-                {#each p.artists as a}
-                  <span>{a},</span>
-                {/each}
-              </div>
-              <div class="date">
-                {p.startDate.substring(0, 9)} – {p.endDate.substring(0, 9)}
-              </div>
-              <div class="text">
-                {@html renderBlockText(p.content)}
-              </div>
-            </a>
+      {#await single then single}
+        <div class="title">{single.title}</div>
+        <div class="artist">
+          {#each single.artists as a}
+            <span>{a},</span>
           {/each}
-        {/await}
-      {/if}
+        </div>
+        <div class="date">
+          {single.startDate.substring(0, 9)} – {single.endDate.substring(0, 9)}
+        </div>
 
-      {#if isAri}
-        {#await readings then readings}
-          {#each readings as r}
-            <div class="program">
-              <div class="title">{r.title}</div>
-              <div class="text">
-                {@html renderBlockText(r.content)}
-              </div>
-            </div>
-          {/each}
-
-        {/await}
-      {/if}
+        {#each single.imageArray as img}
+          <img
+            src={urlFor(img)
+              .width(400)
+              .quality(80)
+              .auto('format')
+              .url()} />
+        {/each}
+      {/await}
 
     </div>
 

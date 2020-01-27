@@ -5,8 +5,6 @@
   import { loadData, renderBlockText } from "../sanity.js";
 
   // *** COMPONENTS
-  import ArielLogo from "../Components/ArielLogo.svelte";
-  import AriLogo from "../Components/AriLogo.svelte";
 
   export let title = "";
   export let slug = "";
@@ -16,8 +14,6 @@
     "*[slug.current == $slug][0]{'pdfFile': pdfFile.asset->url}",
     { slug: slug }
   );
-
-  console.log(slug);
 </script>
 
 <style lang="scss">

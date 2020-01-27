@@ -10,7 +10,9 @@
   svg {
     display: block;
     width: 100%;
-    // background: pink;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>
 

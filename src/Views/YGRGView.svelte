@@ -72,6 +72,7 @@
     padding-right: 30px;
     font-weight: bold;
     font-size: $font-size-large;
+    user-select: none;
 
     &.left {
       //   background: $black;
@@ -104,6 +105,7 @@
     width: 80px;
     background: $grey;
     border-right: $line-style;
+    user-select: none;
 
     .inner {
       position: absolute;
@@ -150,6 +152,7 @@
     transform: translateX(100%);
     background: $red-gradient;
     opacity: 1;
+    font-family: $font-stack-ygrg-regular;
 
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
@@ -161,7 +164,7 @@
       margin-top: $top-bar-height + 20px;
       margin-right: 30px;
       margin-left: 30px;
-      font-size: $font-size-medium;
+      font-size: $font-size-large;
       font-weight: bold;
     }
 
@@ -184,7 +187,8 @@
     border-radius: 4px;
     height: 160px;
     width: calc(32% - 10px);
-    display: inline-block;
+    display: block;
+    float: left;
     margin-right: 10px;
     margin-bottom: 10px;
     text-align: center;
@@ -221,6 +225,13 @@
       <div class="tile-container" use:links>
 
         {#await texts then texts}
+          {#each texts as t}
+            <a class="tile" href="/ygrg/text/{t.slug.current}">
+              <div class="title">{t.title}</div>
+              <div class="time">About 2 months ago</div>
+              <div class="preview">Preview</div>
+            </a>
+          {/each}
           {#each texts as t}
             <a class="tile" href="/ygrg/text/{t.slug.current}">
               <div class="title">{t.title}</div>

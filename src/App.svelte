@@ -9,6 +9,7 @@
   import YGRGView from "./Views/YGRGView.svelte";
   import TextView from "./Views/TextView.svelte";
   import Error404 from "./Views/Error404.svelte";
+  import SingleView from "./Views/SingleView.svelte";
 </script>
 
 <style lang="scss" global>
@@ -39,20 +40,14 @@
 
 <Router>
   <Route path="/" component={ArielView} title="ariel" />
-  <Route path="/about" component={ArielView} title="ariel" />
-
-  <!-- <Route path="/ariel/program/:slug" component={programView} /> -->
+  <Route path="/program/:slug" component={SingleView} />
 
   <Route path="/ari" component={ArielView} title="ari" />
-  <Route path="/ari/about" component={ArielView} title="ari" />
-  <!-- <Route path="/ariel/ari/reading/:slug" component={readingView} /> -->
+  <!-- <Route path="/ari/reading/:slug" component={readingView} /> -->
 
   <Route path="/ygrg" component={YGRGView} />
-  <Route path="/ygrg/about" component={YGRGView} />
   <Route path="/ygrg/text/:slug" component={TextView} />
-  -
-  <!-- <Route path="/ygrg/event/:slug" component={eventView} />
-   ->
+  <Route path="/ygrg/event/:slug" component={SingleView} />
 
   <!-- <Route path="/ygrg/signup" component={signupView} />
     <Route path="/ygrg/signIn" component={signupView} />
