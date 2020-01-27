@@ -188,6 +188,8 @@
     background: $purple-gradient;
     font-size: $font-size-large;
     opacity: 0;
+    overflow-y: auto;
+    @include hide-scroll;
 
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;

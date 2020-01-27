@@ -3,18 +3,23 @@
   import { onMount } from "svelte";
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
+  import SlideShow from "../Components/SlideShow.svelte";
 
   // *** COMPONENTS
   import ArielVerticalLogo from "../Components/ArielVerticalLogo.svelte";
 
-  //   export let title = "";
-  export const location = {};
+  export let title = "";
+  export let slug = "";
+  export let location = {};
+
+  const single = loadData("*[slug.current == $slug][0]", { slug: slug });
 
   let showAbout = false;
 
   const aboutYGRG = loadData('*[_id == "aboutYGRG"][0]', {});
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
-  const events = loadData('*[_type in [ "event"]]', {});
+
+  console.dir(single);
 </script>
 
 <style lang="scss">
@@ -153,8 +158,6 @@
     background: $red-gradient;
     opacity: 1;
     font-family: $font-stack-ygrg-regular;
-    overflow-y: auto;
-    @include hide-scroll;
 
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
@@ -204,6 +207,25 @@
 
     .preview {
       font-size: $font-size-small;
+    }
+  }
+
+  .bottom-text {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    .title {
+      text-align: center;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .date {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .artist {
+      text-align: center;
+      text-transform: uppercase;
     }
   }
 </style>
@@ -257,18 +279,17 @@
     <!-- INNER CONTAINER -->
     <div class="inner-container">
 
-      {#await events then events}
-        {#each events as e}
-          <a href="/ygrg/event/{e.slug.current}" class="program">
-            <div class="title">{e.title}</div>
-            <div class="date">
-              {e.startDate.substring(0, 9)} – {e.endDate.substring(0, 9)}
-            </div>
-            <div class="text">
-              {@html renderBlockText(e.content)}
-            </div>
-          </a>
-        {/each}
+      {#await single then single}
+
+        <SlideShow slideArray={single.slideshow} />
+
+        <div class="bottom-text">
+          <div class="title">{single.title}</div>
+          <div class="date">
+            {single.startDate.substring(0, 9)} – {single.endDate.substring(0, 9)}
+          </div>
+        </div>
+
       {/await}
 
     </div>
