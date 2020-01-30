@@ -1,21 +1,44 @@
 <script>
+  // # # # # # # # # # # # # # # #
+  //
+  //  View: Ariel/Ari
+  //
+  // # # # # # # # # # # # # # # #
+
   // *** IMPORT
   import { onMount } from "svelte";
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
+  import { fade } from "svelte/transition";
+  import MediaQuery from "svelte-media-query";
 
   // *** COMPONENTS
   import ArielLogo from "../Components/ArielLogo.svelte";
   import AriLogo from "../Components/AriLogo.svelte";
+  import Cross from "../Components/Cross.svelte";
+  import SinglePane from "../Components/SinglePane.svelte";
 
+  // *** STORES
+  import {
+    isYGRG,
+    isAriel,
+    isSubsectionAriel,
+    isSubsectionAri
+  } from "../stores.js";
+
+  // *** PROPS
   export let title = "";
+  export let slug = "";
   export const location = {};
 
+  // Set globals
+  isYGRG.set(false);
+  isAriel.set(true);
+  isSubsectionAriel.set(title === "ariel");
+  isSubsectionAri.set(title === "ari");
+
+  // *** VARIABLES
   let showAbout = false;
-
-  const isAriel = title === "ariel";
-  const isAri = title === "ari";
-
   const aboutAriel = loadData('*[_id == "aboutAriel"][0]', {});
   const aboutAri = loadData('*[_id == "aboutAri"][0]', {});
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
@@ -26,7 +49,7 @@
 <style lang="scss">
   @import "../variables.scss";
 
-  main {
+  .ariel-view {
     position: fixed;
     left: 0;
     top: 0;
@@ -35,6 +58,11 @@
     margin: 0;
     padding: 0;
     font-family: $font-stack-ariel;
+
+    @include screen-size("small") {
+      position: static;
+      width: 100vw;
+    }
   }
 
   .half-pane {
@@ -44,6 +72,13 @@
     width: 50%;
     overflow-y: auto;
     @include hide-scroll;
+
+    @include screen-size("small") {
+      margin-top: $top-bar-height;
+      position: static;
+      height: auto;
+      width: 100vw;
+    }
 
     &.left {
       left: 0;
@@ -98,57 +133,6 @@
 
     .right {
       float: right;
-    }
-  }
-
-  .side-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 100vh;
-    width: 80px;
-    background: $grey;
-    border-left: $line-style;
-
-    .inner {
-      position: absolute;
-      top: 0;
-      left: 80px;
-      width: 100vh;
-      height: 80px;
-      display: block;
-      transform-origin: 0% 0%;
-      transform: rotateZ(90deg);
-      line-height: 80px;
-      padding-left: 30px;
-      font-size: 36px;
-      font-family: $font-stack-ygrg-extended;
-
-      &:hover {
-        text-decoration: none;
-      }
-    }
-
-    .side-bar-background {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: 78px;
-      background: $grey;
-      background: $red-gradient;
-      pointer-events: none;
-      transform: translateX(100%);
-      transition: transform 1s $easing, opacity 1s $easing;
-      opacity: 0;
-    }
-
-    &:hover {
-      .side-bar-background {
-        transform: translateX(0);
-        transition: transform 0.3s $easing, opacity 0.5s $easing;
-        opacity: 1;
-      }
     }
   }
 
@@ -209,7 +193,14 @@
       position: absolute;
       right: 20px;
       top: 20px;
-      font-size: $font-size-large;
+      height: 24px;
+      width: 24px;
+      transition: transform 0.3s $easing;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
   .pseudo-link {
@@ -217,31 +208,35 @@
   }
 </style>
 
-<main>
+<div class="ariel-view" in:fade>
   <div class="half-pane left">
 
     <!-- TOP BAR -->
-    <div class="top-bar left" use:links>
-      <div class="left">
-        <a href="/" class:active={isAriel}>ARIEL</a>
-        |
-        <a href="ari" class:active={isAri}>ARI</a>
-      </div>
-      <div class="right">
-        <span on:click={() => (showAbout = true)} class="pseudo-link">
-          ABOUT
-        </span>
-      </div>
-    </div>
+    <MediaQuery query="(min-width: 700px)" let:matches>
+      {#if matches}
+        <div class="top-bar left" use:links>
+          <div class="left">
+            <a href="/" class:active={$isSubsectionAriel}>ARIEL</a>
+            |
+            <a href="ari" class:active={$isSubsectionAri}>ARI</a>
+          </div>
+          <div class="right">
+            <span on:click={() => (showAbout = true)} class="pseudo-link">
+              ABOUT
+            </span>
+          </div>
+        </div>
+      {/if}
+    </MediaQuery>
 
     <!-- INNER CONTAINER -->
     <div class="inner-container">
 
       <!-- LOGO -->
-      {#if isAriel}
+      {#if $isSubsectionAriel}
         <ArielLogo />
       {/if}
-      {#if isAri}
+      {#if $isSubsectionAri}
         <AriLogo />
       {/if}
 
@@ -259,68 +254,70 @@
   </div>
 
   <div class="half-pane right">
-    <!-- TOP BAR -->
-    <div class="top-bar right">
-      {#if isAriel}
-        <div class="left active">ARIEL PROGRAM</div>
-        <!-- <div class="right">XXX</div> -->
-      {/if}
-      {#if isAri}
-        <div class="left active">ARI READINGS</div>
-      {/if}
-    </div>
 
-    <!-- INNER CONTAINER -->
-    <div class="inner-container" use:links>
+    {#if slug}
+      <SinglePane {slug} />
+    {:else}
+      <!-- TOP BAR -->
+      <MediaQuery query="(min-width: 700px)" let:matches>
+        {#if matches}
+          <div class="top-bar right">
+            {#if $isSubsectionAriel}
+              <div class="left active">ARIEL PROGRAM</div>
+            {/if}
+            {#if $isSubsectionAri}
+              <div class="left active">ARI READINGS</div>
+            {/if}
+          </div>
+        {/if}
+      </MediaQuery>
 
-      {#if isAriel}
-        {#await program then program}
-          {#each program as p}
-            <a href="/program/{p.slug.current}" class="program">
-              <div class="title">{p.title}</div>
-              <div class="artist">
-                {#each p.artists as a}
-                  <span>{a},</span>
-                {/each}
+      <!-- INNER CONTAINER -->
+      <div class="inner-container" use:links>
+        {#if $isSubsectionAriel}
+          {#await program then program}
+            {#each program as p}
+              <a href="/{p.slug.current}" class="program">
+                <div class="title">{p.title}</div>
+                <div class="artist">
+                  {#each p.artists as a}
+                    <span>{a},</span>
+                  {/each}
+                </div>
+                <div class="date">
+                  {p.startDate.substring(0, 9)} – {p.endDate.substring(0, 9)}
+                </div>
+                <div class="text">
+                  {@html renderBlockText(p.content)}
+                </div>
+              </a>
+            {/each}
+          {/await}
+        {/if}
+
+        {#if $isSubsectionAri}
+          {#await readings then readings}
+            {#each readings as r}
+              <div class="program">
+                <div class="title">{r.title}</div>
+                <div class="text">
+                  {@html renderBlockText(r.content)}
+                </div>
               </div>
-              <div class="date">
-                {p.startDate.substring(0, 9)} – {p.endDate.substring(0, 9)}
-              </div>
-              <div class="text">
-                {@html renderBlockText(p.content)}
-              </div>
-            </a>
-          {/each}
-        {/await}
-      {/if}
+            {/each}
 
-      {#if isAri}
-        {#await readings then readings}
-          {#each readings as r}
-            <div class="program">
-              <div class="title">{r.title}</div>
-              <div class="text">
-                {@html renderBlockText(r.content)}
-              </div>
-            </div>
-          {/each}
+          {/await}
+        {/if}
 
-        {/await}
-      {/if}
+      </div>
+    {/if}
 
-    </div>
-
-  </div>
-
-  <div class="side-bar left" use:links>
-    <div class="side-bar-background" />
-    <a href="/ygrg" class="inner">YGRG Archive</a>
   </div>
 
   <div class="about-pane" class:open={showAbout}>
     <div class="inner-container">
 
-      {#if isAriel}
+      {#if $isSubsectionAriel}
         {#await aboutAriel then aboutAriel}
           <div class="text">
             {@html renderBlockText(aboutAriel.content)}
@@ -328,7 +325,7 @@
         {/await}
       {/if}
 
-      {#if isAri}
+      {#if $isSubsectionAri}
         {#await aboutAri then aboutAri}
           <div class="text">
             {@html renderBlockText(aboutAri.content)}
@@ -338,8 +335,10 @@
 
     </div>
 
-    <div class="close" on:click={() => (showAbout = false)}>X</div>
+    <div class="close" on:click={() => (showAbout = false)}>
+      <Cross />
+    </div>
 
   </div>
 
-</main>
+</div>

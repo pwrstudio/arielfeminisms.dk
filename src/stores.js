@@ -4,9 +4,13 @@ import { writable, derived } from 'svelte/store'
 
 // *** GLOBALS
 
-export const isAriel = writable('true')
-export const isAri = writable('false')
-export const isYGRG = writable('false')
+export const isAriel = writable(true)
+export const isYGRG = writable(false)
+
+export const isSubsectionAriel = writable(true)
+export const isSubsectionAri = writable(false)
+
+export const isText = writable(false)
 
 
 // export const isArabic = derived(

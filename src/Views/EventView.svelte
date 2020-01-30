@@ -1,4 +1,10 @@
 <script>
+  // # # # # # # # # # # # # # # #
+  //
+  //  Event
+  //
+  // # # # # # # # # # # # # # # #
+
   // *** IMPORT
   import { onMount } from "svelte";
   import { Route, links } from "svelte-routing";
@@ -44,12 +50,10 @@
     @include hide-scroll;
 
     &.left {
-      //   background: $red;
       left: 0;
     }
 
     &.right {
-      //   background: $purple;
       right: 0;
     }
 
@@ -183,10 +187,6 @@
   .pseudo-link {
     cursor: pointer;
   }
-
-  .tile-container {
-  }
-
   .tile {
     border: $line-style;
     border-radius: 4px;

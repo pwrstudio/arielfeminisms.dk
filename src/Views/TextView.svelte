@@ -1,11 +1,25 @@
 <script>
+  // # # # # # # # # # # # # # # #
+  //
+  //  View: Text
+  //
+  // # # # # # # # # # # # # # # #
+
   // *** IMPORT
-  import { onMount } from "svelte";
+  import { onMount, onDestroy } from "svelte";
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
 
   // *** COMPONENTS
+  import Cross from "../Components/Cross.svelte";
 
+  // *** STORES
+  import { isText } from "../stores.js";
+
+  // Set globals
+  isText.set(true);
+
+  // *** PROPS
   export let title = "";
   export let slug = "";
   export let location = {};
@@ -14,6 +28,11 @@
     "*[slug.current == $slug][0]{'pdfFile': pdfFile.asset->url}",
     { slug: slug }
   );
+
+  // *** ON DESTROY
+  onDestroy(async () => {
+    isText.set(false);
+  });
 </script>
 
 <style lang="scss">
@@ -49,7 +68,14 @@
     position: absolute;
     right: 20px;
     top: 20px;
-    font-size: $font-size-large;
+    height: 24px;
+    width: 24px;
+    transition: transform 0.3s $easing;
+    cursor: pointer;
+
+    &:hover {
+      transform: scale(1.1);
+    }
   }
 </style>
 
@@ -62,6 +88,8 @@
     </div>
   {/await}
 
-  <a href="/ygrg" class="close">X</a>
+  <a href="/ygrg" class="close">
+    <Cross />
+  </a>
 
 </div>

@@ -1,14 +1,28 @@
 <script>
+  // # # # # # # # # # # # # # # #
+  //
+  //  arielfeminisms.dk
+  //
+  // # # # # # # # # # # # # # # #
+
   // *** IMPORT
   import { Router, Route, links } from "svelte-routing";
+  import { fade } from "svelte/transition";
+  import MediaQuery from "svelte-media-query";
+
+  // *** COMPONENTS
+  import ArielNavigation from "./Components/ArielNavigation.svelte";
+  import YGRGNavigation from "./Components/YGRGNavigation.svelte";
+  import TopBar from "./Components/TopBar.svelte";
+
+  // *** STORES
+  import { isYGRG, isAriel, isText } from "./stores.js";
 
   // ** VIEWS
   import ArielView from "./Views/ArielView.svelte";
   import YGRGView from "./Views/YGRGView.svelte";
   import TextView from "./Views/TextView.svelte";
   import Error404 from "./Views/Error404.svelte";
-  import SingleView from "./Views/SingleView.svelte";
-  import EventView from "./Views/EventView.svelte";
 </script>
 
 <style lang="scss" global>
@@ -33,6 +47,12 @@
     }
     &:visited {
       color: $black;
+    }
+  }
+
+  .pseudo-link {
+    &:hover {
+      font-style: italic;
     }
   }
 
@@ -206,20 +226,41 @@
   }
 </style>
 
-<Router>
-  <Route path="/" component={ArielView} title="ariel" />
-  <Route path="/program/:slug" component={SingleView} />
+<main>
 
-  <Route path="/ari" component={ArielView} title="ari" />
-  <!-- <Route path="/ari/reading/:slug" component={readingView} /> -->
+  <Router>
+    <Route path="/" component={ArielView} title="ariel" />
 
-  <Route path="/ygrg" component={YGRGView} />
-  <Route path="/ygrg/text/:slug" component={TextView} />
-  <Route path="/ygrg/event/:slug" component={EventView} />
+    <Route path="/ari" component={ArielView} title="ari" />
 
-  <!-- <Route path="/ygrg/signup" component={signupView} />
+    <Route path="/:slug" component={ArielView} title="ariel" />
+
+    <!-- <Route path="/ari/reading/:slug" component={readingView} /> -->
+
+    <Route path="/ygrg" component={YGRGView} />
+    <Route path="/ygrg/text/:slug" component={TextView} />
+
+    <Route path="/ygrg/:slug" component={YGRGView} />
+
+    <!-- <Route path="/ygrg/signup" component={signupView} />
     <Route path="/ygrg/signIn" component={signupView} />
     <Route path="/ygrg/profile" component={propfileView} /> -->
+    <Route component={Error404} title="404" />
+  </Router>
 
-  <Route component={Error404} title="404" />
-</Router>
+  <!-- TODO: PhoneNavigation -->
+  <MediaQuery query="(max-width: 700px)" let:matches>
+    {#if matches}
+      <TopBar />
+    {/if}
+  </MediaQuery>
+
+  {#if $isYGRG && !$isText}
+    <ArielNavigation />
+  {/if}
+
+  {#if $isAriel && !$isText}
+    <YGRGNavigation />
+  {/if}
+
+</main>

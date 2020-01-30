@@ -13,7 +13,6 @@
     max-width: 450px;
     margin-left: auto;
     margin-right: auto;
-    // background: pink;
   }
 </style>
 

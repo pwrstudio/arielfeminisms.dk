@@ -1,17 +1,41 @@
 <script>
+  // # # # # # # # # # # # # # # #
+  //
+  //  YGRG VIEW
+  //
+  // # # # # # # # # # # # # # # #
+
   // *** IMPORT
   import { onMount } from "svelte";
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
+  import { fade } from "svelte/transition";
+  import MediaQuery from "svelte-media-query";
 
   // *** COMPONENTS
-  import ArielVerticalLogo from "../Components/ArielVerticalLogo.svelte";
+  import Cross from "../Components/Cross.svelte";
+  import SinglePane from "../Components/SinglePane.svelte";
 
-  //   export let title = "";
+  // *** STORES
+  import {
+    isYGRG,
+    isAriel,
+    isSubsectionAriel,
+    isSubsectionAri
+  } from "../stores.js";
+
+  // Set globals
+  isAriel.set(false);
+  isYGRG.set(true);
+  isSubsectionAriel.set(false);
+  isSubsectionAri.set(false);
+
+  // *** PROPS
+  export let slug = "";
   export const location = {};
 
+  // *** VARIABLES
   let showAbout = false;
-
   const aboutYGRG = loadData('*[_id == "aboutYGRG"][0]', {});
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
@@ -20,7 +44,7 @@
 <style lang="scss">
   @import "../variables.scss";
 
-  main {
+  .ygrg-view {
     position: fixed;
     right: 0;
     top: 0;
@@ -28,6 +52,11 @@
     height: 100vh;
     margin: 0;
     padding: 0;
+
+    @include screen-size("small") {
+      position: static;
+      width: 100vw;
+    }
   }
 
   .half-pane {
@@ -38,13 +67,18 @@
     overflow-y: auto;
     @include hide-scroll;
 
+    @include screen-size("small") {
+      margin-top: $top-bar-height;
+      position: static;
+      height: auto;
+      width: 100vw;
+    }
+
     &.left {
-      //   background: $red;
       left: 0;
     }
 
     &.right {
-      //   background: $purple;
       right: 0;
     }
 
@@ -97,54 +131,6 @@
     }
   }
 
-  .side-bar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 80px;
-    background: $grey;
-    border-right: $line-style;
-    user-select: none;
-
-    .inner {
-      position: absolute;
-      top: 0;
-      left: 0px;
-      height: 100vh;
-      width: 80px;
-      display: block;
-      transform-origin: 0% 0%;
-      //   transform: rotateZ(90deg);
-      line-height: 80px;
-      padding-left: 15px;
-      padding-top: 30px;
-      font-size: 42px;
-    }
-
-    .side-bar-background {
-      position: absolute;
-      top: 0;
-      right: 0;
-      height: 100vh;
-      width: 78px;
-      background: $grey;
-      background: $purple-gradient;
-      pointer-events: none;
-      transform: translateX(-100%);
-      transition: transform 1s $easing, opacity 1s $easing;
-      opacity: 0;
-    }
-
-    &:hover {
-      .side-bar-background {
-        transform: translateX(0);
-        transition: transform 0.3s $easing, opacity 0.5s $easing;
-        opacity: 1;
-      }
-    }
-  }
-
   .program {
     font-family: $font-stack-ygrg-extended;
 
@@ -175,6 +161,7 @@
     background: $red-gradient;
     opacity: 1;
     font-family: $font-stack-ygrg-regular;
+    font-weight: normal;
     overflow-y: auto;
     @include hide-scroll;
 
@@ -197,13 +184,18 @@
       left: 20px;
       top: 20px;
       font-size: $font-size-large;
+      height: 24px;
+      width: 24px;
+      transition: transform 0.3s $easing;
+
+      &:hover {
+        transform: scale(1.1);
+      }
     }
   }
+
   .pseudo-link {
     cursor: pointer;
-  }
-
-  .tile-container {
   }
 
   .tile {
@@ -230,18 +222,23 @@
   }
 </style>
 
-<main>
+<div class="ygrg-view" in:fade>
+
   <div class="half-pane left">
 
     <!-- TOP BAR -->
-    <div class="top-bar left" use:links>
-      <div class="left">
-        <span on:click={() => (showAbout = !showAbout)} class="pseudo-link">
-          ABOUT YGRG
-        </span>
-      </div>
-      <div class="right">SIGN IN</div>
-    </div>
+    <MediaQuery query="(min-width: 700px)" let:matches>
+      {#if matches}
+        <div class="top-bar left" use:links>
+          <div class="left">
+            <span on:click={() => (showAbout = !showAbout)} class="pseudo-link">
+              ABOUT YGRG
+            </span>
+          </div>
+          <div class="right">SIGN IN</div>
+        </div>
+      {/if}
+    </MediaQuery>
 
     <!-- INNER CONTAINER -->
     <div class="inner-container">
@@ -271,37 +268,39 @@
   </div>
 
   <div class="half-pane right">
-    <!-- TOP BAR -->
-    <div class="top-bar right">
-      <div class="left active">YGRG ARCHIVE</div>
-    </div>
 
-    <!-- INNER CONTAINER -->
-    <div class="inner-container">
+    {#if slug}
+      <SinglePane {slug} />
+    {:else}
+      <!-- TOP BAR -->
+      <MediaQuery query="(min-width: 700px)" let:matches>
+        {#if matches}
+          <div class="top-bar right">
+            <div class="left active">YGRG ARCHIVE</div>
+          </div>
+        {/if}
+      </MediaQuery>
 
-      {#await events then events}
-        {#each events as e}
-          <a href="/ygrg/event/{e.slug.current}" class="program">
-            <div class="title">{e.title}</div>
-            <div class="date">
-              {e.startDate.substring(0, 9)} – {e.endDate.substring(0, 9)}
-            </div>
-            <div class="text">
-              {@html renderBlockText(e.content)}
-            </div>
-          </a>
-        {/each}
-      {/await}
+      <!-- INNER CONTAINER -->
+      <div class="inner-container">
 
-    </div>
+        {#await events then events}
+          {#each events as e}
+            <a href="/ygrg/{e.slug.current}" class="program">
+              <div class="title">{e.title}</div>
+              <div class="date">
+                {e.startDate.substring(0, 9)} – {e.endDate.substring(0, 9)}
+              </div>
+              <div class="text">
+                {@html renderBlockText(e.content)}
+              </div>
+            </a>
+          {/each}
+        {/await}
 
-  </div>
+      </div>
+    {/if}
 
-  <div class="side-bar left" use:links>
-    <div class="side-bar-background" />
-    <a href="/" class="inner">
-      <ArielVerticalLogo />
-    </a>
   </div>
 
   <div class="about-pane" class:open={showAbout}>
@@ -315,8 +314,10 @@
 
     </div>
 
-    <div class="close" on:click={() => (showAbout = false)}>X</div>
+    <div class="close" on:click={() => (showAbout = false)}>
+      <Cross />
+    </div>
 
   </div>
 
-</main>
+</div>
