@@ -15,7 +15,7 @@
     expanded = true;
     setTimeout(() => {
       navigate("/ygrg");
-    }, 600);
+    }, 400);
   };
 </script>
 
@@ -32,7 +32,7 @@
     border-left: $line-style;
     user-select: none;
     transform: translateX(calc(100% - 80px));
-    transition: transform 0.5s $easing, opacity 0.3s $easing;
+    transition: transform 0.3s $easing, opacity 0.3s $easing;
     cursor: pointer;
 
     @include screen-size("small") {
@@ -55,8 +55,8 @@
       transform-origin: 0% 0%;
       transform: rotateZ(90deg);
       line-height: 80px;
-      padding-left: 30px;
-      font-size: 42px;
+      padding-left: 20px;
+      font-size: 32px;
       font-family: $font-stack-ygrg-extended;
       transition: opacity 0.5s $easing;
       opacity: 1;

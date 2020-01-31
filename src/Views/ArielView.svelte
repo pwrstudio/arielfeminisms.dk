@@ -44,6 +44,8 @@
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
   const program = loadData('*[_type in [ "program"]]', {});
   const readings = loadData('*[_type in [ "reading"]]', {});
+
+  console.dir(aboutAri);
 </script>
 
 <style lang="scss">
@@ -51,9 +53,9 @@
 
   .ariel-view {
     position: fixed;
-    left: 0;
+    left: 80px;
     top: 0;
-    width: calc(100vw - 80px);
+    width: calc(100vw - 160px);
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -93,6 +95,7 @@
       margin-right: 30px;
       margin-left: 30px;
       font-size: $font-size-medium;
+      line-height: $line-height;
       font-weight: bold;
     }
 
@@ -112,18 +115,15 @@
     padding-right: 30px;
     font-weight: bold;
     font-size: $font-size-large;
+    user-select: none;
 
     &.left {
-      //   background: $black;
       left: 0;
-      //   background: red;
       box-sizing: border-box;
     }
 
     &.right {
-      //   background: white;
       right: 0;
-      //   background: green;
       box-sizing: border-box;
     }
 
@@ -143,12 +143,12 @@
     }
     .title {
       text-align: center;
-      margin-bottom: 20px;
+      margin-bottom: $line-height;
       text-transform: uppercase;
     }
     .date {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: $line-height * 3;
     }
     .artist {
       text-align: center;
@@ -165,12 +165,10 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: calc(50vw - 30px);
-    background: pink;
+    width: calc(50vw);
     z-index: 10000;
     transform: translateX(-100%);
     background: $purple-gradient;
-    font-size: $font-size-large;
     opacity: 0;
     overflow-y: auto;
     @include hide-scroll;
@@ -182,17 +180,24 @@
     }
 
     .inner-container {
-      margin-top: $top-bar-height + 20px;
       margin-right: 30px;
       margin-left: 30px;
       font-size: $font-size-large;
+      line-height: $line-height;
       font-weight: bold;
+      width: calc(100% - 100px);
+
+      .bottom-text {
+        margin-top: $line-height * 2;
+        text-align: center;
+        margin-bottom: $line-height * 4;
+      }
     }
 
     .close {
       position: absolute;
       right: 20px;
-      top: 20px;
+      top: 15px;
       height: 24px;
       width: 24px;
       transition: transform 0.3s $easing;
@@ -203,6 +208,7 @@
       }
     }
   }
+
   .pseudo-link {
     cursor: pointer;
   }
@@ -314,6 +320,7 @@
 
   </div>
 
+  <!-- ABOUT -->
   <div class="about-pane" class:open={showAbout}>
     <div class="inner-container">
 
@@ -321,6 +328,9 @@
         {#await aboutAriel then aboutAriel}
           <div class="text">
             {@html renderBlockText(aboutAriel.content)}
+            <div class="bottom-text">
+              {@html renderBlockText(aboutAriel.bottomText)}
+            </div>
           </div>
         {/await}
       {/if}
@@ -329,6 +339,9 @@
         {#await aboutAri then aboutAri}
           <div class="text">
             {@html renderBlockText(aboutAri.content)}
+            <div class="bottom-text">
+              {@html renderBlockText(aboutAri.bottomText)}
+            </div>
           </div>
         {/await}
       {/if}

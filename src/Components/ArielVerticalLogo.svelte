@@ -9,7 +9,7 @@
 <style lang="scss">
   svg {
     display: block;
-    width: 50px;
+    width: 40px;
   }
 </style>
 

@@ -46,9 +46,9 @@
 
   .ygrg-view {
     position: fixed;
-    right: 0;
+    left: 80px;
     top: 0;
-    width: calc(100vw - 80px);
+    width: calc(100vw - 160px);
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -154,7 +154,7 @@
     top: 0;
     right: 0;
     height: 100vh;
-    width: calc(50vw - 30px);
+    width: 50vw;
     background: $grey;
     z-index: 10000;
     transform: translateX(100%);
@@ -172,16 +172,24 @@
     }
 
     .inner-container {
-      margin-top: $top-bar-height + 20px;
       margin-right: 30px;
       margin-left: 30px;
       font-size: $font-size-large;
       font-weight: bold;
+      line-height: $line-height;
+      width: calc(100% - 100px);
+
+      .bottom-text {
+        margin-top: $line-height * 2;
+        text-align: center;
+        margin-bottom: $line-height * 4;
+        font-family: $font-stack-ariel;
+      }
     }
 
     .close {
       position: absolute;
-      left: 20px;
+      right: 20px;
       top: 20px;
       font-size: $font-size-large;
       height: 24px;
@@ -309,6 +317,9 @@
       {#await aboutYGRG then aboutYGRG}
         <div class="text">
           {@html renderBlockText(aboutYGRG.content)}
+          <div class="bottom-text">
+            {@html renderBlockText(aboutYGRG.bottomText)}
+          </div>
         </div>
       {/await}
 

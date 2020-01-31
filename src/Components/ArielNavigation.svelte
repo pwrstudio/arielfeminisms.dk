@@ -18,7 +18,7 @@
     expanded = true;
     setTimeout(() => {
       navigate("/");
-    }, 600);
+    }, 400);
   };
 </script>
 
@@ -35,7 +35,7 @@
     border-right: $line-style;
     user-select: none;
     transform: translateX(calc(-100% + 80px));
-    transition: transform 0.5s $easing, opacity 0.3s $easing;
+    transition: transform 0.3s $easing, opacity 0.3s $easing;
     cursor: pointer;
 
     @include screen-size("small") {
@@ -56,9 +56,8 @@
       width: 80px;
       display: block;
       line-height: 80px;
-      padding-left: 15px;
-      padding-top: 30px;
-      font-size: 42px;
+      padding-left: 20px;
+      padding-top: 20px;
       transition: opacity 0.5s $easing;
       opacity: 1;
 
