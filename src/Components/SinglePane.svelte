@@ -28,8 +28,6 @@
 
   // *** VARIABLES
   const single = loadData("*[slug.current == $slug][0]", { slug: slug });
-
-  console.dir(single);
 </script>
 
 <style lang="scss">
@@ -77,7 +75,7 @@
       .close {
         position: absolute;
         right: 20px;
-        top: 10px;
+        top: 15px;
         height: 24px;
         width: 24px;
         transition: transform 0.3s $easing;
@@ -93,16 +91,20 @@
   .bottom-text {
     position: absolute;
     bottom: 0;
+    left: 0;
     width: 100%;
+
     .title {
       text-align: center;
       margin-bottom: 20px;
       text-transform: uppercase;
     }
+
     .date {
       text-align: center;
       margin-bottom: 40px;
     }
+
     .artist {
       text-align: center;
       text-transform: uppercase;

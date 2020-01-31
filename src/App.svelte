@@ -128,13 +128,12 @@
 
   .flickity-button {
     position: absolute;
-    background: hsla(0, 0%, 100%, 0.75);
     border: none;
-    color: #333;
+    color: $black;
+    background: $grey;
   }
 
   .flickity-button:hover {
-    background: white;
     cursor: pointer;
   }
 
@@ -161,19 +160,16 @@
   /* ---- previous/next buttons ---- */
 
   .flickity-prev-next-button {
-    top: 50%;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    /* vertically center */
-    transform: translateY(-50%);
+    bottom: -30px;
+    width: 20px;
+    height: 20px;
   }
 
   .flickity-prev-next-button.previous {
-    left: 10px;
+    left: 0px;
   }
   .flickity-prev-next-button.next {
-    right: 10px;
+    right: 0px;
   }
   /* right to left */
   .flickity-rtl .flickity-prev-next-button.previous {
@@ -197,8 +193,9 @@
 
   .flickity-page-dots {
     position: absolute;
-    width: 100%;
-    bottom: -25px;
+    width: calc(100% - 40px);
+    bottom: -30px;
+    left: 20px;
     padding: 0;
     margin: 0;
     list-style: none;
@@ -212,10 +209,10 @@
 
   .flickity-page-dots .dot {
     display: inline-block;
-    width: 10px;
-    height: 10px;
-    margin: 0 8px;
-    background: #333;
+    width: 7px;
+    height: 7px;
+    margin: 0 6px;
+    background: $black;
     border-radius: 50%;
     opacity: 0.25;
     cursor: pointer;
