@@ -9,9 +9,9 @@
   import { navigate } from "svelte-routing";
   import MediaQuery from "svelte-media-query";
 
-  // *** COMPONENTS
-  import ArielVerticalLogo from "./ArielVerticalLogo.svelte";
-  import ArielHorizontalLogo from "./ArielHorizontalLogo.svelte";
+  // *** GRAPHICS
+  import ArielVerticalLogo from "../Graphics/ArielVerticalLogo.svelte";
+  import ArielHorizontalLogo from "../Graphics/ArielHorizontalLogo.svelte";
 
   // *** VARIABLES
   let expanded = false;

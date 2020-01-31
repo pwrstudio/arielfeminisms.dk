@@ -14,9 +14,10 @@
   import { format, getYear, formatDistanceToNow } from "date-fns";
 
   // *** COMPONENTS
-  import Cross from "../Components/Cross.svelte";
-  import SubmitArrow from "../Components/SubmitArrow.svelte";
+  import Cross from "../Graphics/Cross.svelte";
+  import SubmitArrow from "../Graphics/SubmitArrow.svelte";
   import SinglePane from "../Components/SinglePane.svelte";
+  import SignIn from "../Components/SignIn.svelte";
 
   // *** STORES
   import {
@@ -24,7 +25,8 @@
     isAriel,
     isSubsectionAriel,
     isSubsectionAri,
-    showAbout
+    showAbout,
+    loggedInUser
   } from "../stores.js";
 
   // Set globals
@@ -35,12 +37,14 @@
 
   // *** PROPS
   export let slug = "";
-  export const location = {};
+  export let location = {};
 
   // *** VARIABLES
   const aboutYGRG = loadData('*[_id == "aboutYGRG"][0]', {});
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
+
+  let showSignIn = false;
 
   const formattedDate = (start, end) => {
     const startDate = Date.parse(start);
@@ -53,14 +57,8 @@
     return format(startDate, startFormat) + " – " + format(endDate, endFormat);
   };
 
-  const formattedDuration = date => {
-    const creationDate = Date.parse(date);
-
-    const timeDistance = formatDistanceToNow(creationDate, { addSuffix: true });
-
-    console.dir(timeDistance);
-    return timeDistance;
-  };
+  const formattedDuration = date =>
+    formatDistanceToNow(Date.parse(date), { addSuffix: true });
 
   onMount(async () => {
     window.scrollTo(0, 0);
@@ -248,6 +246,70 @@
     }
   }
 
+  .sign-in {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 50vw;
+    background: $grey;
+    z-index: 10000;
+    transform: translateX(100%);
+    background: $brown;
+    opacity: 1;
+    font-family: $font-stack-ygrg-regular;
+    font-weight: normal;
+    overflow-y: auto;
+    @include hide-scroll;
+
+    @include screen-size("small") {
+      width: 100vw;
+      top: 80px;
+      height: calc(100vh - 80px);
+      transform: translateY(100%);
+    }
+    &.open {
+      transition: transform 0.2s $easing, opacity 0.3s $easing;
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .inner-container {
+      margin-right: 30px;
+      margin-left: 30px;
+      font-size: $font-size-large;
+      font-weight: bold;
+      line-height: $line-height;
+      width: calc(100% - 100px);
+
+      .bottom-text {
+        margin-top: $line-height * 2;
+        text-align: center;
+        margin-bottom: $line-height * 4;
+        font-family: $font-stack-ariel;
+      }
+
+      @include screen-size("small") {
+        margin-right: 10px;
+        margin-left: 10px;
+      }
+    }
+
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      font-size: $font-size-large;
+      height: 24px;
+      width: 24px;
+      transition: transform 0.3s $easing;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
   .pseudo-link {
     cursor: pointer;
   }
@@ -336,12 +398,20 @@
                 <span
                   on:click={() => {
                     showAbout.set(true);
+                    showSignIn = false;
                   }}
                   class="pseudo-link">
                   ABOUT YGRG
                 </span>
               </div>
-              <div class="right">SIGN IN</div>
+              <div
+                class="right pseudo-link"
+                on:click={() => {
+                  showAbout.set(false);
+                  showSignIn = !showSignIn;
+                }}>
+                {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+              </div>
             </div>
           {/if}
         </MediaQuery>
@@ -432,6 +502,19 @@
       class="close"
       on:click={() => {
         showAbout.set(false);
+      }}>
+      <Cross />
+    </div>
+
+  </div>
+
+  <div class="sign-in" class:open={showSignIn}>
+    <SignIn />
+
+    <div
+      class="close"
+      on:click={() => {
+        showSignIn = false;
       }}>
       <Cross />
     </div>

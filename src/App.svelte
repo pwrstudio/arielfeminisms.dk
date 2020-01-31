@@ -9,6 +9,7 @@
   import { Router, Route, links } from "svelte-routing";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
+  import * as Cookies from "es-cookie";
 
   // *** COMPONENTS
   import ArielNavigation from "./Components/ArielNavigation.svelte";
@@ -16,13 +17,19 @@
   import TopBar from "./Components/TopBar.svelte";
 
   // *** STORES
-  import { isYGRG, isAriel, isText } from "./stores.js";
+  import { isYGRG, isAriel, isText, loggedInUser } from "./stores.js";
 
   // ** VIEWS
   import ArielView from "./Views/ArielView.svelte";
   import YGRGView from "./Views/YGRGView.svelte";
   import TextView from "./Views/TextView.svelte";
-  import Error404 from "./Views/Error404.svelte";
+
+  const userCookie = Cookies.get("ygrgLoggedInUser");
+  console.dir(userCookie);
+
+  if (userCookie) {
+    loggedInUser.set(JSON.parse(userCookie));
+  }
 </script>
 
 <style lang="scss" global>
@@ -221,6 +228,10 @@
   .flickity-page-dots .dot.is-selected {
     opacity: 1;
   }
+
+  .pseudo-link {
+    cursor: pointer;
+  }
 </style>
 
 <main>
@@ -239,10 +250,7 @@
 
     <Route path="/ygrg/:slug" component={YGRGView} />
 
-    <!-- <Route path="/ygrg/signup" component={signupView} />
-    <Route path="/ygrg/signIn" component={signupView} />
-    <Route path="/ygrg/profile" component={propfileView} /> -->
-    <Route component={Error404} title="404" />
+    <Route component={ArielView} title="ariel" />
   </Router>
 
   <MediaQuery query="(max-width: 700px)" let:matches>

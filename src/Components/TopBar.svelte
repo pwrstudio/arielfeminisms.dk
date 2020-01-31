@@ -9,8 +9,8 @@
   import { links } from "svelte-routing";
   import { slide, fade } from "svelte/transition";
 
-  // *** COMPONENTS
-  import Cross from "../Components/Cross.svelte";
+  // *** GRAPHICS
+  import Cross from "../Graphics/Cross.svelte";
 
   // *** STORES
   import {

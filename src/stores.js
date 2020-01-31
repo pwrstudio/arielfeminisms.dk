@@ -14,6 +14,8 @@ export const isText = writable(false)
 
 export const showAbout = writable(false)
 
+export const loggedInUser = writable(false)
+
 
 // export const isArabic = derived(
 //     globalLanguage,
