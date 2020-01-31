@@ -119,6 +119,9 @@
       right: 0;
       .inner-container {
         margin-top: $top-bar-height + 20px;
+        @include screen-size("small") {
+          margin-top: $top-bar-height;
+        }
       }
     }
 

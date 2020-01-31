@@ -99,12 +99,16 @@
 
     &.left {
       left: 0;
+      @include screen-size("small") {
+        margin-top: 20px;
+      }
     }
 
     &.right {
       right: 0;
       @include screen-size("small") {
         padding-bottom: $line-height * 6;
+        margin-top: 20px;
       }
     }
 

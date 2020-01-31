@@ -64,6 +64,10 @@
     margin-left: 30px;
     font-size: $font-size-medium;
     font-weight: bold;
+
+    @include screen-size("small") {
+      margin-top: 50px;
+    }
   }
 
   .top-bar {
