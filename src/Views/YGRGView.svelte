@@ -11,6 +11,7 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
+  import { format, getYear } from "date-fns";
 
   // *** COMPONENTS
   import Cross from "../Components/Cross.svelte";
@@ -39,6 +40,17 @@
   const aboutYGRG = loadData('*[_id == "aboutYGRG"][0]', {});
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
+
+  const formattedDate = (start, end) => {
+    const startDate = Date.parse(start);
+    const endDate = Date.parse(end);
+
+    const startFormat =
+      getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
+    const endFormat = "dd.MM.yyyy";
+
+    return format(startDate, startFormat) + " – " + format(endDate, endFormat);
+  };
 </script>
 
 <style lang="scss">
@@ -314,9 +326,7 @@
           {#each events as e}
             <a href="/ygrg/{e.slug.current}" class="program">
               <div class="title">{e.title}</div>
-              <div class="date">
-                {e.startDate.substring(0, 9)} – {e.endDate.substring(0, 9)}
-              </div>
+              <div class="date">{formattedDate(e.startDate, e.endDate)}</div>
               <div class="text">
                 {@html renderBlockText(e.content)}
               </div>

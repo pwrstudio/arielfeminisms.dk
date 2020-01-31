@@ -10,6 +10,7 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
+  import { format, getYear } from "date-fns";
 
   // *** COMPONENTS
   import Cross from "../Components/Cross.svelte";
@@ -28,6 +29,17 @@
 
   // *** VARIABLES
   const single = loadData("*[slug.current == $slug][0]", { slug: slug });
+
+  const formattedDate = (start, end) => {
+    const startDate = Date.parse(start);
+    const endDate = Date.parse(end);
+
+    const startFormat =
+      getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
+    const endFormat = "dd.MM.yyyy";
+
+    return format(startDate, startFormat) + " – " + format(endDate, endFormat);
+  };
 </script>
 
 <style lang="scss">
@@ -167,7 +179,7 @@
         {/if}
         <!-- // *** DATE -->
         <div class="date">
-          {single.startDate.substring(0, 9)} – {single.endDate.substring(0, 9)}
+          {formattedDate(single.startDate, single.endDate)}
         </div>
       </div>
 

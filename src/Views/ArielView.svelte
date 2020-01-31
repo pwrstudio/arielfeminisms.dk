@@ -11,6 +11,7 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
+  import { format, getYear } from "date-fns";
 
   // *** COMPONENTS
   import ArielLogo from "../Components/ArielLogo.svelte";
@@ -44,6 +45,17 @@
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
   const program = loadData('*[_type in [ "program"]]', {});
   const readings = loadData('*[_type in [ "reading"]]', {});
+
+  const formattedDate = (start, end) => {
+    const startDate = Date.parse(start);
+    const endDate = Date.parse(end);
+
+    const startFormat =
+      getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
+    const endFormat = "dd.MM.yyyy";
+
+    return format(startDate, startFormat) + " – " + format(endDate, endFormat);
+  };
 </script>
 
 <style lang="scss">
@@ -307,9 +319,7 @@
                     <span>{a},</span>
                   {/each}
                 </div>
-                <div class="date">
-                  {p.startDate.substring(0, 9)} – {p.endDate.substring(0, 9)}
-                </div>
+                <div class="date">{formattedDate(p.startDate, p.endDate)}</div>
                 <div class="text">
                   {@html renderBlockText(p.content)}
                 </div>

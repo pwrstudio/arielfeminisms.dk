@@ -119,7 +119,7 @@
     }
 
     &.expanded {
-      transform: translateY(-2px);
+      transform: translateX(2px);
       background: $purple-gradient;
 
       @include screen-size("small") {
