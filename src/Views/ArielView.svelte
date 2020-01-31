@@ -18,6 +18,7 @@
   import AriLogo from "../Components/AriLogo.svelte";
   import Cross from "../Components/Cross.svelte";
   import SinglePane from "../Components/SinglePane.svelte";
+  import SubmitArrow from "../Components/SubmitArrow.svelte";
 
   // *** STORES
   import {
@@ -56,6 +57,10 @@
 
     return format(startDate, startFormat) + " – " + format(endDate, endFormat);
   };
+
+  onMount(async () => {
+    window.scrollTo(0, 0);
+  });
 </script>
 
 <style lang="scss">
@@ -110,6 +115,11 @@
       font-size: $font-size-medium;
       line-height: $line-height;
       font-weight: bold;
+
+      @include screen-size("small") {
+        margin-right: 10px;
+        margin-left: 10px;
+      }
     }
 
     .bottom-meta {
@@ -232,6 +242,37 @@
   .pseudo-link {
     cursor: pointer;
   }
+
+  .search {
+    width: 300px;
+    max-width: 60%;
+    position: relative;
+    float: right;
+
+    .search-input {
+      font-size: $font-size-medium;
+      width: 100%;
+      border: $line-style;
+      outline: none;
+      line-height: $line-height;
+      height: $line-height * 2.5;
+      padding: 5px;
+      border-radius: 5px;
+      background: $grey;
+
+      @include screen-size("small") {
+        border: $mobile-line-style;
+      }
+    }
+
+    .search-icon {
+      position: absolute;
+      right: $line-height * 0.35;
+      top: $line-height * 0.35;
+      width: $line-height * 1.25;
+      height: $line-height * 1.25;
+    }
+  }
 </style>
 
 <div class="ariel-view" in:fade>
@@ -302,6 +343,15 @@
             {/if}
             {#if $isSubsectionAri}
               <div class="left active">ARI READINGS</div>
+              <div class="search">
+                <input
+                  class="search-input"
+                  type="text"
+                  placeholder="Search in ARI..." />
+                <div class="search-icon">
+                  <SubmitArrow />
+                </div>
+              </div>
             {/if}
           </div>
         {/if}

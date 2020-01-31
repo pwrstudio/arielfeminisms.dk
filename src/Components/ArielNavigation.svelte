@@ -49,6 +49,7 @@
       transform: translateY(calc(100% - 80px));
       top: unset;
     }
+
     .arrow-up {
       display: flex;
       justify-content: center;

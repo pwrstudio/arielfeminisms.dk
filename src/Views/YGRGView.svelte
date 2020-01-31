@@ -61,6 +61,10 @@
     console.dir(timeDistance);
     return timeDistance;
   };
+
+  onMount(async () => {
+    window.scrollTo(0, 0);
+  });
 </script>
 
 <style lang="scss">
@@ -219,6 +223,11 @@
         margin-bottom: $line-height * 4;
         font-family: $font-stack-ariel;
       }
+
+      @include screen-size("small") {
+        margin-right: 10px;
+        margin-left: 10px;
+      }
     }
 
     .close {
@@ -294,6 +303,10 @@
       padding: 5px;
       border-radius: 5px;
       background: $grey;
+
+      @include screen-size("small") {
+        border: $mobile-line-style;
+      }
     }
 
     .filter-icon {
