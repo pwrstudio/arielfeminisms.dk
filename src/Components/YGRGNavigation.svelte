@@ -7,6 +7,7 @@
 
   // *** IMPORT
   import { navigate } from "svelte-routing";
+  import MediaQuery from "svelte-media-query";
 
   // *** VARIABLES
   let expanded = false;
@@ -40,8 +41,8 @@
       height: 100vh;
       width: 100vw;
       border-left: unset;
-      border-top: $line-style;
-      transform: translateY(calc(100% - 80px));
+      border-top: $mobile-line-style;
+      transform: translateY(calc(100% - 78px));
       top: unset;
     }
 
@@ -62,10 +63,26 @@
       opacity: 1;
 
       @include screen-size("small") {
-        transform: translateY(2px);
+        transform: unset;
         height: 80px;
         width: 100vw;
         font-size: 16px;
+        left: 0;
+        text-align: center;
+        padding-left: 0;
+      }
+    }
+
+    .arrow-up {
+      display: flex;
+      justify-content: center;
+
+      svg {
+        fill: none;
+        stroke: $black;
+        stroke-width: 1.85px;
+        width: 30px;
+        margin-top: 10px;
       }
     }
 
@@ -108,7 +125,9 @@
       background: $red-gradient;
 
       @include screen-size("small") {
+        transform: translateX(0);
         background: $red-gradient-vertical;
+        border-top: none;
       }
 
       .side-bar-background {
@@ -118,11 +137,24 @@
       .inner {
         opacity: 0;
       }
+
+      .arrow-up {
+        display: none;
+      }
     }
   }
 </style>
 
 <div on:click={transition} class="ygrg-navigation" class:expanded>
   <div class="side-bar-background" />
+  <MediaQuery query="(max-width: 700px)" let:matches>
+    {#if matches}
+      <div class="arrow-up">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.21 10.36">
+          <polyline class="cls-1" points="0.37 9.51 20.08 1.01 39.85 9.51" />
+        </svg>
+      </div>
+    {/if}
+  </MediaQuery>
   <div class="inner">YGRG Archive</div>
 </div>

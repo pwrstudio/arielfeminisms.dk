@@ -12,6 +12,8 @@ export const isSubsectionAri = writable(false)
 
 export const isText = writable(false)
 
+export const showAbout = writable(false)
+
 
 // export const isArabic = derived(
 //     globalLanguage,

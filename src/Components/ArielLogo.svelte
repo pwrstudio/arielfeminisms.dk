@@ -7,12 +7,19 @@
 </script>
 
 <style lang="scss">
+  @import "../variables.scss";
+
   svg {
     display: block;
     width: 100%;
     max-width: 450px;
     margin-left: auto;
     margin-right: auto;
+
+    @include screen-size("small") {
+      width: 80%;
+      max-width: 400px;
+    }
   }
 </style>
 

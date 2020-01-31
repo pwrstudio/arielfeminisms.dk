@@ -21,7 +21,8 @@
     isYGRG,
     isAriel,
     isSubsectionAriel,
-    isSubsectionAri
+    isSubsectionAri,
+    showAbout
   } from "../stores.js";
 
   // Set globals
@@ -35,7 +36,6 @@
   export const location = {};
 
   // *** VARIABLES
-  let showAbout = false;
   const aboutYGRG = loadData('*[_id == "aboutYGRG"][0]', {});
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
@@ -165,6 +165,12 @@
     overflow-y: auto;
     @include hide-scroll;
 
+    @include screen-size("small") {
+      width: 100vw;
+      top: 80px;
+      height: calc(100vh - 80px);
+      transform: translateY(100%);
+    }
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
       transform: translateX(0);
@@ -219,6 +225,10 @@
     padding-top: 40px;
     font-family: $font-stack-ygrg-regular;
 
+    @include screen-size("small") {
+      border: $mobile-line-style;
+    }
+
     .time {
       font-size: $font-size-small;
       margin-bottom: 20px;
@@ -232,48 +242,56 @@
 
 <div class="ygrg-view" in:fade>
 
-  <div class="half-pane left">
+  <MediaQuery query="(max-width: 700px)" let:matches>
+    {#if (matches && !slug) || !matches}
+      <div class="half-pane left">
 
-    <!-- TOP BAR -->
-    <MediaQuery query="(min-width: 700px)" let:matches>
-      {#if matches}
-        <div class="top-bar left" use:links>
-          <div class="left">
-            <span on:click={() => (showAbout = !showAbout)} class="pseudo-link">
-              ABOUT YGRG
-            </span>
+        <!-- TOP BAR -->
+        <MediaQuery query="(min-width: 700px)" let:matches>
+          {#if matches}
+            <div class="top-bar left" use:links>
+              <div class="left">
+                <span
+                  on:click={() => {
+                    showAbout.set(true);
+                  }}
+                  class="pseudo-link">
+                  ABOUT YGRG
+                </span>
+              </div>
+              <div class="right">SIGN IN</div>
+            </div>
+          {/if}
+        </MediaQuery>
+
+        <!-- INNER CONTAINER -->
+        <div class="inner-container">
+
+          <div class="tile-container" use:links>
+
+            {#await texts then texts}
+              {#each texts as t}
+                <a class="tile" href="/ygrg/text/{t.slug.current}">
+                  <div class="title">{t.title}</div>
+                  <div class="time">About 2 months ago</div>
+                  <div class="preview">Preview</div>
+                </a>
+              {/each}
+              {#each texts as t}
+                <a class="tile" href="/ygrg/text/{t.slug.current}">
+                  <div class="title">{t.title}</div>
+                  <div class="time">About 2 months ago</div>
+                  <div class="preview">Preview</div>
+                </a>
+              {/each}
+            {/await}
           </div>
-          <div class="right">SIGN IN</div>
+
         </div>
-      {/if}
-    </MediaQuery>
 
-    <!-- INNER CONTAINER -->
-    <div class="inner-container">
-
-      <div class="tile-container" use:links>
-
-        {#await texts then texts}
-          {#each texts as t}
-            <a class="tile" href="/ygrg/text/{t.slug.current}">
-              <div class="title">{t.title}</div>
-              <div class="time">About 2 months ago</div>
-              <div class="preview">Preview</div>
-            </a>
-          {/each}
-          {#each texts as t}
-            <a class="tile" href="/ygrg/text/{t.slug.current}">
-              <div class="title">{t.title}</div>
-              <div class="time">About 2 months ago</div>
-              <div class="preview">Preview</div>
-            </a>
-          {/each}
-        {/await}
       </div>
-
-    </div>
-
-  </div>
+    {/if}
+  </MediaQuery>
 
   <div class="half-pane right">
 
@@ -311,7 +329,7 @@
 
   </div>
 
-  <div class="about-pane" class:open={showAbout}>
+  <div class="about-pane" class:open={$showAbout}>
     <div class="inner-container">
 
       {#await aboutYGRG then aboutYGRG}
@@ -325,7 +343,11 @@
 
     </div>
 
-    <div class="close" on:click={() => (showAbout = false)}>
+    <div
+      class="close"
+      on:click={() => {
+        showAbout.set(false);
+      }}>
       <Cross />
     </div>
 

@@ -94,6 +94,11 @@
     left: 0;
     width: 100%;
 
+    @include screen-size("small") {
+      margin-top: $line-height * 6;
+      position: static;
+    }
+
     .title {
       text-align: center;
       margin-bottom: 20px;

@@ -81,7 +81,6 @@
 
 <div class="text-view" use:links>
 
-  <!-- BOTTOM META-->
   {#await text then text}
     <div class="pdf-viewer">
       <iframe src={text.pdfFile} />

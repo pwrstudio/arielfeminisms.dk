@@ -7,9 +7,11 @@
 
   // *** IMPORT
   import { navigate } from "svelte-routing";
+  import MediaQuery from "svelte-media-query";
 
   // *** COMPONENTS
   import ArielVerticalLogo from "./ArielVerticalLogo.svelte";
+  import ArielHorizontalLogo from "./ArielHorizontalLogo.svelte";
 
   // *** VARIABLES
   let expanded = false;
@@ -39,13 +41,25 @@
     cursor: pointer;
 
     @include screen-size("small") {
-      bottom: 0;
-      height: 100vh;
+      bottom: -2px;
+      height: calc(100vh + 2px);
       width: 100vw;
       border-right: unset;
-      border-top: $line-style;
+      border-top: $mobile-line-style;
       transform: translateY(calc(100% - 80px));
       top: unset;
+    }
+    .arrow-up {
+      display: flex;
+      justify-content: center;
+
+      svg {
+        fill: none;
+        stroke: $black;
+        stroke-width: 1.85px;
+        width: 30px;
+        margin-top: 10px;
+      }
     }
 
     .inner {
@@ -64,6 +78,11 @@
       @include screen-size("small") {
         height: 80px;
         width: 100vw;
+        padding-left: 0px;
+        padding-top: 30px;
+
+        display: flex;
+        justify-content: center;
       }
     }
 
@@ -100,11 +119,13 @@
     }
 
     &.expanded {
-      transform: translatey(-2px);
+      transform: translateY(-2px);
       background: $purple-gradient;
 
       @include screen-size("small") {
+        transform: translateY(-2px);
         background: $purple-gradient-vertical;
+        border-top: none;
       }
 
       .side-bar-background {
@@ -114,13 +135,32 @@
       .inner {
         opacity: 0;
       }
+
+      .arrow-up {
+        display: none;
+      }
     }
   }
 </style>
 
 <div on:click={transition} class="ariel-navigation" class:expanded>
   <div class="side-bar-background" />
+  <MediaQuery query="(max-width: 700px)" let:matches>
+    {#if matches}
+      <div class="arrow-up">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.21 10.36">
+          <polyline class="cls-1" points="0.37 9.51 20.08 1.01 39.85 9.51" />
+        </svg>
+      </div>
+    {/if}
+  </MediaQuery>
   <div class="inner">
-    <ArielVerticalLogo />
+    <MediaQuery query="(max-width: 700px)" let:matches>
+      {#if matches}
+        <ArielHorizontalLogo />
+      {:else}
+        <ArielVerticalLogo />
+      {/if}
+    </MediaQuery>
   </div>
 </div>

@@ -23,7 +23,8 @@
     isYGRG,
     isAriel,
     isSubsectionAriel,
-    isSubsectionAri
+    isSubsectionAri,
+    showAbout
   } from "../stores.js";
 
   // *** PROPS
@@ -38,14 +39,11 @@
   isSubsectionAri.set(title === "ari");
 
   // *** VARIABLES
-  let showAbout = false;
   const aboutAriel = loadData('*[_id == "aboutAriel"][0]', {});
   const aboutAri = loadData('*[_id == "aboutAri"][0]', {});
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
   const program = loadData('*[_type in [ "program"]]', {});
   const readings = loadData('*[_type in [ "reading"]]', {});
-
-  console.dir(aboutAri);
 </script>
 
 <style lang="scss">
@@ -88,6 +86,9 @@
 
     &.right {
       right: 0;
+      @include screen-size("small") {
+        padding-bottom: $line-height * 6;
+      }
     }
 
     .inner-container {
@@ -173,6 +174,13 @@
     overflow-y: auto;
     @include hide-scroll;
 
+    @include screen-size("small") {
+      width: 100vw;
+      top: 80px;
+      height: calc(100vh - 80px);
+      transform: translateY(100%);
+    }
+
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
       transform: translateX(0);
@@ -215,49 +223,58 @@
 </style>
 
 <div class="ariel-view" in:fade>
-  <div class="half-pane left">
 
-    <!-- TOP BAR -->
-    <MediaQuery query="(min-width: 700px)" let:matches>
-      {#if matches}
-        <div class="top-bar left" use:links>
-          <div class="left">
-            <a href="/" class:active={$isSubsectionAriel}>ARIEL</a>
-            |
-            <a href="ari" class:active={$isSubsectionAri}>ARI</a>
-          </div>
-          <div class="right">
-            <span on:click={() => (showAbout = true)} class="pseudo-link">
-              ABOUT
-            </span>
-          </div>
+  <MediaQuery query="(max-width: 700px)" let:matches>
+    {#if (matches && !slug) || !matches}
+      <div class="half-pane left">
+
+        <!-- TOP BAR -->
+        <MediaQuery query="(min-width: 700px)" let:matches>
+          {#if matches}
+            <div class="top-bar left" use:links>
+              <div class="left">
+                <a href="/" class:active={$isSubsectionAriel}>ARIEL</a>
+                |
+                <a href="ari" class:active={$isSubsectionAri}>ARI</a>
+              </div>
+              <div class="right">
+                <span
+                  on:click={() => {
+                    showAbout.set(true);
+                  }}
+                  class="pseudo-link">
+                  ABOUT
+                </span>
+              </div>
+            </div>
+          {/if}
+        </MediaQuery>
+
+        <!-- INNER CONTAINER -->
+        <div class="inner-container">
+
+          <!-- LOGO -->
+          {#if $isSubsectionAriel}
+            <ArielLogo />
+          {/if}
+          {#if $isSubsectionAri}
+            <AriLogo />
+          {/if}
+
+          <!-- BOTTOM META-->
+          {#await generalInformation then generalInformation}
+            <div class="bottom-meta">
+              <div class="tagline">{generalInformation.tagline}</div>
+              <div class="address">
+                {@html generalInformation.address}
+              </div>
+            </div>
+          {/await}
         </div>
-      {/if}
-    </MediaQuery>
 
-    <!-- INNER CONTAINER -->
-    <div class="inner-container">
-
-      <!-- LOGO -->
-      {#if $isSubsectionAriel}
-        <ArielLogo />
-      {/if}
-      {#if $isSubsectionAri}
-        <AriLogo />
-      {/if}
-
-      <!-- BOTTOM META-->
-      {#await generalInformation then generalInformation}
-        <div class="bottom-meta">
-          <div class="tagline">{generalInformation.tagline}</div>
-          <div class="address">
-            {@html generalInformation.address}
-          </div>
-        </div>
-      {/await}
-    </div>
-
-  </div>
+      </div>
+    {/if}
+  </MediaQuery>
 
   <div class="half-pane right">
 
@@ -321,7 +338,7 @@
   </div>
 
   <!-- ABOUT -->
-  <div class="about-pane" class:open={showAbout}>
+  <div class="about-pane" class:open={$showAbout}>
     <div class="inner-container">
 
       {#if $isSubsectionAriel}
@@ -348,7 +365,11 @@
 
     </div>
 
-    <div class="close" on:click={() => (showAbout = false)}>
+    <div
+      class="close"
+      on:click={() => {
+        showAbout.set(false);
+      }}>
       <Cross />
     </div>
 

@@ -245,7 +245,6 @@
     <Route component={Error404} title="404" />
   </Router>
 
-  <!-- TODO: PhoneNavigation -->
   <MediaQuery query="(max-width: 700px)" let:matches>
     {#if matches}
       <TopBar />
