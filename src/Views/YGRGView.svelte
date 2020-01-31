@@ -11,7 +11,7 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
-  import { format, getYear } from "date-fns";
+  import { format, getYear, formatDistanceToNow } from "date-fns";
 
   // *** COMPONENTS
   import Cross from "../Components/Cross.svelte";
@@ -50,6 +50,15 @@
     const endFormat = "dd.MM.yyyy";
 
     return format(startDate, startFormat) + " – " + format(endDate, endFormat);
+  };
+
+  const formattedDuration = date => {
+    const creationDate = Date.parse(date);
+
+    const timeDistance = formatDistanceToNow(creationDate, { addSuffix: true });
+
+    console.dir(timeDistance);
+    return timeDistance;
   };
 </script>
 
@@ -226,19 +235,27 @@
 
   .tile {
     border: $line-style;
-    border-radius: 4px;
-    height: 160px;
-    width: calc(32% - 10px);
+    border-radius: 8px;
+    height: 150px;
+    width: 150px;
     display: block;
     float: left;
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-right: 8px;
+    margin-bottom: 8px;
     text-align: center;
-    padding-top: 40px;
+    padding-top: 30px;
     font-family: $font-stack-ygrg-regular;
+    line-height: $line-height;
 
     @include screen-size("small") {
       border: $mobile-line-style;
+    }
+
+    .title {
+      background: red;
+      padding-left: 10px;
+      padding-right: 10px;
+      margin-bottom: 4px;
     }
 
     .time {
@@ -248,6 +265,10 @@
 
     .preview {
       font-size: $font-size-small;
+
+      span {
+        border-bottom: 1px solid $black;
+      }
     }
   }
 </style>
@@ -285,15 +306,10 @@
               {#each texts as t}
                 <a class="tile" href="/ygrg/text/{t.slug.current}">
                   <div class="title">{t.title}</div>
-                  <div class="time">About 2 months ago</div>
-                  <div class="preview">Preview</div>
-                </a>
-              {/each}
-              {#each texts as t}
-                <a class="tile" href="/ygrg/text/{t.slug.current}">
-                  <div class="title">{t.title}</div>
-                  <div class="time">About 2 months ago</div>
-                  <div class="preview">Preview</div>
+                  <div class="time">{formattedDuration(t._createdAt)}</div>
+                  <div class="preview">
+                    <span>Preview</span>
+                  </div>
                 </a>
               {/each}
             {/await}
