@@ -14,11 +14,13 @@
   import { format, getYear } from "date-fns";
 
   // *** COMPONENTS
-  import ArielLogo from "../Components/ArielLogo.svelte";
-  import AriLogo from "../Components/AriLogo.svelte";
-  import Cross from "../Components/Cross.svelte";
   import SinglePane from "../Components/SinglePane.svelte";
-  import SubmitArrow from "../Components/SubmitArrow.svelte";
+
+  // *** GRAPHICS
+  import ArielLogo from "../Graphics/ArielLogo.svelte";
+  import AriLogo from "../Graphics/AriLogo.svelte";
+  import Cross from "../Graphics/Cross.svelte";
+  import SubmitArrow from "../Graphics/SubmitArrow.svelte";
 
   // *** STORES
   import {
@@ -32,7 +34,7 @@
   // *** PROPS
   export let title = "";
   export let slug = "";
-  export const location = {};
+  export let location = {};
 
   // Set globals
   isYGRG.set(false);

@@ -101,7 +101,7 @@ export const loadData = async (query, params) => {
             return Promise.reject(new Error(404));
         }
 
-        // console.dir(res)
+        console.dir(res)
 
         return res
 

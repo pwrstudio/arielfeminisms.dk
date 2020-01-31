@@ -6,15 +6,18 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { links } from "svelte-routing";
+  import { onMount } from "svelte";
+  import { links, navigate } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import { format, getYear } from "date-fns";
 
   // *** COMPONENTS
-  import Cross from "../Components/Cross.svelte";
   import SlideShow from "../Components/SlideShow.svelte";
+
+  // *** GRAPHICS
+  import Cross from "../Graphics/Cross.svelte";
 
   // *** STORES
   import {
@@ -164,7 +167,9 @@
   <!-- INNER CONTAINER -->
   <div class="inner-container" use:links>
 
-    {#await single then single}
+    {#await single}
+      <span />
+    {:then single}
 
       {#if single.slideshow.length > 0}
         <SlideShow slideArray={single.slideshow} />
@@ -187,6 +192,10 @@
         </div>
       </div>
 
+    {:catch error}
+      File not Found (404)
+      <br />
+      <a href="/">Return to main page</a>
     {/await}
 
   </div>
