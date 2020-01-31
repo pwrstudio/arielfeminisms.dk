@@ -15,6 +15,7 @@
 
   // *** COMPONENTS
   import Cross from "../Components/Cross.svelte";
+  import SubmitArrow from "../Components/SubmitArrow.svelte";
   import SinglePane from "../Components/SinglePane.svelte";
 
   // *** STORES
@@ -95,20 +96,26 @@
       width: 100vw;
     }
 
-    &.left {
-      left: 0;
-    }
-
-    &.right {
-      right: 0;
-    }
-
     .inner-container {
-      margin-top: $top-bar-height + 20px;
       margin-right: 30px;
       margin-left: 30px;
       font-size: $font-size-medium;
       font-weight: bold;
+    }
+
+    &.left {
+      left: 0;
+
+      .inner-container {
+        margin-top: $top-bar-height;
+      }
+    }
+
+    &.right {
+      right: 0;
+      .inner-container {
+        margin-top: $top-bar-height + 20px;
+      }
     }
 
     .bottom-meta {
@@ -252,7 +259,6 @@
     }
 
     .title {
-      background: red;
       padding-left: 10px;
       padding-right: 10px;
       margin-bottom: 4px;
@@ -269,6 +275,33 @@
       span {
         border-bottom: 1px solid $black;
       }
+    }
+  }
+
+  .filter {
+    margin-bottom: $line-height * 2;
+    width: 400px;
+    max-width: 90%;
+    position: relative;
+
+    .filter-input {
+      font-size: $font-size-medium;
+      width: 100%;
+      border: $line-style;
+      outline: none;
+      line-height: $line-height;
+      height: $line-height * 2.5;
+      padding: 5px;
+      border-radius: 5px;
+      background: $grey;
+    }
+
+    .filter-icon {
+      position: absolute;
+      right: $line-height * 0.5;
+      top: $line-height * 0.5;
+      width: $line-height * 1.5;
+      height: $line-height * 1.5;
     }
   }
 </style>
@@ -299,6 +332,16 @@
 
         <!-- INNER CONTAINER -->
         <div class="inner-container">
+
+          <div class="filter">
+            <input
+              class="filter-input"
+              type="text"
+              placeholder="Search in the YGRG Archive..." />
+            <div class="filter-icon">
+              <SubmitArrow />
+            </div>
+          </div>
 
           <div class="tile-container" use:links>
 
