@@ -14,6 +14,7 @@
   import ArielNavigation from "./Components/ArielNavigation.svelte";
   import YGRGNavigation from "./Components/YGRGNavigation.svelte";
   import TopBar from "./Components/TopBar.svelte";
+  import SignIn from "./Components/SignIn.svelte";
 
   // *** STORES
   import { isYGRG, isAriel, isText } from "./stores.js";
@@ -258,5 +259,7 @@
   {#if $isAriel && !$isText}
     <YGRGNavigation />
   {/if}
+
+  <SignIn />
 
 </main>
