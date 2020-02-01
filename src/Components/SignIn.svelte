@@ -60,8 +60,10 @@
           { expires: 7 }
         );
         loggedInUser.set({
+          id: response.id,
           email: response.email,
-          name: response.user_metadata.name
+          name: response.user_metadata.name,
+          token: response.token.access_token
         });
       })
       .catch(err => {
