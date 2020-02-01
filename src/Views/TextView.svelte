@@ -15,7 +15,7 @@
   import SubmitArrow from "../Graphics/SubmitArrow.svelte";
 
   // *** STORES
-  import { isText } from "../stores.js";
+  import { isText, loggedInUser } from "../stores.js";
 
   // Set globals
   isText.set(true);
@@ -34,11 +34,17 @@
 
   // LOGIC
   const submit = () => {
+    console.dir($loggedInUser);
     const url =
       "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
       encodeURIComponent(newComment);
 
-    fetch(url)
+    fetch(url, {
+      method: "post",
+      headers: new Headers({
+        Authorization: "Bearer " + $loggedInUser.token
+      })
+    })
       .then(function(response) {
         console.log("SUCCESS");
         console.dir(response);
