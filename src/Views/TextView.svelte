@@ -9,6 +9,8 @@
   import { onMount, onDestroy } from "svelte";
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
+  import { fade, slide } from "svelte/transition";
+  import { format, getYear, formatDistanceToNow } from "date-fns";
 
   import { auth } from "../identity.js";
 
@@ -27,7 +29,10 @@
   export let slug = "";
   export let location = {};
 
+  // *** VARIABLES
   let submit = {};
+  let newComment = "";
+  let comments = [];
 
   const text = loadData(
     "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title}",
@@ -35,6 +40,10 @@
   );
 
   text.then(t => {
+    comments = loadData(
+      "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
+      { id: t.id }
+    );
     // LOGIC
     submit = () => {
       // const user = auth.currentUser();
@@ -59,7 +68,14 @@
       })
         .then(response => {
           console.log("SUCCESS");
+          newComment = "";
           console.dir(response);
+          setTimeout(() => {
+            comments = loadData(
+              "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
+              { id: t.id }
+            );
+          }, 5000);
         })
         .catch(err => {
           console.log("ERROR");
@@ -68,12 +84,13 @@
     };
   });
 
-  let newComment = "";
-
   // *** ON DESTROY
   onDestroy(async () => {
     isText.set(false);
   });
+
+  const formattedDuration = date =>
+    formatDistanceToNow(Date.parse(date), { addSuffix: true });
 </script>
 
 <style lang="scss">
@@ -95,7 +112,7 @@
     top: 70px;
     right: 60px;
     height: calc(100vh - 100px);
-    width: 70vw;
+    width: 60vw;
 
     iframe {
       height: 100%;
@@ -173,7 +190,7 @@
     position: absolute;
     left: 20px;
     top: 70px;
-    width: 20vw;
+    width: 30vw;
   }
 
   .comment {
@@ -191,6 +208,7 @@
       border-radius: 5px;
       background: $brown;
       resize: none;
+      color: white;
 
       &::placeholder {
         color: white;
@@ -216,6 +234,22 @@
       }
     }
   }
+
+  .comment-box {
+    width: 100%;
+    background: $grey;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: $font-stack-ygrg-regular;
+    font-size: $font-size-medium;
+
+    .time {
+      font-size: $font-size-small;
+    }
+  }
 </style>
 
 <div class="text-view" use:links>
@@ -238,6 +272,20 @@
         </div>
       </div>
       <button on:click={submit}>Send comment</button>
+
+      {#await comments then comments}
+
+        {#each comments as c, i}
+          <div class="comment-box" in:slide={{ duration: 100 + i * 100 }}>
+            <div class="time">
+              {c.authorName} / {formattedDuration(c._createdAt)}
+            </div>
+            <div class="comment-text">{c.content}</div>
+          </div>
+        {/each}
+
+      {/await}
+
     </div>
 
     <div class="pdf-viewer">
