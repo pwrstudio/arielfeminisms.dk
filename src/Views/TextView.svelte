@@ -10,6 +10,8 @@
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
 
+  import { auth } from "../identity.js";
+
   // *** COMPONENTS
   import Cross from "../Graphics/Cross.svelte";
   import SubmitArrow from "../Graphics/SubmitArrow.svelte";
@@ -35,6 +37,13 @@
   // LOGIC
   const submit = () => {
     console.dir($loggedInUser);
+
+    const user = auth.currentUser();
+    const jwt = user.jwt();
+
+    console.dir(user);
+    console.dir(jwt);
+
     const url =
       "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
       encodeURIComponent(newComment);
@@ -42,7 +51,7 @@
     fetch(url, {
       method: "post",
       headers: new Headers({
-        Authorization: "Bearer " + $loggedInUser.token
+        Authorization: "Bearer" + jwt
       })
     })
       .then(function(response) {
