@@ -27,43 +27,48 @@
   export let slug = "";
   export let location = {};
 
+  let submit = {};
+
   const text = loadData(
     "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title}",
     { slug: slug }
   );
 
+  text.then(t => {
+    // LOGIC
+    submit = () => {
+      // const user = auth.currentUser();
+      // const jwt = user.jwt();
+      const jwt = "xxx";
+
+      // console.dir(user);
+      // console.dir(jwt);
+      console.log(t.id);
+
+      const url =
+        "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
+        encodeURIComponent(newComment) +
+        "&id=" +
+        encodeURIComponent(t.id);
+
+      fetch(url, {
+        method: "post",
+        headers: new Headers({
+          Authorization: "Bearer " + jwt
+        })
+      })
+        .then(response => {
+          console.log("SUCCESS");
+          console.dir(response);
+        })
+        .catch(err => {
+          console.log("ERROR");
+          console.error(err);
+        });
+    };
+  });
+
   let newComment = "";
-
-  // LOGIC
-  const submit = () => {
-    const user = auth.currentUser();
-    const jwt = user.jwt();
-
-    console.dir(user);
-    console.dir(jwt);
-    console.log(text.id);
-
-    const url =
-      "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
-      encodeURIComponent(newComment) +
-      "&id=" +
-      encodeURIComponent(text.id);
-
-    fetch(url, {
-      method: "post",
-      headers: new Headers({
-        Authorization: "Bearer " + jwt
-      })
-    })
-      .then(response => {
-        console.log("SUCCESS");
-        console.dir(response);
-      })
-      .catch(err => {
-        console.log("ERROR");
-        console.error(err);
-      });
-  };
 
   // *** ON DESTROY
   onDestroy(async () => {
