@@ -9,7 +9,7 @@
   import { links } from "svelte-routing";
   import MediaQuery from "svelte-media-query";
   import { fade } from "svelte/transition";
-  import * as Cookies from "es-cookie";
+  // import * as Cookies from "es-cookie";
   import get from "lodash/get";
 
   import { auth } from "../identity.js";
@@ -49,22 +49,17 @@
         email = "";
         password = "";
         console.dir(response);
-        Cookies.set(
-          "ygrgLoggedInUser",
-          JSON.stringify({
-            id: response.id,
-            email: response.email,
-            name: response.user_metadata.name,
-            token: response.token.access_token
-          }),
-          { expires: 7 }
-        );
-        loggedInUser.set({
-          id: response.id,
-          email: response.email,
-          name: response.user_metadata.name,
-          token: response.token.access_token
-        });
+        // Cookies.set(
+        //   "ygrgLoggedInUser",
+        //   JSON.stringify({
+        //     id: response.id,
+        //     email: response.email,
+        //     name: response.user_metadata.name,
+        //     token: response.token.access_token
+        //   }),
+        //   { expires: 7 }
+        // );
+        loggedInUser.set(auth.currentUser());
       })
       .catch(err => {
         processing = false;
@@ -110,7 +105,7 @@
     //     throw error;
     //   });
     error = false;
-    Cookies.remove("ygrgLoggedInUser");
+    // Cookies.remove("ygrgLoggedInUser");
     loggedInUser.set(false);
   };
 </script>
@@ -373,7 +368,9 @@
   {#if $loggedInUser}
     <div class="profile">
       <div>
-        <div class="profile-header">{$loggedInUser.name} ∙ profile</div>
+        <div class="profile-header">
+          {$loggedInUser.user_metadata.name} ∙ profile
+        </div>
       </div>
 
       <div class="profile-picture-section">
@@ -382,7 +379,7 @@
 
       <div class="profile-section">
         <label>Name</label>
-        <input type="text" value={$loggedInUser.name} />
+        <input type="text" value={$loggedInUser.user_metadata.name} />
       </div>
 
       <div class="profile-section">

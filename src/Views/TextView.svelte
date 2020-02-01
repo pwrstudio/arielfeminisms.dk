@@ -46,41 +46,44 @@
     );
     // LOGIC
     submit = () => {
-      // const user = auth.currentUser();
-      // const jwt = user.jwt();
-      const jwt = "xxx";
+      if (!$loggedInUser) return false;
 
-      // console.dir(user);
-      // console.dir(jwt);
-      console.log(t.id);
+      let jwt = $loggedInUser.jwt();
 
-      const url =
-        "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
-        encodeURIComponent(newComment) +
-        "&id=" +
-        encodeURIComponent(t.id);
+      jwt.then(jwt => {
+        console.dir(jwt);
+        console.log(t.id);
 
-      fetch(url, {
-        method: "post",
-        headers: new Headers({
-          Authorization: "Bearer " + jwt
+        const url =
+          "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
+          encodeURIComponent(newComment) +
+          "&id=" +
+          encodeURIComponent(t.id) +
+          "&title=" +
+          encodeURIComponent(t.title);
+
+        fetch(url, {
+          method: "POST",
+          headers: new Headers({
+            Authorization: "Bearer " + jwt
+          })
         })
-      })
-        .then(response => {
-          console.log("SUCCESS");
-          newComment = "";
-          console.dir(response);
-          setTimeout(() => {
-            comments = loadData(
-              "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
-              { id: t.id }
-            );
-          }, 5000);
-        })
-        .catch(err => {
-          console.log("ERROR");
-          console.error(err);
-        });
+          .then(response => {
+            console.log("SUCCESS");
+            newComment = "";
+            console.dir(response);
+            setTimeout(() => {
+              comments = loadData(
+                "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
+                { id: t.id }
+              );
+            }, 5000);
+          })
+          .catch(err => {
+            console.log("ERROR");
+            console.error(err);
+          });
+      });
     };
   });
 
@@ -263,15 +266,18 @@
     <div class="comment-container">
       <div class="comment">
         <textarea
+          class:disabled={!$loggedInUser}
           bind:value={newComment}
           class="comment-input"
           type="text"
-          placeholder="Comment a text... ..." />
-        <div class="comment-icon">
+          placeholder="Make a comment..." />
+        <div class="comment-icon" class:disabled={!$loggedInUser}>
           <SubmitArrow />
         </div>
       </div>
-      <button on:click={submit}>Send comment</button>
+      <button disabled={!$loggedInUser} on:click={submit}>
+        {#if $loggedInUser}Send comment{:else}Sign in to comment{/if}
+      </button>
 
       {#await comments then comments}
 

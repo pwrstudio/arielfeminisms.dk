@@ -4,18 +4,6 @@
  *
  */
 
-
-// https://docs.netlify.com/functions/build-with-javascript/#runtime-settings
-
-// {
-//     "path": "Path parameter",
-//     "httpMethod": "Incoming request's method name"
-//     "headers": {Incoming request headers}
-//     "queryStringParameters": {query string parameters }
-//     "body": "A JSON string of the request payload."
-//     "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encode"
-// }
-
 const get = require('lodash/get');
 
 const sanityClient = require('@sanity/client')
@@ -27,46 +15,102 @@ const client = sanityClient({
 
 exports.handler = function (event, context, callback) {
 
-    const { identity, user } = context.clientContext;
+    const { user } = context.clientContext;
 
-    // Construct comment document
-    const doc = {
-        _type: 'ygrgComment',
-        title: 'Comment by ' + get(user, 'user_metadata.name', 'Anon'),
-        authorId: get(user, 'sub', 'No ID'),
-        authorName: get(user, 'user_metadata.name', 'Anon'),
-        content: get(event, 'queryStringParameters.comment', "default comment"),
-        textReference: {
-            _type: 'reference',
-            _ref: get(event, 'queryStringParameters.id', "null"),
-        },
-        location: '0'
-    }
+    const id = get(event, 'queryStringParameters.id', false)
 
-    // Create comment document
-    client.create(doc).then(res => {
-        console.log(`Comment was created, document ID is ${res._id}`)
+    if (!user || !id) {
+        // Break if not authorized
         callback(
             null, {
-            statusCode: 200,
-            body: JSON.stringify(res)
+            statusCode: 401,
+            body: 'Unauthorized'
         });
-    })
+    } else {
 
+        const commentContent = get(event, 'queryStringParameters.comment', "")
+        const title = get(event, 'queryStringParameters.title', "")
+        const userName = get(user, 'user_metadata.name', '')
+        const userId = get(user, 'sub', 'No ID')
 
+        if (event.httpMethod === "POST") {
+            // *** CREATE COMMENT
 
-    // if (!user) {
-    //     callback(
-    //         null, {
-    //         statusCode: 401,
-    //         body: 'Unauthorized'
-    //     });
-    // } else {
-    // callback(
-    //     null, {
-    //     statusCode: 200,
-    //     body: JSON.stringify({ user: user, event: event })
-    // });
-    // }
+            // Construct comment document
+            const doc = {
+                _type: 'ygrgComment',
+                title: title + ' – ' + userName,
+                authorId: userId,
+                authorName: userName,
+                content: commentContent,
+                textReference: {
+                    _type: 'reference',
+                    _ref: id,
+                },
+                location: '0'
+            }
 
+            // Create comment document
+            client.create(doc).then(res => {
+                callback(
+                    null, {
+                    statusCode: 201,
+                    body: JSON.stringify(res)
+                });
+            }).catch(err => {
+                console.error(err.message)
+                callback(
+                    null, {
+                    statusCode: 500,
+                    body: err.message
+                });
+            })
+
+        } else if (event.httpMethod === "PUT") {
+            // *** EDIT COMMENT
+
+            client
+                .patch(id) // Document ID to patch
+                .set({ content: commentContent }) // Shallow merge
+                .commit() // Perform the patch and return a promise
+                .then(updatedComment => {
+                    console.log(updatedComment)
+                    callback(
+                        null, {
+                        statusCode: 200,
+                        body: JSON.stringify(updatedComment)
+                    });
+                })
+                .catch(err => {
+                    console.error(err.message)
+                    callback(
+                        null, {
+                        statusCode: 500,
+                        body: err.message
+                    });
+                })
+
+        } else if (event.httpMethod === "DEL") {
+            // *** DELETE COMMENT
+
+            client.delete(id)
+                .then(res => {
+                    callback(
+                        null, {
+                        statusCode: 200,
+                        body: 'DEL'
+                    });
+                })
+                .catch(err => {
+                    console.error('Delete failed: ', err.message)
+                    callback(
+                        null, {
+                        statusCode: 500,
+                        body: err.message
+                    });
+                })
+
+        }
+
+    }
 }

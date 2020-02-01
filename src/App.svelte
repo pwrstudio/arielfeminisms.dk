@@ -9,7 +9,7 @@
   import { Router, Route, links } from "svelte-routing";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
-  import * as Cookies from "es-cookie";
+  // import * as Cookies from "es-cookie";
 
   // *** COMPONENTS
   import ArielNavigation from "./Components/ArielNavigation.svelte";
@@ -24,12 +24,12 @@
   import YGRGView from "./Views/YGRGView.svelte";
   import TextView from "./Views/TextView.svelte";
 
-  const userCookie = Cookies.get("ygrgLoggedInUser");
-  console.dir(userCookie);
+  // const userCookie = Cookies.get("ygrgLoggedInUser");
+  // console.dir(userCookie);
 
-  if (userCookie) {
-    loggedInUser.set(JSON.parse(userCookie));
-  }
+  // if (userCookie) {
+  //   loggedInUser.set(JSON.parse(userCookie));
+  // }
 </script>
 
 <style lang="scss" global>
@@ -231,6 +231,11 @@
 
   .pseudo-link {
     cursor: pointer;
+  }
+
+  .disabled {
+    opacity: 0.5;
+    pointer-events: none;
   }
 </style>
 
