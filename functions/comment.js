@@ -16,7 +16,7 @@
 //     "isBase64Encoded": "A boolean flag to indicate if the applicable request payload is Base64-encode"
 // }
 
-const get = require('lodash / get');
+const get = require('lodash/get');
 
 const sanityClient = require('@sanity/client')
 const client = sanityClient({
@@ -29,6 +29,7 @@ exports.handler = function (event, context, callback) {
 
     const { identity, user } = context.clientContext;
 
+    // Construct comment document
     const doc = {
         _type: 'ygrgComment',
         title: 'test comment',
@@ -40,6 +41,7 @@ exports.handler = function (event, context, callback) {
         }
     }
 
+    // Create comment document
     client.create(doc).then(res => {
         console.log(`Comment was created, document ID is ${res._id}`)
         callback(
