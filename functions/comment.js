@@ -30,24 +30,30 @@
 //     console.error('Oh no, the update failed: ', err.message)
 //   })
 
-// const sanityClient = require('@sanity/client')
-// const client = sanityClient({
-//     projectId: '883bmkra',
-//     dataset: 'production',
-//     token: SANITY_TOKEN, // or leave blank to be anonymous user
-//     useCdn: true // `false` if you want to ensure fresh data
-// })
+const sanityClient = require('@sanity/client')
+const client = sanityClient({
+    projectId: '883bmkra',
+    dataset: 'production',
+    token: process.env.SANITY_TOKEN, // or leave blank to be anonymous user
+    useCdn: true // `false` if you want to ensure fresh data
+})
 
 exports.handler = function (event, context, callback) {
 
     const { identity, user } = context.clientContext;
 
-    callback(
-        null, {
-        statusCode: 200,
-        body: JSON.stringify({
-            result: { user: user, identity: identity, event: event, token: process.env.SANITY_TOKEN }
-        })
-    });
+    if (!user) {
+        callback(
+            null, {
+            statusCode: 401,
+            body: 'Unauthorized'
+        });
+    } else {
+        callback(
+            null, {
+            statusCode: 200,
+            body: JSON.stringify({ user: user, event: event })
+        });
+    }
 
 }
