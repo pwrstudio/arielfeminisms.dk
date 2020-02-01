@@ -32,13 +32,15 @@ exports.handler = function (event, context, callback) {
     // Construct comment document
     const doc = {
         _type: 'ygrgComment',
-        title: 'test comment',
-        author: get(user, 'sub', 'XXX'),
-        content: event.queryStringParameters.comment,
+        title: 'Comment by ' + get(user, 'user_metadata.name', 'Anon'),
+        authorId: get(user, 'sub', 'No ID'),
+        authorName: get(user, 'user_metadata.name', 'Anon'),
+        content: get(event, 'queryStringParameters.comment', "default comment"),
         textReference: {
             _type: 'reference',
-            _ref: '76bddb66-4972-4e7d-8cb1-14cb78a2a01f'
-        }
+            _ref: get(event, 'queryStringParameters.id', "null"),
+        },
+        location: '0'
     }
 
     // Create comment document

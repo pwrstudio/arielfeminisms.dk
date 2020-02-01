@@ -28,7 +28,7 @@
   export let location = {};
 
   const text = loadData(
-    "*[slug.current == $slug][0]{'pdfFile': pdfFile.asset->url, title}",
+    "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title}",
     { slug: slug }
   );
 
@@ -36,25 +36,26 @@
 
   // LOGIC
   const submit = () => {
-    console.dir($loggedInUser);
-
     const user = auth.currentUser();
     const jwt = user.jwt();
 
     console.dir(user);
     console.dir(jwt);
+    console.log(text.id);
 
     const url =
       "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
-      encodeURIComponent(newComment);
+      encodeURIComponent(newComment) +
+      "&id=" +
+      encodeURIComponent(text.id);
 
     fetch(url, {
       method: "post",
       headers: new Headers({
-        Authorization: "Bearer" + jwt
+        Authorization: "Bearer " + jwt
       })
     })
-      .then(function(response) {
+      .then(response => {
         console.log("SUCCESS");
         console.dir(response);
       })
