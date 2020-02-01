@@ -30,6 +30,25 @@
     { slug: slug }
   );
 
+  let newComment = "";
+
+  // LOGIC
+  const submit = () => {
+    const url =
+      "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
+      encodeURIComponent(newComment);
+
+    fetch(url)
+      .then(function(response) {
+        console.log("SUCCESS");
+        console.dir(response);
+      })
+      .catch(err => {
+        console.log("ERROR");
+        console.error(err);
+      });
+  };
+
   // *** ON DESTROY
   onDestroy(async () => {
     isText.set(false);
@@ -189,6 +208,7 @@
     <div class="comment-container">
       <div class="comment">
         <textarea
+          bind:value={newComment}
           class="comment-input"
           type="text"
           placeholder="Comment a text... ..." />
@@ -196,6 +216,7 @@
           <SubmitArrow />
         </div>
       </div>
+      <button on:click={submit}>Send comment</button>
     </div>
 
     <div class="pdf-viewer">

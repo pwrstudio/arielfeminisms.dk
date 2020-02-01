@@ -29,7 +29,7 @@ exports.handler = function (event, context, callback) {
         null, {
         statusCode: 400,
         body: JSON.stringify({
-            result: { user: user, identity: identity, event: event }
+            result: { user: user, identity: identity, event: event, token: SANITY_TOKEN }
         })
     });
 
