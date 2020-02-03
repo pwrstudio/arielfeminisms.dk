@@ -35,13 +35,16 @@
   let passwordUp = "";
   let nameUp = "";
   let processing = false;
-  let error = false;
+  let msgSignUp = false;
+  let msgSignIn = false;
   let signUpActive = false;
   let signUpMessage = false;
 
   const signIn = () => {
     processing = true;
-    error = false;
+    msgSignUp = false;
+    msgSignIn = false;
+
     auth
       .login(email, password)
       .then(response => {
@@ -64,16 +67,14 @@
       .catch(err => {
         processing = false;
         console.dir(err);
-        error = "Sign in failed: " + err.json.error_description;
+        msgSignIn = "Sign in failed: " + err.json.error_description;
       });
   };
 
   const signUp = () => {
     processing = true;
-    error = false;
-    emailUp = "";
-    passwordUp = "";
-    nameUp = "";
+    msgSignIn = false;
+    msgSignUp = false;
 
     console.log(passwordUp);
     auth
@@ -83,16 +84,20 @@
         biography: ""
       })
       .then(response => {
+        console.dir(response);
+        // RESET
         processing = false;
         signUpActive = false;
-        console.dir(response);
-        error = "Account created. Sign in with your email and password below.";
+        emailUp = "";
+        passwordUp = "";
+        nameUp = "";
+        msgSignIn =
+          "Account created. Sign in with your email and password below.";
       })
       .catch(err => {
         processing = false;
-        signUpActive = false;
         console.dir(err.json.msg);
-        error = "Account creation failed. " + get(err, "json.msg", "");
+        msgSignUp = "Account creation failed. " + get(err, "json.msg", "");
       });
   };
 
@@ -110,7 +115,8 @@
     //     console.log("Failed to logout user: %o", error);
     //     throw error;
     //   });
-    error = false;
+    msgSignUp = false;
+    msgSignIn = false;
     // Cookies.remove("ygrgLoggedInUser");
     loggedInUser.set(false);
   };
@@ -195,9 +201,10 @@
     }
   }
 
-  .sign-in-section {
+  fieldset {
     width: 100%;
     display: inline-block;
+    border: none;
 
     &.error {
       cursor: pointer;
@@ -296,28 +303,32 @@
 
   <!-- SIGN IN  -->
   {#if !$loggedInUser && !signUpActive}
-    <div class="sign-in">
-      {#if error}
-        <div
+    <form class="sign-in">
+      {#if msgSignIn}
+        <fieldset
           class="sign-in-section error"
           on:click={() => {
-            error = false;
+            msgSignIn = false;
           }}
           out:fade>
-          <span class="sign-up-link">{error}</span>
-        </div>
+          <span class="sign-up-link">{msgSignIn}</span>
+        </fieldset>
       {/if}
-      <input
-        type="text"
-        class:disabled={processing}
-        placeholder="email"
-        bind:value={email} />
-      <input
-        type="password"
-        class:disabled={processing}
-        placeholder="password"
-        bind:value={password} />
-      <div class="sign-in-section">
+      <fieldset>
+        <input
+          type="text"
+          autocomplete="username"
+          class:disabled={processing}
+          placeholder="email"
+          bind:value={email} />
+        <input
+          type="password"
+          autocomplete="current-password"
+          class:disabled={processing}
+          placeholder="password"
+          bind:value={password} />
+      </fieldset>
+      <fieldset class="sign-in-section">
         {#if !processing}
           <button on:click={signIn}>Sign In</button>
         {:else}
@@ -325,9 +336,9 @@
             <Ellipse />
           </div>
         {/if}
-      </div>
+      </fieldset>
       {#if !processing}
-        <div class="sign-in-section">
+        <fieldset class="sign-in-section">
           <span
             class="sign-up-link pseudo-link"
             on:click={() => {
@@ -335,14 +346,24 @@
             }}>
             Create account
           </span>
-        </div>
+        </fieldset>
       {/if}
-    </div>
+    </form>
   {/if}
 
   <!-- SIGN UP -->
   {#if signUpActive}
     <form>
+      {#if msgSignUp}
+        <fieldset
+          class="sign-in-section error"
+          on:click={() => {
+            msgSignUp = false;
+          }}
+          out:fade>
+          <span class="sign-up-link">{msgSignUp}</span>
+        </fieldset>
+      {/if}
       <input
         type="text"
         class:disabled={processing}
@@ -350,15 +371,17 @@
         bind:value={nameUp} />
       <input
         type="text"
+        autocomplete="username"
         class:disabled={processing}
         placeholder="Email"
         bind:value={emailUp} />
       <input
         type="password"
+        autocomplete="current-password"
         class:disabled={processing}
         placeholder="Password"
         bind:value={passwordUp} />
-      <div class="sign-in-section">
+      <fieldset>
         {#if !processing}
           <button on:click={signUp}>Sign up</button>
         {:else}
@@ -366,13 +389,13 @@
             <Ellipse />
           </div>
         {/if}
-      </div>
+      </fieldset>
     </form>
   {/if}
 
   <!-- PROFILE -->
   {#if $loggedInUser}
-    <div class="profile">
+    <form class="profile">
       <div>
         <div class="profile-header">
           {$loggedInUser.user_metadata.name} ∙ profile
@@ -398,12 +421,11 @@
         <textarea />
       </div>
 
-    </div>
-    <div>
-      <div class="sign-in-section">
+      <fieldset>
         <button class="sign-up-link" on:click={logOut}>LOG OUT</button>
-      </div>
-    </div>
+      </fieldset>
+
+    </form>
   {/if}
 
 </div>
