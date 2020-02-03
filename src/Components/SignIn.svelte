@@ -102,23 +102,20 @@
   };
 
   const logOut = () => {
-    // const user = auth.currentUser();
-    // user
-    //   .logout()
-    //   .then(response => {
-    //     console.log("User logged out");
-    //     Cookies.remove("ygrgLoggedInUser");
-    //     loggedInUser.email = "";
-    //     loggedInUser.name = "";
-    //   })
-    //   .catch(error => {
-    //     console.log("Failed to logout user: %o", error);
-    //     throw error;
-    //   });
-    msgSignUp = false;
-    msgSignIn = false;
-    // Cookies.remove("ygrgLoggedInUser");
-    loggedInUser.set(false);
+    const user = auth.currentUser();
+    user
+      .logout()
+      .then(response => {
+        console.log("User logged out");
+        msgSignUp = false;
+        msgSignIn = "Logged out";
+        // Cookies.remove("ygrgLoggedInUser");
+        // loggedInUser.set(false);
+      })
+      .catch(error => {
+        console.log("Failed to logout user: %o", error);
+        throw error;
+      });
   };
 </script>
 
