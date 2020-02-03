@@ -11,13 +11,14 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
-  import { format, getYear, formatDistanceToNow } from "date-fns";
+  import { format, getYear } from "date-fns";
 
   // *** COMPONENTS
   import Cross from "../Graphics/Cross.svelte";
   import SubmitArrow from "../Graphics/SubmitArrow.svelte";
   import SinglePane from "../Components/SinglePane.svelte";
   import SignIn from "../Components/SignIn.svelte";
+  import TextTile from "../Components/TextTile.svelte";
 
   // *** STORES
   import {
@@ -56,9 +57,6 @@
 
     return format(startDate, startFormat) + " – " + format(endDate, endFormat);
   };
-
-  const formattedDuration = date =>
-    formatDistanceToNow(Date.parse(date), { addSuffix: true });
 
   onMount(async () => {
     window.scrollTo(0, 0);
@@ -433,13 +431,11 @@
 
             {#await texts then texts}
               {#each texts as t}
-                <a class="tile" href="/ygrg/text/{t.slug.current}">
-                  <div class="title">{t.title}</div>
-                  <div class="time">{formattedDuration(t._createdAt)}</div>
-                  <div class="preview">
-                    <span>Preview</span>
-                  </div>
-                </a>
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt} />
               {/each}
             {/await}
           </div>

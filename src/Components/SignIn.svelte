@@ -74,8 +74,14 @@
     emailUp = "";
     passwordUp = "";
     nameUp = "";
+
+    console.log(passwordUp);
     auth
-      .signup(emailUp, passwordUp, { name: nameUp })
+      .signup(emailUp, passwordUp, {
+        name: nameUp,
+        bookmarks: [],
+        biography: ""
+      })
       .then(response => {
         processing = false;
         signUpActive = false;
@@ -336,7 +342,7 @@
 
   <!-- SIGN UP -->
   {#if signUpActive}
-    <div>
+    <form>
       <input
         type="text"
         class:disabled={processing}
@@ -361,7 +367,7 @@
           </div>
         {/if}
       </div>
-    </div>
+    </form>
   {/if}
 
   <!-- PROFILE -->

@@ -60,39 +60,6 @@ const builder = imageUrlBuilder(client)
 
 export const urlFor = source => builder.image(source)
 
-// const sanitizePost = res => {
-//     return {
-//         id: get(res, '_id', ''),
-//         slug: get(res, 'slug', ''),
-//         category: get(res, 'category', ''),
-//         satoshiIndex: get(res, 'satoshiIndex', 0),
-//         title: {
-//             english: get(res, 'en_title', ''),
-//             arabic: get(res, 'ar_title', '')
-//         },
-//         content: {
-//             english: get(res, 'en_content', []),
-//             arabic: get(res, 'ar_content', [])
-//         },
-//         mainImage: get(res, 'mainImage', false),
-//         videoLink: get(res, 'videoLink', false),
-//         posterImage: get(res, 'posterImage', false),
-//         links: [],
-//         curatorialTeam: get(res, 'curatorialTeam', []),
-//         sharjahTeam: get(res, 'sharjahTeam', []),
-//         event: {
-//             type: get(res, 'eventType', ''),
-//             date: get(res, 'performanceDate', ''),
-//             simpleDate: get(res, 'simpleDate', 12),
-//             startTime: get(res, 'startTime', ''),
-//             discussions: get(res, 'discussions', []),
-//             performers: get(res, 'participants', [])
-//         },
-//         link: get(res, 'link', ''),
-//         publisherName: get(res, 'publisherName', '')
-//     }
-// }
-
 export const loadData = async (query, params) => {
     try {
         const res = await client.fetch(query, params)
@@ -100,26 +67,8 @@ export const loadData = async (query, params) => {
         if (res === null) {
             return Promise.reject(new Error(404));
         }
-
-        console.dir(res)
-
         return res
 
-        // let postConstruction = sanitizePost(res)
-
-        // // LINKS >>>
-        // if (postConstruction.category === 'participant') {
-        //     const linksQuery =
-        //         '*[participants[]._ref == $id]{en_title, ar_title, en_content, ar_content, "slug": slug.current, mainImage, "category": _type}'
-        //     postConstruction.links = await client.fetch(linksQuery, {
-        //         id: postConstruction.id
-        //     })
-        //     postConstruction.links = postConstruction.links.map(sanitizePost)
-        // } else {
-        //     postConstruction.links = get(res, 'participants', []).map(sanitizePost)
-        // }
-
-        // return postConstruction
     } catch (err) {
         // Sentry.captureException(err)
         return Promise.reject(new Error(404));

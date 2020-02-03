@@ -11,6 +11,7 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade, slide } from "svelte/transition";
   import { format, getYear, formatDistanceToNow } from "date-fns";
+  import get from "lodash/get";
 
   import { auth } from "../identity.js";
 
@@ -30,9 +31,11 @@
   export let location = {};
 
   // *** VARIABLES
-  let submit = {};
+  let submitComment = {};
+  let submitBookmark = {};
   let newComment = "";
   let comments = [];
+  let marked = false;
 
   const text = loadData(
     "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title}",
@@ -40,12 +43,14 @@
   );
 
   text.then(t => {
+    marked = get($loggedInUser, "user_metadata.bookmarks", []).includes(t.id);
+
     comments = loadData(
       "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
       { id: t.id }
     );
     // LOGIC
-    submit = () => {
+    submitComment = () => {
       if (!$loggedInUser) return false;
 
       let jwt = $loggedInUser.jwt();
@@ -84,6 +89,32 @@
             console.error(err);
           });
       });
+    };
+
+    submitBookmark = () => {
+      const user = auth.currentUser();
+
+      if (!user) return false;
+
+      console.dir(user.user_metadata);
+
+      const oldBookmarkList = user.user_metadata.bookmarks;
+      const newBookmarkList = oldBookmarkList.includes(t.id)
+        ? oldBookmarkList.filter(item => item !== t.id)
+        : [...oldBookmarkList, t.id];
+
+      console.dir(newBookmarkList);
+
+      user
+        .update({ data: { bookmarks: newBookmarkList } })
+        .then(user => {
+          console.log("Updated user bookmarks %s", user);
+          marked = get(user, "user_metadata.bookmarks", []).includes(t.id);
+        })
+        .catch(error => {
+          console.log("Failed to update user: %o", error);
+          throw error;
+        });
     };
   });
 
@@ -255,6 +286,22 @@
       font-size: $font-size-small;
     }
   }
+
+  .bookmark {
+    svg {
+      polygon {
+        fill: none;
+      }
+    }
+
+    &.marked {
+      svg {
+        polygon {
+          fill: $black;
+        }
+      }
+    }
+  }
 </style>
 
 <div class="text-view" use:links>
@@ -277,7 +324,7 @@
           <SubmitArrow />
         </div>
       </div>
-      <button disabled={!$loggedInUser} on:click={submit}>
+      <button disabled={!$loggedInUser} on:click={submitComment}>
         {#if $loggedInUser}Send comment{:else}Sign in to comment{/if}
       </button>
 
@@ -355,6 +402,7 @@
             18.91 6.69 0.02 4.76 0" />
         </svg>
       </div>
+
       <div class="menu-bar-item print">
         <!-- PRINT -->
         <svg
@@ -376,7 +424,11 @@
         </svg>
       </div>
 
-      <div class="menu-bar-item bookmark">
+      <div
+        class="menu-bar-item bookmark"
+        class:disabled={!$loggedInUser}
+        class:marked
+        on:click={submitBookmark}>
         <!-- BOOKMARK -->
         <svg
           class="bookmark"
@@ -385,10 +437,6 @@
           viewBox="0 0 14.07 23.74">
           <defs>
             <style>
-              .cls-1,
-              .cls-3 {
-                fill: none;
-              }
               .cls-2 {
                 clip-path: url(#clip-path);
               }
