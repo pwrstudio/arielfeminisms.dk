@@ -194,6 +194,8 @@
     left: 20px;
     top: 70px;
     width: 30vw;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
   }
 
   .comment {
@@ -286,6 +288,9 @@
             <div class="time">
               {c.authorName} / {formattedDuration(c._createdAt)}
             </div>
+            {#if $loggedInUser}
+              <div class="delete">DEL</div>
+            {/if}
             <div class="comment-text">{c.content}</div>
           </div>
         {/each}
