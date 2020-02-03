@@ -351,9 +351,8 @@
     </div>
 
     <div class="menu-bar">
-
+      <!-- 
       <div class="menu-bar-item reload">
-        <!-- RELOAD -->
         <svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -370,8 +369,7 @@
                 fill: #000;
                 width: 20px;
               }
-            </style>
-            <clipPath id="clip-path" transform="translate(0 0)">
+            </style>            <clipPath id="clip-path" transform="translate(0 0)">
               <rect class="cls-1" width="32.33" height="30.83" />
             </clipPath>
           </defs>
@@ -387,10 +385,14 @@
             </g>
           </g>
         </svg>
-      </div>
+      </div> -->
 
-      <div class="menu-bar-item download">
-        <!-- DOWNLOAD -->
+      <!-- DOWNLOAD -->
+      <a
+        href={text.pdfFile}
+        target="_blank"
+        download={slug}
+        class="menu-bar-item download">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 11.6 23.32"
@@ -401,19 +403,18 @@
             23.32 11.58 23.24 11.6 21.75 5.78 21.69 11.58 17.09 9.09 17.07 6.75
             18.91 6.69 0.02 4.76 0" />
         </svg>
-      </div>
+      </a>
 
-      <div class="menu-bar-item print">
-        <!-- PRINT -->
-        <svg
+      <!-- <div class="menu-bar-item print"> -->
+      <!-- PRINT -->
+      <!-- <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 19.95 23.32"
           class="print">
           <defs>
             <style>
 
-            </style>
-          </defs>
+            </style>          </defs>
           <g id="Layer_2" data-name="Layer 2">
             <g id="Layer_1-2" data-name="Layer 1">
               <path
@@ -422,7 +423,7 @@
             </g>
           </g>
         </svg>
-      </div>
+      </div> -->
 
       <div
         class="menu-bar-item bookmark"
