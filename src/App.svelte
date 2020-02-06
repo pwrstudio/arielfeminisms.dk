@@ -9,12 +9,14 @@
   import { Router, Route, links } from "svelte-routing";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
-  // import * as Cookies from "es-cookie";
+  import * as Cookies from "es-cookie";
 
   // *** COMPONENTS
   import ArielNavigation from "./Components/ArielNavigation.svelte";
   import YGRGNavigation from "./Components/YGRGNavigation.svelte";
   import TopBar from "./Components/TopBar.svelte";
+
+  import { auth } from "./identity.js";
 
   // *** STORES
   import { isYGRG, isAriel, isText, loggedInUser } from "./stores.js";
@@ -24,12 +26,21 @@
   import YGRGView from "./Views/YGRGView.svelte";
   import TextView from "./Views/TextView.svelte";
 
-  // const userCookie = Cookies.get("ygrgLoggedInUser");
-  // console.dir(userCookie);
+  const userCookie = JSON.parse(Cookies.get("ygrgLoggedInUser"));
 
-  // if (userCookie) {
-  //   loggedInUser.set(JSON.parse(userCookie));
-  // }
+  if (userCookie) {
+    console.dir(userCookie);
+    auth
+      .login(userCookie.email, userCookie.password)
+      .then(response => {
+        // HACK
+        console.dir(response);
+        loggedInUser.set(auth.currentUser());
+      })
+      .catch(err => {
+        console.log("Sign in failed: " + err.json.error_description);
+      });
+  }
 </script>
 
 <style lang="scss" global>

@@ -9,7 +9,7 @@
   import { links } from "svelte-routing";
   import MediaQuery from "svelte-media-query";
   import { fade } from "svelte/transition";
-  // import * as Cookies from "es-cookie";
+  import * as Cookies from "es-cookie";
   import get from "lodash/get";
 
   import { auth } from "../identity.js";
@@ -48,20 +48,19 @@
     auth
       .login(email, password)
       .then(response => {
+        // HACK
+        console.dir(response);
+        Cookies.set(
+          "ygrgLoggedInUser",
+          JSON.stringify({
+            email: email,
+            password: password
+          }),
+          { expires: 7 }
+        );
         processing = false;
         email = "";
         password = "";
-        console.dir(response);
-        // Cookies.set(
-        //   "ygrgLoggedInUser",
-        //   JSON.stringify({
-        //     id: response.id,
-        //     email: response.email,
-        //     name: response.user_metadata.name,
-        //     token: response.token.access_token
-        //   }),
-        //   { expires: 7 }
-        // );
         loggedInUser.set(auth.currentUser());
       })
       .catch(err => {
@@ -109,8 +108,8 @@
         console.log("User logged out");
         msgSignUp = false;
         msgSignIn = "Logged out";
-        // Cookies.remove("ygrgLoggedInUser");
-        // loggedInUser.set(false);
+        Cookies.remove("ygrgLoggedInUser");
+        loggedInUser.set(false);
       })
       .catch(error => {
         console.log("Failed to logout user: %o", error);
