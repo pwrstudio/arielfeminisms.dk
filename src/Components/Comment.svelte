@@ -6,6 +6,7 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
+  import { createEventDispatcher } from "svelte";
   import { fade, slide } from "svelte/transition";
   import { formatDistanceToNow } from "date-fns";
   import get from "lodash/get";
@@ -29,6 +30,8 @@
 
   let editMode = false;
   let editedContent = content;
+
+  const dispatch = createEventDispatcher();
 
   const deleteComment = () => {
     if (!$loggedInUser) return false;
@@ -113,6 +116,17 @@
 
     .time {
       font-size: $font-size-small;
+      margin-bottom: 1em;
+    }
+
+    .location {
+      font-size: $font-size-small;
+      margin-bottom: 1em;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
@@ -130,9 +144,14 @@
 </style>
 
 <div class="comment-box" in:slide={{ duration: 100 + delay * 100 }}>
-  <div class="time">
-    {authorName} / {formattedDuration(date)} => {location} / {authorId}
+  <div
+    class="location"
+    on:click={() => {
+      dispatch('goto', { page: location });
+    }}>
+    Page {location}
   </div>
+  <div class="time">{authorName} / {formattedDuration(date)} / {authorId}</div>
   <div class="comment-text">{content}</div>
   {#if $loggedInUser && $loggedInUser.id == authorId}
     <div class="actions">

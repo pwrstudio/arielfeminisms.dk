@@ -112,6 +112,8 @@
     submitComment = () => {
       if (!$loggedInUser) return false;
 
+      comments = [];
+
       let jwt = $loggedInUser.jwt();
 
       jwt.then(jwt => {
@@ -140,12 +142,10 @@
             console.log("SUCCESS");
             newComment = "";
             console.dir(response);
-            setTimeout(() => {
-              comments = loadData(
-                "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
-                { id: t.id }
-              );
-            }, 5000);
+            comments = loadData(
+              "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
+              { id: t.id }
+            );
           })
           .catch(err => {
             console.log("ERROR");
@@ -180,6 +180,13 @@
         });
     };
   });
+
+  const goToPage = e => {
+    console.dir(e.detail.page);
+    console.dir(pdfViewerIframe.contentWindow.PDFViewerApplication);
+    pdfViewerIframe.contentWindow.PDFViewerApplication.page =
+      e.detail.page == 0 ? 1 : e.detail.page;
+  };
 
   // *** ON DESTROY
   onDestroy(async () => {
@@ -386,19 +393,25 @@
         {#if $loggedInUser}Send comment{:else}Sign in to comment{/if}
       </button>
 
-      {#await comments then comments}
+      <div class="comment-list">
+        {#await comments}
+          LOADING COMMENTS...
+        {:then comments}
 
-        {#each comments as c}
-          <Comment
-            commentId={c._id}
-            authorId={c.authorId}
-            authorName={c.authorName}
-            date={c._createdAt}
-            location={c.location}
-            content={c.content} />
-        {/each}
+          {#each comments as c}
+            <Comment
+              on:goto={goToPage}
+              commentId={c._id}
+              authorId={c.authorId}
+              authorName={c.authorName}
+              date={c._createdAt}
+              location={c.location}
+              content={c.content} />
+          {/each}
 
-      {/await}
+        {/await}
+
+      </div>
 
     </div>
 

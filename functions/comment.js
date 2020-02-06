@@ -94,6 +94,8 @@ exports.handler = function (event, context, callback) {
         } else if (event.httpMethod === "DEL") {
             // *** DELETE COMMENT
 
+            // TODO: Check if users are the same before delete
+
             client.delete(id)
                 .then(res => {
                     callback(
