@@ -131,10 +131,10 @@
 
 <div class="comment-box" in:slide={{ duration: 100 + delay * 100 }}>
   <div class="time">
-    {authorName} / {formattedDuration(date)} => {location} / {commentId}
+    {authorName} / {formattedDuration(date)} => {location} / {authorId}
   </div>
   <div class="comment-text">{content}</div>
-  {#if $loggedInUser}
+  {#if $loggedInUser && $loggedInUser.id == authorId}
     <div class="actions">
       <span class="delete" on:click={deleteComment}>Delete comment</span>
     </div>

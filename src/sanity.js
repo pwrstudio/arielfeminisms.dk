@@ -15,7 +15,7 @@ export const client = sanityClient({
     projectId: '883bmkra',
     dataset: 'production',
     token: '', // or leave blank to be anonymous user
-    useCdn: true // `false` if you want to ensure fresh data
+    useCdn: false // `false` if you want to ensure fresh data
 })
 
 const h = blocksToHtml.h
