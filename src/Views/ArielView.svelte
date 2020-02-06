@@ -292,12 +292,12 @@
         <MediaQuery query="(min-width: 700px)" let:matches>
           {#if matches}
             <div class="top-bar left" use:links>
-              <div class="left">
+              <div class="right">
                 <a href="/" class:active={$isSubsectionAriel}>ARIEL</a>
                 |
-                <a href="ari" class:active={$isSubsectionAri}>ARI</a>
+                <a href="ari" class:active={$isSubsectionAri}>ARI.</a>
               </div>
-              <div class="right">
+              <div class="left">
                 <span
                   on:click={() => {
                     showAbout.set(true);
@@ -346,10 +346,10 @@
         {#if matches}
           <div class="top-bar right">
             {#if $isSubsectionAriel}
-              <div class="left active">ARIEL PROGRAM</div>
+              <div class="left active">PROGRAM</div>
             {/if}
             {#if $isSubsectionAri}
-              <div class="left active">ARI READINGS</div>
+              <div class="left active">READINGS</div>
               <div class="search">
                 <input
                   class="search-input"

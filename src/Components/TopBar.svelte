@@ -140,7 +140,7 @@
     <div class="inner">
       <a href="/" class:active={$isSubsectionAriel}>ARIEL</a>
       |
-      <a href="/ari" class:active={$isSubsectionAri}>ARI</a>
+      <a href="/ari" class:active={$isSubsectionAri}>ARI.</a>
     </div>
   </div>
 
@@ -156,7 +156,7 @@
             on:click={() => {
               open = false;
             }}>
-            ARIEL PROGRAM
+            PROGRAM
           </div>
           <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
         {/if}
@@ -167,9 +167,9 @@
             on:click={() => {
               open = false;
             }}>
-            ARI READINGS
+            READINGS
           </div>
-          <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI</div>
+          <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
         {/if}
       {/if}
 
