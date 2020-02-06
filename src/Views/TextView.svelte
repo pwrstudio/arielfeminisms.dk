@@ -182,8 +182,6 @@
   });
 
   const goToPage = e => {
-    console.dir(e.detail.page);
-    console.dir(pdfViewerIframe.contentWindow.PDFViewerApplication);
     pdfViewerIframe.contentWindow.PDFViewerApplication.page =
       e.detail.page == 0 ? 1 : e.detail.page;
   };

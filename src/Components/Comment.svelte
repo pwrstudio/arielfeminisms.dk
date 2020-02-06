@@ -147,7 +147,7 @@
   <div
     class="location"
     on:click={() => {
-      dispatch('goto', { page: location });
+      dispatch('goto', { page: parseInt(location) });
     }}>
     Page {location}
   </div>
