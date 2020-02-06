@@ -37,6 +37,7 @@
   export let location = {};
 
   // Set globals
+  showAbout.set(false);
   isYGRG.set(false);
   isAriel.set(true);
   isSubsectionAriel.set(title === "ariel");

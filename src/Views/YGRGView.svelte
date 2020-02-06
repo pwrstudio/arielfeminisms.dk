@@ -31,6 +31,7 @@
   } from "../stores.js";
 
   // Set globals
+  showAbout.set(false);
   isAriel.set(false);
   isYGRG.set(true);
   isSubsectionAriel.set(false);
