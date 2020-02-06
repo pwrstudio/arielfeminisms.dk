@@ -2458,7 +2458,7 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
 /* OVERRIDE */
 
 body {
-  background-color: rgba(0,0,0,0.05);
+  background-color: transparent;
   background-image: none;
 }
 
@@ -2493,4 +2493,13 @@ body {
 
 #viewerContainer {
   top: 0;
+}
+
+.pdfViewer .page {
+  border-image: none;
+  -webkit-border-image: none;
+}
+
+html[dir='ltr'] #viewerContainer {
+  box-shadow: none;
 }

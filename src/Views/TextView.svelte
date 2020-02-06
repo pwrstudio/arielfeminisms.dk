@@ -80,7 +80,6 @@
   );
 
   const getCurrentPage = () => {
-    // console.dir(pdfViewerIframe.contentWindow.PDFViewerApplication);
     currentPage = get(
       pdfViewerIframe,
       "contentWindow.PDFViewerApplication.page",
@@ -94,6 +93,10 @@
       "contentWindow.PDFViewerApplication.pagesCount",
       0
     );
+  };
+
+  const getSelection = () => {
+    console.dir(pdfViewerIframe.contentWindow.getSelection());
   };
 
   text.then(t => {
@@ -210,7 +213,7 @@
     position: absolute;
     top: 70px;
     right: 60px;
-    height: calc(100vh - 100px);
+    height: calc(100vh - 70px);
     width: 60vw;
 
     iframe {
@@ -376,6 +379,8 @@
 
     <div class="comment-container">
 
+      <button on:click={getSelection}>Get selection</button>
+
       <div class="comment">
         <textarea
           class:disabled={!$loggedInUser}
@@ -417,7 +422,7 @@
       <iframe
         title={text.title}
         bind:this={pdfViewerIframe}
-        src={'/pdfjs/web/viewer.html?file=' + encodeURIComponent(text.pdfFile)} />
+        src={'/pdfjs/web/viewer.html?file=' + encodeURIComponent(text.pdfFile) + '#page=1&zoom=page-fit'} />
     </div>
 
     <div class="menu-bar">
