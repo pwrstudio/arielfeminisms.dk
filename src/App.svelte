@@ -26,10 +26,11 @@
   import YGRGView from "./Views/YGRGView.svelte";
   import TextView from "./Views/TextView.svelte";
 
-  const userCookie = JSON.parse(Cookies.get("ygrgLoggedInUser"));
+  const userCookie = Cookies.get("ygrgLoggedInUser");
 
   if (userCookie) {
     console.dir(userCookie);
+    userCookie = JSON.parse(userCookie);
     auth
       .login(userCookie.email, userCookie.password)
       .then(response => {
