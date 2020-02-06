@@ -30,6 +30,7 @@ exports.handler = function (event, context, callback) {
 
         const commentContent = get(event, 'queryStringParameters.comment', "")
         const title = get(event, 'queryStringParameters.title', "")
+        const location = get(event, 'queryStringParameters.location', 0)
         const userName = get(user, 'user_metadata.name', '')
         const userId = get(user, 'sub', 'No ID')
 
@@ -47,7 +48,7 @@ exports.handler = function (event, context, callback) {
                     _type: 'reference',
                     _ref: id,
                 },
-                location: '0'
+                location: location
             }
 
             // Create comment document
