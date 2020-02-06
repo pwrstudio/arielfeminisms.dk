@@ -1,0 +1,156 @@
+<script>
+  // # # # # # # # # # # # # # # #
+  //
+  //  Comment
+  //
+  // # # # # # # # # # # # # # # #
+
+  // *** IMPORT
+  import { fade, slide } from "svelte/transition";
+  import { formatDistanceToNow } from "date-fns";
+  import get from "lodash/get";
+
+  import { auth } from "../identity.js";
+
+  // *** COMPONENTS
+  import Cross from "../Graphics/Cross.svelte";
+
+  // *** STORES
+  import { loggedInUser } from "../stores.js";
+
+  // *** PROPS
+  export let commentId = "";
+  export let authorId = "";
+  export let authorName = "";
+  export let date = "";
+  export let location = "";
+  export let content = "";
+  export let delay = 0;
+
+  let editMode = false;
+  let editedContent = content;
+
+  const deleteComment = () => {
+    if (!$loggedInUser) return false;
+
+    let jwt = $loggedInUser.jwt();
+
+    jwt.then(jwt => {
+      console.dir(jwt);
+      console.log(commentId);
+
+      const url =
+        "https://arielfeminisms.netlify.com/.netlify/functions/comment?id=" +
+        encodeURIComponent(commentId);
+
+      fetch(url, {
+        method: "DEL",
+        headers: new Headers({
+          Authorization: "Bearer " + jwt
+        })
+      })
+        .then(response => {
+          console.log("SUCCESS");
+          console.dir(response);
+        })
+        .catch(err => {
+          console.log("ERROR");
+          console.error(err);
+        });
+    });
+  };
+
+  const editComment = () => {
+    if (!$loggedInUser) return false;
+
+    let jwt = $loggedInUser.jwt();
+
+    jwt.then(jwt => {
+      console.dir(jwt);
+      console.log(commentId);
+
+      const url =
+        "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
+        encodeURIComponent("EDITED: XXXX") +
+        "&id=" +
+        encodeURIComponent(commentId);
+
+      fetch(url, {
+        method: "PUT",
+        headers: new Headers({
+          Authorization: "Bearer " + jwt
+        })
+      })
+        .then(response => {
+          console.log("SUCCESS");
+          newComment = "";
+          console.dir(response);
+        })
+        .catch(err => {
+          console.log("ERROR");
+          console.error(err);
+        });
+    });
+  };
+
+  const formattedDuration = date =>
+    formatDistanceToNow(Date.parse(date), { addSuffix: true });
+</script>
+
+<style lang="scss">
+  @import "../variables.scss";
+
+  .comment-box {
+    width: 100%;
+    background: $grey;
+    padding: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+    font-family: $font-stack-ygrg-regular;
+    font-size: $font-size-medium;
+
+    .time {
+      font-size: $font-size-small;
+    }
+  }
+
+  .actions {
+    margin-top: 10px;
+  }
+
+  .delete {
+    cursor: pointer;
+    font-size: $font-size-small;
+    background: $red;
+    padding: 5px;
+    border-radius: 4px;
+  }
+</style>
+
+<div class="comment-box" in:slide={{ duration: 100 + delay * 100 }}>
+  <div class="time">
+    {authorName} / {formattedDuration(date)} => {location} / {commentId}
+  </div>
+  <div class="comment-text">{content}</div>
+  {#if $loggedInUser}
+    <div class="actions">
+      <span class="delete" on:click={deleteComment}>Delete comment</span>
+    </div>
+    <!-- <span
+        class="edit"
+        on:click={() => {
+          editMode = true;
+        }}>
+        EDIT
+      </span>
+    </div>
+    {#if editMode}
+      <textarea bind:value={editedContent} class="comment-input" type="text" />
+      <button disabled={!$loggedInUser} on:click={submitComment}>
+        {#if $loggedInUser}Send comment{:else}Sign in to comment{/if}
+      </button>
+    {/if} -->
+  {/if}
+</div>

@@ -10,14 +10,17 @@
   import { Route, links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade, slide } from "svelte/transition";
-  import { format, getYear, formatDistanceToNow } from "date-fns";
+  import { format, getYear } from "date-fns";
   import get from "lodash/get";
 
   import { auth } from "../identity.js";
 
-  // *** COMPONENTS
+  // *** GRAPHICS
   import Cross from "../Graphics/Cross.svelte";
   import SubmitArrow from "../Graphics/SubmitArrow.svelte";
+
+  // *** COMPONENTS
+  import Comment from "../Components/Comment.svelte";
 
   // *** STORES
   import { isText, loggedInUser } from "../stores.js";
@@ -182,9 +185,6 @@
   onDestroy(async () => {
     isText.set(false);
   });
-
-  const formattedDuration = date =>
-    formatDistanceToNow(Date.parse(date), { addSuffix: true });
 </script>
 
 <style lang="scss">
@@ -332,22 +332,6 @@
     }
   }
 
-  .comment-box {
-    width: 100%;
-    background: $grey;
-    padding: 15px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    overflow: hidden;
-    font-family: $font-stack-ygrg-regular;
-    font-size: $font-size-medium;
-
-    .time {
-      font-size: $font-size-small;
-    }
-  }
-
   .bookmark {
     svg {
       polygon {
@@ -404,16 +388,14 @@
 
       {#await comments then comments}
 
-        {#each comments as c, i}
-          <div class="comment-box" in:slide={{ duration: 100 + i * 100 }}>
-            <div class="time">
-              {c.authorName} / {formattedDuration(c._createdAt)} => {c.location}
-            </div>
-            {#if $loggedInUser}
-              <div class="delete">DEL</div>
-            {/if}
-            <div class="comment-text">{c.content}</div>
-          </div>
+        {#each comments as c}
+          <Comment
+            commentId={c._id}
+            authorId={c.authorId}
+            authorName={c.authorName}
+            date={c._createdAt}
+            location={c.location}
+            content={c.content} />
         {/each}
 
       {/await}
