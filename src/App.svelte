@@ -30,9 +30,9 @@
 
   if (userCookie) {
     console.dir(userCookie);
-    userCookie = JSON.parse(userCookie);
+    const userCookieObject = JSON.parse(userCookie);
     auth
-      .login(userCookie.email, userCookie.password)
+      .login(userCookieObject.email, userCookieObject.password)
       .then(response => {
         // HACK
         console.dir(response);
