@@ -422,7 +422,7 @@
       <iframe
         title={text.title}
         bind:this={pdfViewerIframe}
-        src={'/pdfjs/web/viewer.html?file=' + encodeURIComponent(text.pdfFile) + '#page=1&zoom=page-fit'} />
+        src={'/pdfjs/web/viewer.html?file=' + encodeURIComponent(text.pdfFile) + '#page=1&zoom=page-width'} />
     </div>
 
     <div class="menu-bar">

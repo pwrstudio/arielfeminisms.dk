@@ -150,11 +150,23 @@
     &.left {
       left: 0;
       box-sizing: border-box;
+
+      a {
+        &:hover {
+          border-bottom: 2px solid $black;
+        }
+      }
     }
 
     &.right {
       right: 0;
       box-sizing: border-box;
+
+      a {
+        &:hover {
+          border-bottom: 2px solid $black;
+        }
+      }
     }
 
     .left {
@@ -167,19 +179,22 @@
   }
 
   .program {
-    text-decoration: none;
-    &:hover {
-      text-decoration: none;
-    }
+    border-bottom: 2px solid transparent;
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+
     .title {
       text-align: center;
       margin-bottom: $line-height;
       text-transform: uppercase;
     }
+
     .date {
       text-align: center;
       margin-bottom: $line-height * 3;
     }
+
     .artist {
       text-align: center;
       text-transform: uppercase;
@@ -187,7 +202,7 @@
   }
 
   .active {
-    font-style: italic;
+    border-bottom: 2px solid $black;
   }
 
   .about-pane {
@@ -223,6 +238,8 @@
       line-height: $line-height;
       font-weight: bold;
       width: calc(100% - 100px);
+      height: calc(100% - 50px);
+      background: red;
 
       .bottom-text {
         margin-top: $line-height * 2;
@@ -244,10 +261,6 @@
         transform: scale(1.1);
       }
     }
-  }
-
-  .pseudo-link {
-    cursor: pointer;
   }
 
   .search {
@@ -346,10 +359,16 @@
         {#if matches}
           <div class="top-bar right">
             {#if $isSubsectionAriel}
-              <div class="left active">PROGRAM</div>
+              <div class="left">
+                {#await program then program}
+                  <a href={program[0].slug.current}>PROGRAM</a>
+                {/await}
+              </div>
             {/if}
             {#if $isSubsectionAri}
-              <div class="left active">READINGS</div>
+              <div class="left">
+                <span>READINGS</span>
+              </div>
               <div class="search">
                 <input
                   class="search-input"

@@ -165,6 +165,9 @@
 
   .program {
     font-family: $font-stack-ygrg-extended;
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%;
 
     .title {
       text-align: center;
@@ -178,7 +181,7 @@
   }
 
   .active {
-    font-style: italic;
+    border-bottom: $line-style;
   }
 
   .about-pane {
@@ -203,6 +206,7 @@
       height: calc(100vh - 80px);
       transform: translateY(100%);
     }
+
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
       transform: translateX(0);
@@ -309,10 +313,6 @@
     }
   }
 
-  .pseudo-link {
-    cursor: pointer;
-  }
-
   .tile {
     border: $line-style;
     border-radius: 8px;
@@ -403,14 +403,17 @@
                   ABOUT YGRG
                 </span>
               </div>
-              <div
-                class="right pseudo-link"
-                on:click={() => {
-                  showAbout.set(false);
-                  showSignIn = !showSignIn;
-                }}>
-                {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+              <div class="right">
+                <span
+                  class="pseudo-link"
+                  on:click={() => {
+                    showAbout.set(false);
+                    showSignIn = !showSignIn;
+                  }}>
+                  {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+                </span>
               </div>
+
             </div>
           {/if}
         </MediaQuery>
@@ -456,7 +459,7 @@
       <MediaQuery query="(min-width: 700px)" let:matches>
         {#if matches}
           <div class="top-bar right">
-            <div class="left active">YGRG ARCHIVE</div>
+            <div class="left">YGRG ARCHIVE</div>
           </div>
         {/if}
       </MediaQuery>

@@ -53,7 +53,7 @@
       line-height: 80px;
 
       .active {
-        font-style: italic;
+        border-bottom: $line-style;
       }
     }
   }

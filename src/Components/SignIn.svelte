@@ -171,8 +171,10 @@
       padding: 0;
       outline: none;
 
+      border-bottom: 2px solid transparent;
+
       &:hover {
-        font-style: italic;
+        border-bottom: $line-style;
         cursor: pointer;
       }
     }
@@ -293,6 +295,10 @@
       }
     }
   }
+
+  .read-only {
+    pointer-events: none;
+  }
 </style>
 
 <div class="identity">
@@ -324,7 +330,7 @@
           placeholder="password"
           bind:value={password} />
       </fieldset>
-      <fieldset class="sign-in-section">
+      <fieldset>
         {#if !processing}
           <button on:click={signIn}>Sign In</button>
         {:else}
@@ -333,8 +339,11 @@
           </div>
         {/if}
       </fieldset>
+      <fieldset>
+        <button>Recover password</button>
+      </fieldset>
       {#if !processing}
-        <fieldset class="sign-in-section">
+        <fieldset>
           <span
             class="sign-up-link pseudo-link"
             on:click={() => {
@@ -404,12 +413,15 @@
 
       <div class="profile-section">
         <label>Name</label>
-        <input type="text" value={$loggedInUser.user_metadata.name} />
+        <input
+          type="text"
+          class="read-only"
+          value={$loggedInUser.user_metadata.name} />
       </div>
 
       <div class="profile-section">
         <label>Email</label>
-        <input type="text" value={$loggedInUser.email} />
+        <input type="text" class="read-only" value={$loggedInUser.email} />
       </div>
 
       <div class="profile-section">
@@ -419,6 +431,10 @@
 
       <fieldset>
         <button class="sign-up-link" on:click={logOut}>LOG OUT</button>
+      </fieldset>
+
+      <fieldset>
+        <button class="sign-up-link">DELETE ACCOUNT</button>
       </fieldset>
 
     </form>

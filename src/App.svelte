@@ -69,12 +69,6 @@
     }
   }
 
-  .pseudo-link {
-    &:hover {
-      font-style: italic;
-    }
-  }
-
   * {
     box-sizing: border-box;
   }
@@ -243,6 +237,11 @@
 
   .pseudo-link {
     cursor: pointer;
+    border-bottom: 2px solid transparent;
+
+    &:hover {
+      border-bottom: 2px solid $black;
+    }
   }
 
   .disabled {
