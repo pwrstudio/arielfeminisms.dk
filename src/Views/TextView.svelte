@@ -379,7 +379,7 @@
 
     <div class="comment-container">
 
-      <button on:click={getSelection}>Get selection</button>
+      <!-- <button on:click={getSelection}>Get selection</button> -->
 
       <div class="comment">
         <textarea
