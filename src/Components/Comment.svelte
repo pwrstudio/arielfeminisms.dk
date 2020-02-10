@@ -11,7 +11,7 @@
   import { formatDistanceToNow } from "date-fns";
   import get from "lodash/get";
 
-  import { auth } from "../identity.js";
+  import { auth } from "../global.js";
 
   // *** COMPONENTS
   import Cross from "../Graphics/Cross.svelte";

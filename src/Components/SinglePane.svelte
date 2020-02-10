@@ -6,12 +6,12 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { onMount } from "svelte";
-  import { links, navigate } from "svelte-routing";
+  import { links } from "svelte-routing";
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
-  import { format, getYear } from "date-fns";
+
+  import { formattedDate } from "../global.js";
 
   // *** COMPONENTS
   import SlideShow from "../Components/SlideShow.svelte";
@@ -20,40 +20,32 @@
   import Cross from "../Graphics/Cross.svelte";
 
   // *** STORES
-  import {
-    isYGRG,
-    isAriel,
-    isSubsectionAriel,
-    isSubsectionAri
-  } from "../stores.js";
+  import { isYGRG, isAriel, isAri } from "../stores.js";
 
   // *** PROPS
   export let slug = "";
+  export let title = "";
 
   // *** VARIABLES
   const single = loadData("*[slug.current == $slug][0]", { slug: slug });
-
-  const formattedDate = (start, end) => {
-    const startDate = Date.parse(start);
-    const endDate = Date.parse(end);
-
-    const startFormat =
-      getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
-    const endFormat = "dd.MM.yyyy";
-
-    return format(startDate, startFormat) + " – " + format(endDate, endFormat);
-  };
 </script>
 
 <style lang="scss">
   @import "../variables.scss";
 
-  .single-pane {
+  .single {
     width: 100%;
     height: 100vh;
     margin: 0;
     padding: 0;
-    font-family: $font-stack-ariel;
+
+    &.ariel {
+      font-family: $font-stack-ariel;
+    }
+
+    &.ygrg {
+      font-family: $font-stack-ygrg-extended;
+    }
 
     @include screen-size("small") {
       position: static;
@@ -136,33 +128,30 @@
   }
 </style>
 
-<div class="single-pane" in:fade>
+<div class="single {title}" in:fade>
 
   <!-- TOP BAR -->
-  <MediaQuery query="(min-width: 700px)" let:matches>
-    {#if matches}
-      <div class="top-bar left" use:links>
 
-        <div class="left active">
-          {#if $isAriel}ARIEL PROGRAM{/if}
-          {#if $isYGRG}YGRG ARCHIVE{/if}
-        </div>
-        <div class="right">
-          {#if $isAriel}
-            <a href="/" class="close">
-              <Cross />
-            </a>
-          {/if}
-          {#if $isYGRG}
-            <a href="/ygrg" class="close">
-              <Cross />
-            </a>
-          {/if}
-        </div>
+  <div class="top-bar left" use:links>
 
-      </div>
-    {/if}
-  </MediaQuery>
+    <div class="left active">
+      {#if $isAriel}ARIEL PROGRAM{/if}
+      {#if $isYGRG}YGRG ARCHIVE{/if}
+    </div>
+    <div class="right">
+      {#if $isAriel}
+        <a href="/" class="close">
+          <Cross />
+        </a>
+      {/if}
+      {#if $isYGRG}
+        <a href="/ygrg" class="close">
+          <Cross />
+        </a>
+      {/if}
+    </div>
+
+  </div>
 
   <!-- INNER CONTAINER -->
   <div class="inner-container" use:links>

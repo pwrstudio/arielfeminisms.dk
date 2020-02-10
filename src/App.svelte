@@ -16,14 +16,13 @@
   import YGRGNavigation from "./Components/YGRGNavigation.svelte";
   import TopBar from "./Components/TopBar.svelte";
 
-  import { auth } from "./identity.js";
+  import { auth } from "./global.js";
 
   // *** STORES
-  import { isYGRG, isAriel, isText, loggedInUser } from "./stores.js";
+  import { isYGRG, isAriel, isAri, isText, loggedInUser } from "./stores.js";
 
   // ** VIEWS
-  import ArielView from "./Views/ArielView.svelte";
-  import YGRGView from "./Views/YGRGView.svelte";
+  import MainView from "./Views/MainView.svelte";
   import TextView from "./Views/TextView.svelte";
 
   const userCookie = Cookies.get("ygrgLoggedInUser");
@@ -248,25 +247,30 @@
     opacity: 0.5;
     pointer-events: none;
   }
+
+  // .bottom-text {
+  //   p {
+  //     margin-bottom: 0;
+  //     margin-top: 0;
+  //   }
+  // }
 </style>
 
 <main>
 
   <Router>
-    <Route path="/" component={ArielView} title="ariel" />
+    <Route path="/" component={MainView} title="ariel" />
 
-    <Route path="/ari" component={ArielView} title="ari" />
+    <Route path="/ari" component={MainView} title="ari" />
 
-    <Route path="/:slug" component={ArielView} title="ariel" />
+    <Route path="/:slug" component={MainView} title="ariel" />
 
-    <!-- <Route path="/ari/reading/:slug" component={readingView} /> -->
+    <Route path="/ygrg" component={MainView} title="ygrg" />
+    <Route path="/ygrg/text/:slug" component={TextView} title="ygrg" />
 
-    <Route path="/ygrg" component={YGRGView} />
-    <Route path="/ygrg/text/:slug" component={TextView} />
+    <Route path="/ygrg/:slug" component={MainView} title="ygrg" />
 
-    <Route path="/ygrg/:slug" component={YGRGView} />
-
-    <Route component={ArielView} title="ariel" />
+    <Route component={MainView} title="ariel" />
   </Router>
 
   <MediaQuery query="(max-width: 700px)" let:matches>
@@ -279,7 +283,7 @@
     <ArielNavigation />
   {/if}
 
-  {#if $isAriel && !$isText}
+  {#if ($isAriel || $isAri) && !$isText}
     <YGRGNavigation />
   {/if}
 

@@ -13,7 +13,7 @@
   import { format, getYear } from "date-fns";
   import get from "lodash/get";
 
-  import { auth } from "../identity.js";
+  import { auth } from "../global.js";
 
   // *** GRAPHICS
   import Cross from "../Graphics/Cross.svelte";

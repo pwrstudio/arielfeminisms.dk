@@ -13,13 +13,7 @@
   import Cross from "../Graphics/Cross.svelte";
 
   // *** STORES
-  import {
-    isYGRG,
-    isAriel,
-    isSubsectionAriel,
-    isSubsectionAri,
-    showAbout
-  } from "../stores.js";
+  import { isYGRG, isAriel, isAri, showAbout } from "../stores.js";
 
   // *** VARIABLES
   let open = false;
@@ -138,9 +132,9 @@
       </div>
     {/if}
     <div class="inner">
-      <a href="/" class:active={$isSubsectionAriel}>ARIEL</a>
+      <a href="/" class:active={$isAriel}>ARIEL</a>
       |
-      <a href="/ari" class:active={$isSubsectionAri}>ARI.</a>
+      <a href="/ari" class:active={$isAri}>ARI.</a>
     </div>
   </div>
 
@@ -150,7 +144,7 @@
       in:slide={{ duration: 200 }}
       out:fade={{ duration: 200 }}>
       {#if $isAriel}
-        {#if $isSubsectionAriel}
+        {#if $isAriel}
           <div
             class="mobile-menu-item"
             on:click={() => {
@@ -161,7 +155,7 @@
           <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
         {/if}
 
-        {#if $isSubsectionAri}
+        {#if $isAri}
           <div
             class="mobile-menu-item"
             on:click={() => {

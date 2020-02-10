@@ -12,19 +12,13 @@
   import * as Cookies from "es-cookie";
   import get from "lodash/get";
 
-  import { auth } from "../identity.js";
+  import { auth } from "../global.js";
 
   // *** GRAPHICS
   import Ellipse from "../Graphics/Ellipse.svelte";
 
   // *** STORES
-  import {
-    isYGRG,
-    isAriel,
-    isSubsectionAriel,
-    isSubsectionAri,
-    loggedInUser
-  } from "../stores.js";
+  import { isYGRG, isAriel, isAri, loggedInUser } from "../stores.js";
 
   // *** PROPS
 
