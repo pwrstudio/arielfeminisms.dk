@@ -64,6 +64,10 @@
   if ($isYGRG) aboutQuery = '*[_id == "aboutYGRG"][0]';
   const about = loadData(aboutQuery, {});
 
+  const setSlug = s => {
+    slug = s;
+  };
+
   onMount(async () => {
     window.scrollTo(0, 0);
   });
@@ -166,6 +170,20 @@
 
     .right {
       float: right;
+
+      .close {
+        position: absolute;
+        right: 20px;
+        top: 15px;
+        height: 24px;
+        width: 24px;
+        transition: transform 0.3s $easing;
+        cursor: pointer;
+
+        &:hover {
+          transform: scale(1.1);
+        }
+      }
     }
   }
 
@@ -173,6 +191,7 @@
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
+    cursor: pointer;
 
     .title {
       text-align: center;
@@ -195,6 +214,7 @@
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
+    cursor: pointer;
 
     .title {
       text-align: center;
@@ -218,6 +238,7 @@
     display: inline-block;
     width: 100%;
     font-family: $font-stack-ygrg-extended;
+    cursor: pointer;
 
     .title {
       text-align: center;
@@ -522,43 +543,75 @@
   <!-- RIGHT PANE -->
   <div class="half right">
 
+    <div class="top-bar right">
+      {#if $isAriel}
+        <div class="left">
+          {#await program then program}
+            <span
+              class="pseudo-link"
+              on:click={() => {
+                setSlug(program[0].slug.current);
+              }}>
+              PROGRAM
+            </span>
+          {/await}
+        </div>
+        {#if slug}
+          <div class="right">
+            <span
+              class="close"
+              on:click={() => {
+                setSlug(false);
+              }}>
+              <Cross />
+            </span>
+          </div>
+        {/if}
+      {/if}
+      {#if $isAri}
+        <div class="left">
+          <span>READINGS</span>
+        </div>
+        <div class="search">
+          <input
+            class="search-input"
+            type="text"
+            placeholder="Search in ARI..." />
+          <div class="search-icon">
+            <SubmitArrow />
+          </div>
+        </div>
+      {/if}
+      {#if $isYGRG}
+        <div class="left">YGRG ARCHIVE</div>
+        {#if slug}
+          <div class="right">
+            <span
+              class="close"
+              on:click={() => {
+                setSlug(false);
+              }}>
+              <Cross />
+            </span>
+          </div>
+        {/if}
+      {/if}
+    </div>
+
     {#if slug}
       <SinglePane {slug} {title} />
     {:else}
-      <div class="top-bar right">
-        {#if $isAriel}
-          <div class="left">
-            {#await program then program}
-              <a href={program[0].slug.current}>PROGRAM</a>
-            {/await}
-          </div>
-        {/if}
-        {#if $isAri}
-          <div class="left">
-            <span>READINGS</span>
-          </div>
-          <div class="search">
-            <input
-              class="search-input"
-              type="text"
-              placeholder="Search in ARI..." />
-            <div class="search-icon">
-              <SubmitArrow />
-            </div>
-          </div>
-        {/if}
-        {#if $isYGRG}
-          <div class="left">YGRG ARCHIVE</div>
-        {/if}
-      </div>
-
       <div class="inner-container" use:links>
 
         <!-- ARIEL -->
         {#if $isAriel}
           {#await program then program}
             {#each program as p}
-              <a href="/{p.slug.current}" class="program">
+              <div
+                class="program"
+                on:click={() => {
+                  setSlug(p.slug.current);
+                }}>
                 <div class="title">{p.title}</div>
                 <div class="artist">
                   {#each p.artists as a}
@@ -569,7 +622,7 @@
                 <div class="text">
                   {@html renderBlockText(p.content)}
                 </div>
-              </a>
+              </div>
             {/each}
           {/await}
         {/if}
@@ -592,13 +645,17 @@
         {#if $isYGRG}
           {#await events then events}
             {#each events as e}
-              <a href="/ygrg/{e.slug.current}" class="event">
+              <div
+                class="event"
+                on:click={() => {
+                  setSlug(e.slug.current);
+                }}>
                 <div class="title">{e.title}</div>
                 <div class="date">{formattedDate(e.startDate, e.endDate)}</div>
                 <div class="text">
                   {@html renderBlockText(e.content)}
                 </div>
-              </a>
+              </div>
             {/each}
           {/await}
         {/if}

@@ -65,40 +65,6 @@
     }
   }
 
-  .top-bar {
-    position: absolute;
-    top: 0;
-    height: $top-bar-height;
-    width: 100%;
-    line-height: $top-bar-height;
-    padding-left: 30px;
-    padding-right: 30px;
-    font-weight: bold;
-    font-size: $font-size-large;
-
-    .left {
-      float: left;
-    }
-
-    .right {
-      float: right;
-
-      .close {
-        position: absolute;
-        right: 20px;
-        top: 15px;
-        height: 24px;
-        width: 24px;
-        transition: transform 0.3s $easing;
-        cursor: pointer;
-
-        &:hover {
-          transform: scale(1.1);
-        }
-      }
-    }
-  }
-
   .bottom-text {
     position: absolute;
     bottom: 0;
@@ -113,7 +79,6 @@
     .title {
       text-align: center;
       margin-bottom: 20px;
-      text-transform: uppercase;
     }
 
     .date {
@@ -123,35 +88,11 @@
 
     .artist {
       text-align: center;
-      text-transform: uppercase;
     }
   }
 </style>
 
 <div class="single {title}" in:fade>
-
-  <!-- TOP BAR -->
-
-  <div class="top-bar left" use:links>
-
-    <div class="left active">
-      {#if $isAriel}ARIEL PROGRAM{/if}
-      {#if $isYGRG}YGRG ARCHIVE{/if}
-    </div>
-    <div class="right">
-      {#if $isAriel}
-        <a href="/" class="close">
-          <Cross />
-        </a>
-      {/if}
-      {#if $isYGRG}
-        <a href="/ygrg" class="close">
-          <Cross />
-        </a>
-      {/if}
-    </div>
-
-  </div>
 
   <!-- INNER CONTAINER -->
   <div class="inner-container" use:links>
