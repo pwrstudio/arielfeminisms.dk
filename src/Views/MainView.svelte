@@ -12,6 +12,7 @@
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import { format, getYear } from "date-fns";
+  import Fuse from "fuse.js";
 
   import { formattedDate } from "../global.js";
 
@@ -51,12 +52,23 @@
   // *** VARIABLES
 
   let showSignIn = false;
+  let filterQuery = "";
 
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
   const program = loadData('*[_type in [ "program"]]', {});
   const readings = loadData('*[_type in [ "reading"]]', {});
-  const texts = loadData('*[_type in [ "ygrgText"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
+
+  const texts = loadData('*[_type in [ "ygrgText"]]', {});
+  let filteredTexts = [];
+  let filterTexts = () => {};
+  let fuse = {};
+  const options = {
+    keys: ["title"],
+    shouldSort: true,
+    threshold: 0.6,
+    minMatchCharLength: 4
+  };
 
   let aboutQuery = "";
   if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]';
@@ -70,6 +82,16 @@
 
   onMount(async () => {
     window.scrollTo(0, 0);
+  });
+
+  texts.then(results => {
+    filteredTexts = results;
+    fuse = new Fuse(results, options);
+    filterTexts = () => {
+      console.log(filterQuery);
+      filteredTexts =
+        filterQuery.length == 0 ? results : fuse.search(filterQuery);
+    };
   });
 </script>
 
@@ -517,23 +539,22 @@
           <input
             class="filter-input"
             type="text"
+            bind:value={filterQuery}
+            on:keyup={filterTexts}
             placeholder="Search in the YGRG Archive..." />
-          <div class="filter-icon">
+          <div on:click={filterTexts} class="filter-icon">
             <SubmitArrow />
           </div>
         </div>
 
         <div class="tile-container" use:links>
-
-          {#await texts then texts}
-            {#each texts as t}
-              <TextTile
-                id={t._id}
-                title={t.title}
-                slug={t.slug.current}
-                date={t._createdAt} />
-            {/each}
-          {/await}
+          {#each filteredTexts as t}
+            <TextTile
+              id={t._id}
+              title={t.title}
+              slug={t.slug.current}
+              date={t._createdAt} />
+          {/each}
         </div>
       {/if}
     </div>

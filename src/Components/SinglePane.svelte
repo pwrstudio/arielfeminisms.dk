@@ -16,9 +16,6 @@
   // *** COMPONENTS
   import SlideShow from "../Components/SlideShow.svelte";
 
-  // *** GRAPHICS
-  import Cross from "../Graphics/Cross.svelte";
-
   // *** STORES
   import { isYGRG, isAriel, isAri } from "../stores.js";
 
