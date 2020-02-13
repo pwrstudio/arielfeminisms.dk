@@ -65,8 +65,13 @@
   .responsive-container {
     position: relative;
     overflow: hidden;
+    height: 0;
     padding-top: 56.25%;
-    transform: translateY(20%);
+    top: 10%;
+
+    @include screen-size("wide") {
+      top: 0;
+    }
 
     iframe {
       position: absolute;
@@ -108,6 +113,8 @@
       {:else}
         <span />
         {#if slide.videoUrl}
+          <!-- <div class="video-container"> -->
+
           <div class="responsive-container">
             {#if slide.videoUrl.includes('youtube')}
               <iframe
@@ -133,6 +140,7 @@
                 allowfullscreen />
             {/if}
           </div>
+          <!-- </div> -->
         {:else}
           <img
             class="slideshow__slide-image"

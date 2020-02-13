@@ -33,6 +33,8 @@
 
   const dispatch = createEventDispatcher();
 
+  console.dir(content);
+
   const deleteComment = () => {
     if (!$loggedInUser) return false;
 
