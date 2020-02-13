@@ -41,8 +41,6 @@
   export let slug = "";
   export let location = {};
 
-  console.log(title);
-
   // Set globals
   showAbout.set(false);
   isAriel.set(title === "ariel");
@@ -593,15 +591,27 @@
         <div class="left">
           <span>READINGS</span>
         </div>
-        <div class="search">
-          <input
-            class="search-input"
-            type="text"
-            placeholder="Search in ARI..." />
-          <div class="search-icon">
-            <SubmitArrow />
+        {#if slug}
+          <div class="right">
+            <span
+              class="close"
+              on:click={() => {
+                setSlug(false);
+              }}>
+              <Cross />
+            </span>
           </div>
-        </div>
+        {:else}
+          <div class="search">
+            <input
+              class="search-input"
+              type="text"
+              placeholder="Search in ARI..." />
+            <div class="search-icon">
+              <SubmitArrow />
+            </div>
+          </div>
+        {/if}
       {/if}
       {#if $isYGRG}
         <div class="left">YGRG ARCHIVE</div>
@@ -652,7 +662,11 @@
         {#if $isAri}
           {#await readings then readings}
             {#each readings as r}
-              <div class="reading">
+              <div
+                class="reading"
+                on:click={() => {
+                  setSlug(r.slug.current);
+                }}>
                 <div class="title">{r.title}</div>
                 <div class="text">
                   {@html renderBlockText(r.content)}

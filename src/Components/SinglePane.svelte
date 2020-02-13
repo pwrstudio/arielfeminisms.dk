@@ -10,21 +10,36 @@
   import { loadData, renderBlockText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
+  import get from "lodash/get";
 
   import { formattedDate } from "../global.js";
 
   // *** COMPONENTS
   import SlideShow from "../Components/SlideShow.svelte";
 
+  // *** GRAPHICS
+  import ReadIcon from "../Graphics/ReadIcon.svelte";
+
   // *** STORES
   import { isYGRG, isAriel, isAri } from "../stores.js";
+
+  console.log("ygrg", $isYGRG);
+  console.log("ariel", $isAriel);
+  console.log("ari", $isAri);
 
   // *** PROPS
   export let slug = "";
   export let title = "";
 
   // *** VARIABLES
-  const single = loadData("*[slug.current == $slug][0]", { slug: slug });
+  const single = loadData(
+    "*[slug.current == $slug][0]{slideshow[]{textLink->{slug}, ...}, ...}",
+    { slug: slug }
+  );
+
+  let currentIndex = 0;
+
+  console.dir(single);
 </script>
 
 <style lang="scss">
@@ -87,6 +102,26 @@
       text-align: center;
     }
   }
+
+  .text-link {
+    padding-top: 40px;
+    text-align: center;
+    font-family: $font-stack-ygrg-extended;
+    font-size: $font-size-large;
+  }
+
+  .caption {
+    padding-top: 40px;
+    text-align: center;
+  }
+
+  .read-icon {
+    height: 50px;
+    width: 50px;
+    display: inline-block;
+    position: relative;
+    top: 20px;
+  }
 </style>
 
 <div class="single {title}" in:fade>
@@ -94,12 +129,33 @@
   <!-- INNER CONTAINER -->
   <div class="inner-container" use:links>
 
-    {#await single}
-      <span />
-    {:then single}
+    {#await single then single}
 
-      {#if single.slideshow.length > 0}
-        <SlideShow slideArray={single.slideshow} />
+      {#if get(single, 'slideshow.length', 0) > 0}
+        <SlideShow
+          on:slideChange={e => {
+            currentIndex = e.detail.index;
+          }}
+          slideArray={single.slideshow} />
+      {/if}
+
+      {#if single.slideshow}
+        {#if single.slideshow[currentIndex].textLink}
+          <div class="text-link" in:fade>
+            <a
+              href="/ygrg/text/{single.slideshow[currentIndex].textLink.slug.current}">
+              Read
+              <div class="read-icon">
+                <ReadIcon />
+              </div>
+            </a>
+          </div>
+        {/if}
+        {#if single.slideshow[currentIndex].caption}
+          <div class="caption" in:fade>
+            {single.slideshow[currentIndex].caption}
+          </div>
+        {/if}
       {/if}
 
       <div class="bottom-text">
@@ -114,15 +170,13 @@
           </div>
         {/if}
         <!-- // *** DATE -->
-        <div class="date">
-          {formattedDate(single.startDate, single.endDate)}
-        </div>
+        {#if $isYGRG || $isAriel}
+          <div class="date">
+            {formattedDate(single.startDate, single.endDate)}
+          </div>
+        {/if}
       </div>
 
-    {:catch error}
-      File not Found (404)
-      <br />
-      <a href="/">Return to main page</a>
     {/await}
 
   </div>

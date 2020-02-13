@@ -10,6 +10,9 @@
   import Flickity from "flickity";
   import { urlFor } from "../sanity.js";
   import getVideoId from "get-video-id";
+  import { createEventDispatcher } from "svelte";
+
+  const dispatch = createEventDispatcher();
 
   // *** PROPS
   export let slideArray = [];
@@ -28,6 +31,10 @@
         pageDots: true,
         selectedAttraction: 0.2,
         friction: 0.9
+      });
+      flkty.on("change", i => {
+        console.log(i);
+        dispatch("slideChange", { index: parseInt(i) });
       });
     } catch (err) {
       console.error(err);
