@@ -275,10 +275,6 @@
       overflow: visible;
       cursor: pointer;
 
-      .cls-1 {
-        fill: #000;
-      }
-
       &.reload {
         margin-left: 5px;
       }
@@ -310,6 +306,7 @@
     height: calc(100vh - 290px);
     overflow-y: auto;
     padding-bottom: 20px;
+    @include hide-scroll;
     @include screen-size("small") {
       display: none;
     }
@@ -431,6 +428,14 @@
     border-radius: 10px;
     color: white;
     cursor: pointer;
+    border: 0;
+    outline: none;
+    font-family: $font-stack-ygrg-regular;
+    font-size: $font-size-medium;
+
+    &:hover {
+      background: rgba(40, 40, 40, 1);
+    }
   }
 </style>
 
@@ -456,7 +461,10 @@
           <div class="comment-icon" class:disabled={!$loggedInUser}>
             <SubmitArrow />
           </div>
-          <button disabled={!$loggedInUser} on:click={submitComment}>
+          <button
+            class="black-button"
+            disabled={!$loggedInUser}
+            on:click={submitComment}>
             Send comment
           </button>
         {:else}

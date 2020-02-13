@@ -23,10 +23,6 @@
   // *** STORES
   import { isYGRG, isAriel, isAri } from "../stores.js";
 
-  console.log("ygrg", $isYGRG);
-  console.log("ariel", $isAriel);
-  console.log("ari", $isAri);
-
   // *** PROPS
   export let slug = "";
   export let title = "";
@@ -126,6 +122,7 @@
   .caption {
     padding-top: 40px;
     text-align: center;
+    display: none;
     @include screen-size("small") {
       display: none;
     }

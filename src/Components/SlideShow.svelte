@@ -24,8 +24,6 @@
   // *** VARIABLES
   let flkty = {};
 
-  console.log(slideArray);
-
   const flktyOption = isTextNavigation
     ? {
         prevNextButtons: false,
@@ -46,7 +44,6 @@
     try {
       flkty = new Flickity(slideShowEl, flktyOption);
       flkty.on("change", i => {
-        console.log(i);
         dispatch("slideChange", { index: parseInt(i) });
       });
       if (isTextNavigation) {

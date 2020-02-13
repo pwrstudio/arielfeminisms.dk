@@ -2508,9 +2508,12 @@ html[dir='ltr'] #viewerContainer {
   width: 80px;
   height: 80px;
   position: fixed;
-  top: 50%;
+  top: 45%;
   left: 50%;
+  margin-left: -40px;
+  margin-top: -40px;
   z-index: 1000;
+  display: none;
 }
 
 .sk-fading-circle .sk-circle {

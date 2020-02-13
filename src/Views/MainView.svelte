@@ -120,7 +120,6 @@
     results.forEach(r => {
       r.plainText = toPlainText(r.content);
     });
-    console.dir(results);
     fuseReadings = new Fuse(results, optionsReadingsFilter);
     filterReadings = () => {
       console.log(queryReadingsFilter);
