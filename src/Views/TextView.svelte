@@ -21,9 +21,12 @@
 
   // *** COMPONENTS
   import Comment from "../Components/Comment.svelte";
+  import SlideShow from "../Components/SlideShow.svelte";
 
   // *** STORES
   import { isText, loggedInUser } from "../stores.js";
+
+  const texts = loadData('*[_type in [ "ygrgText"]]', {});
 
   // Set globals
   isText.set(true);
@@ -214,7 +217,7 @@
     top: 70px;
     right: 60px;
     height: calc(100vh - 70px);
-    width: 60vw;
+    width: calc(100vw - 500px);
 
     iframe {
       height: 100%;
@@ -227,7 +230,7 @@
   .close {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 20px;
     height: 24px;
     width: 24px;
     transition: transform 0.3s $easing;
@@ -252,7 +255,7 @@
     top: 40px;
     height: 20px;
     overflow: visible;
-    width: 60vw;
+    width: calc(100vw - 480px);
 
     .menu-bar-item {
       display: inline-flex;
@@ -293,13 +296,36 @@
     position: absolute;
     left: 20px;
     top: 70px;
-    width: 30vw;
-    height: calc(100vh - 100px);
+    width: 400px;
+    height: calc(100vh - 290px);
     overflow-y: auto;
+    padding-bottom: 20px;
+  }
+
+  .text-navigation {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    width: 380px;
+    overflow-y: auto;
+    height: 180px;
+    background: $brown;
+    // box-shadow: 0px 0px 10px 10px $brown;
+  }
+
+  .blur {
+    position: absolute;
+    left: 20px;
+    bottom: 200px;
+    width: 380px;
+    overflow-y: auto;
+    height: 180px;
+    background: green;
+    display: none;
   }
 
   .comment {
-    width: 100%;
+    width: 380px;
     position: relative;
 
     .comment-input {
@@ -344,14 +370,25 @@
     svg {
       polygon {
         fill: none;
+        stroke: white;
+        stroke-miterlimit: 10;
+        stroke-width: 2px;
       }
     }
 
     &.marked {
       svg {
         polygon {
-          fill: $black;
+          fill: white;
         }
+      }
+    }
+  }
+
+  .download {
+    svg {
+      polygon {
+        fill: white;
       }
     }
   }
@@ -367,6 +404,17 @@
   .buttons {
     float: right;
   }
+
+  .black-button {
+    background: black;
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+  }
 </style>
 
 <div class="text-view" use:links>
@@ -380,26 +428,27 @@
     <div class="comment-container">
 
       <!-- <button on:click={getSelection}>Get selection</button> -->
-
       <div class="comment">
-        <textarea
-          class:disabled={!$loggedInUser}
-          bind:value={newComment}
-          class="comment-input"
-          type="text"
-          placeholder="Make a comment..." />
-        <div class="comment-icon" class:disabled={!$loggedInUser}>
-          <SubmitArrow />
-        </div>
+        {#if $loggedInUser}
+          <textarea
+            class:disabled={!$loggedInUser}
+            bind:value={newComment}
+            class="comment-input"
+            type="text"
+            placeholder="Make a comment..." />
+          <div class="comment-icon" class:disabled={!$loggedInUser}>
+            <SubmitArrow />
+          </div>
+          <button disabled={!$loggedInUser} on:click={submitComment}>
+            Send comment
+          </button>
+        {:else}
+          <div class="black-button">Sign in to comment</div>
+        {/if}
       </div>
-      <button disabled={!$loggedInUser} on:click={submitComment}>
-        {#if $loggedInUser}Send comment{:else}Sign in to comment{/if}
-      </button>
 
       <div class="comment-list">
-        {#await comments}
-          LOADING COMMENTS...
-        {:then comments}
+        {#await comments then comments}
 
           {#each comments as c}
             <Comment
@@ -417,6 +466,14 @@
       </div>
 
     </div>
+
+    <div class="blur" />
+
+    {#await texts then texts}
+      <div class="text-navigation">
+        <SlideShow slideArray={texts} isTextNavigation={true} />
+      </div>
+    {/await}
 
     <div class="pdf-viewer">
       <iframe
@@ -438,10 +495,7 @@
           target="_blank"
           download={slug}
           class="menu-bar-item download">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 11.6 23.32"
-            class="download">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.6 23.32">
             <polygon
               class="cls-1"
               points="4.76 0 4.8 18.91 2.57 17 0.04 17.03 5.76 21.71 0.02 21.67
@@ -462,16 +516,6 @@
             xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 0 14.07 23.74">
             <defs>
-              <style>
-                .cls-2 {
-                  clip-path: url(#clip-path);
-                }
-                .cls-3 {
-                  stroke: #000;
-                  stroke-miterlimit: 10;
-                  stroke-width: 1.5px;
-                }
-              </style>
               <clipPath id="clip-path" transform="translate(0 0)">
                 <rect class="cls-1" width="14.07" height="23.74" />
               </clipPath>

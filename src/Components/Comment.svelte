@@ -104,22 +104,23 @@
   @import "../variables.scss";
 
   .comment-box {
-    width: 100%;
+    width: 380px;
     background: $grey;
     padding: 15px;
     margin-top: 10px;
     margin-bottom: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
     overflow: hidden;
     font-family: $font-stack-ygrg-regular;
     font-size: $font-size-medium;
 
-    .time {
+    .meta {
       font-size: $font-size-small;
-      margin-bottom: 1em;
+      margin-bottom: 0.5em;
     }
 
     .location {
+      font-family: $font-stack-ariel;
       font-size: $font-size-small;
       margin-bottom: 1em;
       cursor: pointer;
@@ -144,14 +145,14 @@
 </style>
 
 <div class="comment-box" in:slide={{ duration: 100 + delay * 100 }}>
+  <div class="meta">Posted {formattedDuration(date)} by {authorName}</div>
   <div
     class="location"
     on:click={() => {
       dispatch('goto', { page: parseInt(location) });
     }}>
-    Page {location}
+    ⇒ Page {location}
   </div>
-  <div class="time">{authorName} / {formattedDuration(date)} / {authorId}</div>
   <div class="comment-text">{content}</div>
   {#if $loggedInUser && $loggedInUser.id == authorId}
     <div class="actions">

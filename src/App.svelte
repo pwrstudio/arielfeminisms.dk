@@ -81,6 +81,7 @@
     width: 100%;
     height: 100%;
     overflow: hidden;
+    margin-right: 20px;
 
     iframe {
       max-width: 90%;
