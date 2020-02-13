@@ -34,7 +34,6 @@
       .login(userCookieObject.email, userCookieObject.password)
       .then(response => {
         // HACK
-        console.dir(response);
         loggedInUser.set(auth.currentUser());
       })
       .catch(err => {

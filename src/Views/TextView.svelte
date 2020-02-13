@@ -22,6 +22,7 @@
   // *** COMPONENTS
   import Comment from "../Components/Comment.svelte";
   import SlideShow from "../Components/SlideShow.svelte";
+  import MetaData from "../Components/MetaData.svelte";
 
   // *** STORES
   import { isText, isYGRG, isAriel, isAri, loggedInUser } from "../stores.js";
@@ -441,9 +442,9 @@
 
 <div class="text-view" use:links>
 
-  {#await text}
-    <span />
-  {:then text}
+  {#await text then text}
+
+    <MetaData post={text} />
 
     <div class="title">{text.title}</div>
 
@@ -563,11 +564,6 @@
     <a href="/ygrg" class="close">
       <Cross />
     </a>
-
-  {:catch error}
-    File not Found (404)
-    <br />
-    <a href="/">Return to main page</a>
 
   {/await}
 

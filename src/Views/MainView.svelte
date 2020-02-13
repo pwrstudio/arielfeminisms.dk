@@ -20,6 +20,7 @@
   import SinglePane from "../Components/SinglePane.svelte";
   import SignIn from "../Components/SignIn.svelte";
   import TextTile from "../Components/TextTile.svelte";
+  import MetaData from "../Components/MetaData.svelte";
 
   // *** GRAPHICS
   import ArielLogo from "../Graphics/ArielLogo.svelte";
@@ -525,6 +526,8 @@
     }
   }
 </style>
+
+<MetaData post={{ title: title.toUpperCase() }} />
 
 <div class="main-view" in:fade>
 
