@@ -154,22 +154,19 @@
   </div>
 
   {#if open}
-    <div
-      class="mobile-menu"
-      in:slide={{ duration: 200 }}
-      out:fade={{ delay: 200, duration: 10 }}>
+    <div class="mobile-menu" in:slide={{ duration: 200 }}>
       {#if $isAriel}
         <a class="mobile-menu-item" href="/ariel/program">PROGRAM</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
       {/if}
 
       {#if $isAri}
-        <a href="/ari/reading" class="mobile-menu-item">READINGS</a>
+        <a href="/ari/readings" class="mobile-menu-item">READINGS</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
       {/if}
 
       {#if $isYGRG}
-        <a href="/ygrg/event" class="mobile-menu-item">EVENTS</a>
+        <a href="/ygrg/events" class="mobile-menu-item">EVENTS</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT YGRG</div>
         <div
           class="mobile-menu-item"

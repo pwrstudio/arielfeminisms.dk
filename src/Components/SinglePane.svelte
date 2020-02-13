@@ -48,16 +48,17 @@
     margin: 0;
     padding: 0;
     padding-top: 20vh;
+    font-size: $font-size-medium;
 
     @include screen-size("small") {
+      padding-top: 15vh;
       width: 100%;
-      // background: purple;
       height: calc(100vh - 160px);
+      font-size: $font-size-mobile-medium;
     }
 
     &.ariel {
       font-family: $font-stack-ariel;
-      font-size: $font-size-medium;
 
       .bottom-text {
         text-transform: uppercase;
@@ -66,7 +67,6 @@
 
     &.ygrg {
       font-family: $font-stack-ygrg-extended;
-      font-size: $font-size-medium;
     }
 
     @include screen-size("small") {
@@ -76,7 +76,6 @@
   }
 
   .slideshow-container {
-    // background: green;
     width: 90%;
     height: 40vh;
     margin-left: 5%;
@@ -90,25 +89,24 @@
 
   .bottom-text {
     position: absolute;
-    bottom: 0;
+    bottom: 40px;
     left: 0;
     width: 100%;
 
     @include screen-size("small") {
-      bottom: 70px;
+      bottom: 100px;
     }
 
     .title {
       text-align: center;
-      margin-bottom: 20px;
     }
 
     .date {
       text-align: center;
-      margin-bottom: 20px;
     }
 
     .artist {
+      margin-top: 20px;
       text-align: center;
     }
   }
@@ -135,6 +133,12 @@
     display: inline-block;
     position: relative;
     top: 20px;
+
+    @include screen-size("small") {
+      height: 40px;
+      width: 40px;
+      top: 15px;
+    }
   }
 </style>
 
@@ -156,7 +160,7 @@
       {#if single.slideshow[currentIndex].textLink}
         <div class="text-link" in:fade>
           <a
-            href="/ygrg/text/{single.slideshow[currentIndex].textLink.slug.current}">
+            href="/ygrg/texts/{single.slideshow[currentIndex].textLink.slug.current}">
             Read
             <div class="read-icon">
               <ReadIcon />

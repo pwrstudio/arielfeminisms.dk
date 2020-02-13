@@ -365,6 +365,7 @@
 
       @include screen-size("small") {
         border: 1px solid white;
+        font-size: $font-size-mobile-medium;
       }
     }
 
@@ -416,7 +417,6 @@
     font-weight: 200;
     color: white;
     font-family: $font-stack-ygrg-regular;
-    // font-size: $font-size-small;
   }
 
   .buttons {

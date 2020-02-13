@@ -45,9 +45,10 @@
     position: relative;
 
     @include screen-size("small") {
+      font-size: $font-size-mobile-medium;
       border: $mobile-line-style;
-      height: 110px;
-      width: 110px;
+      height: 105px;
+      width: 105px;
       padding-top: 15px;
     }
 
@@ -107,7 +108,7 @@
   }
 </style>
 
-<a class="tile" href="/ygrg/text/{slug}">
+<a class="tile" href="/ygrg/texts/{slug}">
   {#if $loggedInUser}
     <div class="bookmark" class:marked>
       <!-- BOOKMARK -->

@@ -16,6 +16,7 @@ $purple-gradient-vertical: linear-gradient(180deg, $purple 0%, $grey 100%);
 
 // Typography
 $scale-factor: 0.9;
+$mobile-scale-factor: 0.75;
 $font-stack-ariel: 'Univers LT Std', 'Helvetica Neue', helvetica, 'arial', sans-serif;
 $font-stack-ygrg-regular: 'Coconat', 'Times', serif;
 $font-stack-ygrg-extended: 'Coconat Ext', 'Times', serif;
@@ -23,6 +24,10 @@ $font-size-small: 10px * $scale-factor;
 $font-size-medium: 16px * $scale-factor;
 $font-size-large: 20px * $scale-factor;
 $line-height: 1.3em;
+
+$font-size-mobile-small: 10px * $mobile-scale-factor;
+$font-size-mobile-medium: 16px * $mobile-scale-factor;
+$font-size-mobile-large: 20px * $mobile-scale-factor;
 
 // Graphic styles
 $line-style: 2px solid $black;

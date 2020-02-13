@@ -84,6 +84,13 @@
   @import "../variables.scss";
 
   .listing {
+    font-size: $font-size-medium;
+
+    @include screen-size("small") {
+      padding-bottom: 300px;
+      font-size: $font-size-mobile-medium;
+    }
+
     .list-item {
       margin-bottom: 20px;
       display: inline-block;
@@ -108,7 +115,6 @@
 
     &.ariel {
       font-family: $font-stack-ariel;
-      font-size: $font-size-medium;
 
       .title {
         text-transform: uppercase;
@@ -117,7 +123,6 @@
 
     &.ari {
       font-family: $font-stack-ariel;
-      font-size: $font-size-medium;
 
       .title {
         text-transform: uppercase;
@@ -131,7 +136,6 @@
 
     &.ygrg {
       font-family: $font-stack-ygrg-extended;
-      font-size: $font-size-medium;
     }
   }
 

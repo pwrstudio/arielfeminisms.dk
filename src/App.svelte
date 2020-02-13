@@ -69,6 +69,7 @@
 
   * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.2);
   }
 
   ::selection {
@@ -269,13 +270,6 @@
     pointer-events: none;
   }
 
-  // .bottom-text {
-  //   p {
-  //     margin-bottom: 0;
-  //     margin-top: 0;
-  //   }
-  // }
-
   .title {
     p {
       margin: 0;
@@ -288,6 +282,7 @@
   <Router>
     <!-- ARIEL -->
     <Route path="/" component={MainView} title="ariel" />
+    <Route path="/ariel" component={MainView} title="ariel" />
     <Route
       path="/ariel/program"
       component={MainView}
@@ -302,12 +297,12 @@
     <!-- ARI -->
     <Route path="/ari" component={MainView} title="ari" />
     <Route
-      path="/ari/reading"
+      path="/ari/readings"
       component={MainView}
       title="ari"
       listing={true} />
     <Route
-      path="/ari/reading/:slug"
+      path="/ari/readings/:slug"
       component={MainView}
       title="ari"
       single={true} />
@@ -315,16 +310,16 @@
     <!-- YGRG -->
     <Route path="/ygrg" component={MainView} title="ygrg" />
     <Route
-      path="/ygrg/event"
+      path="/ygrg/events"
       component={MainView}
       title="ygrg"
       listing={true} />
     <Route
-      path="/ygrg/event/:slug"
+      path="/ygrg/events/:slug"
       component={MainView}
       title="ygrg"
       single={true} />
-    <Route path="/ygrg/text/:slug" component={TextView} title="ygrg" />
+    <Route path="/ygrg/texts/:slug" component={TextView} title="ygrg" />
 
     <!-- FALLBACK -->
     <Route component={MainView} title="ariel" />

@@ -161,7 +161,7 @@
 
       .bottom-meta {
         position: fixed;
-        bottom: 50px;
+        bottom: 40px;
         left: 0;
         width: 50vw;
         margin-top: 30px;
@@ -214,6 +214,7 @@
 
           &:hover {
             transform: scale(1.1);
+            border-bottom: unset;
           }
         }
       }
@@ -265,20 +266,18 @@
       line-height: $line-height;
       font-weight: bold;
       width: 50vw;
-      height: calc(100% - 90px);
+      height: calc(100% - 110px);
       overflow: auto;
-      // background: red;
       @include hide-scroll;
 
       @include screen-size("small") {
         width: 100%;
+        font-size: $font-size-mobile-large;
       }
 
       .text {
         margin-right: 30px;
         margin-left: 30px;
-        // background: green;
-        // box-shadow: inset 0 0 10px #ff0000;
         @include screen-size("small") {
           padding-top: 40px;
           margin-right: 20px;
@@ -291,6 +290,9 @@
       margin-top: $line-height;
       text-align: center;
       margin-bottom: $line-height * 4;
+      @include screen-size("small") {
+        font-size: $font-size-mobile-medium;
+      }
     }
 
     .close {
@@ -440,117 +442,137 @@
 <div class="main-view" class:listing class:single in:fade>
 
   <!-- LEFT PANE -->
-  <div class="half left">
+  <MediaQuery query="(min-width: 700px)" let:matches>
+    {#if matches || (!listing && !single)}
+      <div class="half left">
 
-    <!-- TOP BAR -->
-    <div class="top-bar left" use:links>
-      <div class="right">
-        {#if $isAriel || $isAri}
-          <a href="/" class:active={$isAriel}>ARIEL</a>
-          |
-          <a href="/ari" class:active={$isAri}>ARI.</a>
-        {/if}
-        {#if $isYGRG}
-          <span
-            class="pseudo-link"
-            on:click={() => {
-              showAbout.set(false);
-              showSignIn = !showSignIn;
-            }}>
-            {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
-          </span>
-        {/if}
-      </div>
-      <div class="left">
-        <span
-          on:click={() => {
-            showSignIn = false;
-            showAbout.set(true);
-          }}
-          class="pseudo-link">
-          ABOUT
-          {#if $isYGRG}YGRG{/if}
-        </span>
-      </div>
-    </div>
+        <!-- TOP BAR -->
+        <div class="top-bar left" use:links>
+          <div class="right">
+            {#if $isAriel || $isAri}
+              <a href="/" class:active={$isAriel}>ARIEL</a>
+              |
+              <a href="/ari" class:active={$isAri}>ARI.</a>
+            {/if}
+            {#if $isYGRG}
+              <span
+                class="pseudo-link"
+                on:click={() => {
+                  showAbout.set(false);
+                  showSignIn = !showSignIn;
+                }}>
+                {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+              </span>
+            {/if}
+          </div>
+          <div class="left">
+            <span
+              on:click={() => {
+                showSignIn = false;
+                showAbout.set(true);
+              }}
+              class="pseudo-link">
+              ABOUT
+              {#if $isYGRG}YGRG{/if}
+            </span>
+          </div>
+        </div>
 
-    <div class="inner-container">
+        <div class="inner-container">
 
-      <!-- LOGO -->
-      {#if $isAriel}
-        <ArielLogo />
-      {/if}
-      {#if $isAri}
-        <AriLogo />
-      {/if}
+          <!-- LOGO -->
+          {#if $isAriel}
+            <ArielLogo />
+          {/if}
+          {#if $isAri}
+            <AriLogo />
+          {/if}
 
-      {#if $isAriel || $isAri}
-        {#await generalInformation then generalInformation}
-          <div class="bottom-meta">
-            <div class="tagline">{generalInformation.tagline}</div>
-            <div class="address">
-              {@html generalInformation.address}
+          {#if $isAriel || $isAri}
+            {#await generalInformation then generalInformation}
+              <div class="bottom-meta">
+                <div class="tagline">{generalInformation.tagline}</div>
+                <div class="address">
+                  {@html generalInformation.address}
+                </div>
+              </div>
+            {/await}
+          {/if}
+
+          {#if $isYGRG}
+            <div class="filter">
+              <input
+                class="filter-input"
+                type="text"
+                bind:value={queryTextsFilter}
+                on:keyup={filterTexts}
+                placeholder="Search in the YGRG Archive..." />
+              <div on:click={filterTexts} class="filter-icon">
+                <SubmitArrow />
+              </div>
             </div>
-          </div>
-        {/await}
-      {/if}
 
-      {#if $isYGRG}
-        <div class="filter">
-          <input
-            class="filter-input"
-            type="text"
-            bind:value={queryTextsFilter}
-            on:keyup={filterTexts}
-            placeholder="Search in the YGRG Archive..." />
-          <div on:click={filterTexts} class="filter-icon">
-            <SubmitArrow />
-          </div>
+            <div class="tile-container" use:links>
+              {#each filteredTexts as t}
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt} />
+              {/each}
+              {#each filteredTexts as t}
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt} />
+              {/each}
+              {#each filteredTexts as t}
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt} />
+              {/each}
+            </div>
+          {/if}
         </div>
 
-        <div class="tile-container" use:links>
-          {#each filteredTexts as t}
-            <TextTile
-              id={t._id}
-              title={t.title}
-              slug={t.slug.current}
-              date={t._createdAt} />
-          {/each}
-        </div>
-      {/if}
-    </div>
-
-  </div>
+      </div>
+    {/if}
+  </MediaQuery>
 
   <!-- RIGHT PANE -->
-  <div class="half right">
+  <MediaQuery query="(min-width: 700px)" let:matches>
+    {#if matches || (listing || single)}
+      <div class="half right">
 
-    <div class="top-bar right">
-      {#if $isAriel}
-        <div class="left">
-          <a href="">PROGRAM</a>
-        </div>
-        {#if slug}
-          <div class="right">
-            <a href="">
-              <Cross />
-            </a>
-          </div>
-        {/if}
-      {/if}
-      {#if $isAri}
-        <div class="left">
-          <span>READINGS</span>
-        </div>
-        {#if slug}
-          <div class="right">
-            <a href="" class="close">
-              <Cross />
-            </a>
-          </div>
-        {:else}
-          <div class="search">
-            <!-- <input
+        <div class="top-bar right">
+          {#if $isAriel}
+            <div class="left">
+              <a href="">PROGRAM</a>
+            </div>
+            {#if slug}
+              <div class="right">
+                <a href="/ariel/program" class="close">
+                  <Cross />
+                </a>
+              </div>
+            {/if}
+          {/if}
+          {#if $isAri}
+            <div class="left">
+              <span>READINGS</span>
+            </div>
+            {#if slug}
+              <div class="right">
+                <a href="/ari/readings" class="close">
+                  <Cross />
+                </a>
+              </div>
+            {:else}
+              <div class="search">
+                <!-- <input
                   class="search-input"
                   type="text"
                   bind:value={queryReadingsFilter}
@@ -559,30 +581,32 @@
                 <div class="search-icon" on:click={filterReadings}>
                   <SubmitArrow />
                 </div> -->
-          </div>
-        {/if}
-      {/if}
-      {#if $isYGRG}
-        <div class="left">YGRG ARCHIVE</div>
-        {#if slug}
-          <div class="right">
-            <a href="" class="close">
-              <Cross />
-            </a>
-          </div>
-        {/if}
-      {/if}
-    </div>
+              </div>
+            {/if}
+          {/if}
+          {#if $isYGRG}
+            <div class="left">YGRG ARCHIVE</div>
+            {#if slug}
+              <div class="right">
+                <a href="/ygrg/events" class="close">
+                  <Cross />
+                </a>
+              </div>
+            {/if}
+          {/if}
+        </div>
 
-    {#if slug}
-      <SinglePane {slug} {title} />
-    {:else}
-      <div class="inner-container" use:links>
-        <Listing />
+        {#if slug}
+          <SinglePane {slug} {title} />
+        {:else}
+          <div class="inner-container" use:links>
+            <Listing />
+          </div>
+        {/if}
+
       </div>
     {/if}
-
-  </div>
+  </MediaQuery>
 
   <!-- ABOUT PANE -->
   {#await about then about}

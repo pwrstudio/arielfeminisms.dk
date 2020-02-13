@@ -21,7 +21,7 @@ export const activeSection = derived(
 export const postType = derived(
     [isAriel, isAri, isYGRG], ([$isAriel, $isAri, $isYGRG]) => {
         if ($isAriel) return "program";
-        if ($isAri) return "reading";
-        if ($isYGRG) return "event";
+        if ($isAri) return "readings";
+        if ($isYGRG) return "events";
     }
 )
