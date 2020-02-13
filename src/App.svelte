@@ -286,17 +286,47 @@
 <main>
 
   <Router>
+    <!-- ARIEL -->
     <Route path="/" component={MainView} title="ariel" />
+    <Route
+      path="/ariel/program"
+      component={MainView}
+      title="ariel"
+      listing={true} />
+    <Route
+      path="/ariel/program/:slug"
+      component={MainView}
+      title="ariel"
+      single={true} />
 
+    <!-- ARI -->
     <Route path="/ari" component={MainView} title="ari" />
+    <Route
+      path="/ari/reading"
+      component={MainView}
+      title="ari"
+      listing={true} />
+    <Route
+      path="/ari/reading/:slug"
+      component={MainView}
+      title="ari"
+      single={true} />
 
-    <Route path="/:slug" component={MainView} title="ariel" />
-
+    <!-- YGRG -->
     <Route path="/ygrg" component={MainView} title="ygrg" />
+    <Route
+      path="/ygrg/event"
+      component={MainView}
+      title="ygrg"
+      listing={true} />
+    <Route
+      path="/ygrg/event/:slug"
+      component={MainView}
+      title="ygrg"
+      single={true} />
     <Route path="/ygrg/text/:slug" component={TextView} title="ygrg" />
 
-    <Route path="/ygrg/:slug" component={MainView} title="ygrg" />
-
+    <!-- FALLBACK -->
     <Route component={MainView} title="ariel" />
   </Router>
 

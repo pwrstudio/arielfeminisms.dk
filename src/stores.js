@@ -9,3 +9,19 @@ export const showProgram = writable(false)
 export const showEvents = writable(false)
 export const showReadings = writable(false)
 export const loggedInUser = writable(false)
+
+export const activeSection = derived(
+    [isAriel, isAri, isYGRG], ([$isAriel, $isAri, $isYGRG]) => {
+        if ($isAriel) return "ariel";
+        if ($isAri) return "ari";
+        if ($isYGRG) return "ygrg";
+    }
+)
+
+export const postType = derived(
+    [isAriel, isAri, isYGRG], ([$isAriel, $isAri, $isYGRG]) => {
+        if ($isAriel) return "program";
+        if ($isAri) return "reading";
+        if ($isYGRG) return "event";
+    }
+)

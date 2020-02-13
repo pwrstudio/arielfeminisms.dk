@@ -9,6 +9,11 @@ export const auth = new GoTrue({
 
 export const formattedDate = (start, end) => {
     const startDate = Date.parse(start);
+
+    if (!end) {
+        return format(startDate, "dd.MM.yyyy");
+    }
+
     const endDate = Date.parse(end);
 
     const startFormat =

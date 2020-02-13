@@ -87,6 +87,7 @@
   }
 
   .mobile-menu-item {
+    display: block;
     height: 80px;
     width: 100vw;
     text-align: center;
@@ -156,32 +157,19 @@
     <div
       class="mobile-menu"
       in:slide={{ duration: 200 }}
-      out:fade={{ duration: 200 }}>
+      out:fade={{ delay: 200, duration: 10 }}>
       {#if $isAriel}
-        <div
-          class="mobile-menu-item"
-          on:click={() => {
-            open = false;
-            showProgram.set(true);
-          }}>
-          PROGRAM
-        </div>
+        <a class="mobile-menu-item" href="/ariel/program">PROGRAM</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
       {/if}
 
       {#if $isAri}
-        <div
-          class="mobile-menu-item"
-          on:click={() => {
-            open = false;
-            showReadings.set(true);
-          }}>
-          READINGS
-        </div>
+        <a href="/ari/reading" class="mobile-menu-item">READINGS</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
       {/if}
 
       {#if $isYGRG}
+        <a href="/ygrg/event" class="mobile-menu-item">EVENTS</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT YGRG</div>
         <div
           class="mobile-menu-item"

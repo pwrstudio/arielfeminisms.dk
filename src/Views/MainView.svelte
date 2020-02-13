@@ -11,7 +11,6 @@
   import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
-  import { format, getYear } from "date-fns";
   import Fuse from "fuse.js";
 
   import { formattedDate } from "../global.js";
@@ -21,6 +20,7 @@
   import SignIn from "../Components/SignIn.svelte";
   import TextTile from "../Components/TextTile.svelte";
   import MetaData from "../Components/MetaData.svelte";
+  import Listing from "../Components/Listing.svelte";
 
   // *** GRAPHICS
   import ArielLogo from "../Graphics/ArielLogo.svelte";
@@ -44,6 +44,8 @@
   export let title = "";
   export let slug = "";
   export let location = {};
+  export let listing = false;
+  export let single = false;
 
   // Set globals
   showAbout.set(false);
@@ -51,16 +53,11 @@
   isAri.set(title === "ari");
   isYGRG.set(title === "ygrg");
 
+  console.log("** single:", single);
+  console.log("** listing:", listing);
+
   // *** VARIABLES
-
   let showSignIn = false;
-  let secondaryNavigation = false;
-
-  const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
-  const program = loadData('*[_type in [ "program"]]', {});
-  const events = loadData('*[_type in [ "event"]]', {});
-
-  console.dir(program);
 
   // TEXTS
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
@@ -77,35 +74,6 @@
     minMatchCharLength: 2
   };
 
-  // READINGS
-  const readings = loadData('*[_type in [ "reading"]]', {});
-  let filteredReadings = [];
-  let filterReadings = () => {};
-  let fuseReadings = {};
-  let queryReadingsFilter = "";
-  const optionsReadingsFilter = {
-    keys: ["plainText"],
-    shouldSort: true,
-    tokenize: true,
-    threshold: 0.4,
-    minMatchCharLength: 2
-  };
-
-  // ABOUT
-  let aboutQuery = "";
-  if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]';
-  if ($isAri) aboutQuery = '*[_id == "aboutAri"][0]';
-  if ($isYGRG) aboutQuery = '*[_id == "aboutYGRG"][0]';
-  const about = loadData(aboutQuery, {});
-
-  const setSlug = s => {
-    slug = s;
-  };
-
-  onMount(async () => {
-    window.scrollTo(0, 0);
-  });
-
   texts.then(results => {
     filteredTexts = results;
     fuseTexts = new Fuse(results, optionsTextsFilter);
@@ -118,19 +86,17 @@
     };
   });
 
-  readings.then(results => {
-    filteredReadings = results;
-    results.forEach(r => {
-      r.plainText = toPlainText(r.content);
-    });
-    fuseReadings = new Fuse(results, optionsReadingsFilter);
-    filterReadings = () => {
-      console.log(queryReadingsFilter);
-      filteredReadings =
-        queryReadingsFilter.length == 0
-          ? results
-          : fuseReadings.search(queryReadingsFilter);
-    };
+  const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
+
+  // ABOUT
+  let aboutQuery = "";
+  if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]';
+  if ($isAri) aboutQuery = '*[_id == "aboutAri"][0]';
+  if ($isYGRG) aboutQuery = '*[_id == "aboutYGRG"][0]';
+  const about = loadData(aboutQuery, {});
+
+  onMount(async () => {
+    window.scrollTo(0, 0);
   });
 </script>
 
@@ -151,164 +117,106 @@
       position: static;
       width: 100vw;
     }
-  }
 
-  .half {
-    position: absolute;
-    top: 0;
-    height: 100vh;
-    width: 50%;
-    overflow-y: auto;
-    @include hide-scroll;
-
-    @include screen-size("small") {
-      padding-top: $top-bar-height;
-      position: static;
-      height: auto;
-      width: 100vw;
-    }
-
-    &.left {
-      left: 0;
-      @include screen-size("small") {
-        // background: orange;
-      }
-    }
-
-    &.right {
-      right: 0;
-    }
-
-    .inner-container {
-      margin-top: $top-bar-height + 20px;
-      margin-right: 30px;
-      margin-left: 30px;
-      font-size: $font-size-medium;
-      line-height: $line-height;
-      font-weight: bold;
+    .half {
+      position: absolute;
+      top: 0;
+      height: 100vh;
+      width: 50%;
+      overflow-y: auto;
+      @include hide-scroll;
 
       @include screen-size("small") {
-        margin-right: 10px;
-        margin-left: 10px;
+        padding-top: $top-bar-height;
+        position: static;
+        height: auto;
+        width: 100vw;
       }
-    }
 
-    .bottom-meta {
-      margin-top: 30px;
-      text-align: center;
-    }
-  }
-
-  .top-bar {
-    position: absolute;
-    top: 0;
-    height: $top-bar-height;
-    width: 100%;
-    line-height: $top-bar-height;
-    padding-left: 30px;
-    padding-right: 30px;
-    font-weight: bold;
-    font-size: $font-size-large;
-    user-select: none;
-
-    @include screen-size("small") {
-      display: none;
-    }
-
-    a {
-      &:hover {
-        border-bottom: 2px solid $black;
+      &.left {
+        left: 0;
+        @include screen-size("small") {
+          // background: orange;
+        }
       }
-    }
 
-    .left {
-      float: left;
-    }
+      &.right {
+        right: 0;
+      }
 
-    .right {
-      float: right;
+      .inner-container {
+        margin-top: $top-bar-height + 20px;
+        margin-right: 30px;
+        margin-left: 30px;
+        font-size: $font-size-medium;
+        line-height: $line-height;
+        font-weight: bold;
 
-      .close {
-        position: absolute;
-        right: 20px;
-        top: 15px;
-        height: 24px;
-        width: 24px;
-        transition: transform 0.3s $easing;
-        cursor: pointer;
+        @include screen-size("small") {
+          margin-right: 10px;
+          margin-left: 10px;
+          margin-top: 40px;
+        }
+      }
 
-        &:hover {
-          transform: scale(1.1);
+      .bottom-meta {
+        position: fixed;
+        bottom: 50px;
+        left: 0;
+        width: 50vw;
+        margin-top: 30px;
+        text-align: center;
+
+        @include screen-size("small") {
+          bottom: 90px;
+          width: 100%;
         }
       }
     }
-  }
 
-  .program {
-    margin-bottom: 20px;
-    display: inline-block;
-    width: 100%;
-    cursor: pointer;
+    .top-bar {
+      position: absolute;
+      top: 0;
+      height: $top-bar-height;
+      width: 100%;
+      line-height: $top-bar-height;
+      padding-left: 30px;
+      padding-right: 30px;
+      font-weight: bold;
+      font-size: $font-size-large;
+      user-select: none;
 
-    .title {
-      text-align: center;
-      margin-bottom: $line-height;
-      text-transform: uppercase;
-
-      p {
-        margin: 0;
+      @include screen-size("small") {
+        display: none;
       }
-    }
 
-    .date {
-      text-align: center;
-      margin-bottom: $line-height * 3;
-    }
+      a {
+        &:hover {
+          border-bottom: 2px solid $black;
+        }
+      }
 
-    .artist {
-      text-align: center;
-      text-transform: uppercase;
-    }
-  }
+      .left {
+        float: left;
+      }
 
-  .reading {
-    margin-bottom: 20px;
-    display: inline-block;
-    width: 100%;
-    cursor: pointer;
+      .right {
+        float: right;
 
-    .title {
-      text-align: center;
-      margin-bottom: $line-height;
-      text-transform: uppercase;
-    }
+        .close {
+          position: absolute;
+          right: 20px;
+          top: 15px;
+          height: 24px;
+          width: 24px;
+          transition: transform 0.3s $easing;
+          cursor: pointer;
 
-    .date {
-      text-align: center;
-      margin-bottom: $line-height * 3;
-    }
-
-    .artist {
-      text-align: center;
-      text-transform: uppercase;
-    }
-  }
-
-  .event {
-    margin-bottom: 40px;
-    display: inline-block;
-    width: 100%;
-    font-family: $font-stack-ygrg-extended;
-    cursor: pointer;
-
-    .title {
-      text-align: center;
-      margin-bottom: 1em;
-    }
-
-    .date {
-      text-align: center;
-      margin-bottom: 2em;
+          &:hover {
+            transform: scale(1.1);
+          }
+        }
+      }
     }
   }
 
@@ -529,140 +437,120 @@
 
 <MetaData post={{ title: title.toUpperCase() }} />
 
-<div class="main-view" in:fade>
+<div class="main-view" class:listing class:single in:fade>
 
   <!-- LEFT PANE -->
-  {#if !($showReadings || $showEvents || $showProgram)}
-    <div class="half left">
+  <div class="half left">
 
-      <!-- TOP BAR -->
-      <div class="top-bar left" use:links>
-        <div class="right">
-          {#if $isAriel || $isAri}
-            <a href="/" class:active={$isAriel}>ARIEL</a>
-            |
-            <a href="ari" class:active={$isAri}>ARI.</a>
-          {/if}
-          {#if $isYGRG}
-            <span
-              class="pseudo-link"
-              on:click={() => {
-                showAbout.set(false);
-                showSignIn = !showSignIn;
-              }}>
-              {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
-            </span>
-          {/if}
-        </div>
-        <div class="left">
-          <span
-            on:click={() => {
-              showSignIn = false;
-              showAbout.set(true);
-            }}
-            class="pseudo-link">
-            ABOUT
-            {#if $isYGRG}YGRG{/if}
-          </span>
-        </div>
-      </div>
-
-      <div class="inner-container">
-
-        <!-- LOGO -->
-        {#if $isAriel}
-          <ArielLogo />
-        {/if}
-        {#if $isAri}
-          <AriLogo />
-        {/if}
-
+    <!-- TOP BAR -->
+    <div class="top-bar left" use:links>
+      <div class="right">
         {#if $isAriel || $isAri}
-          {#await generalInformation then generalInformation}
-            <div class="bottom-meta">
-              <div class="tagline">{generalInformation.tagline}</div>
-              <div class="address">
-                {@html generalInformation.address}
-              </div>
-            </div>
-          {/await}
+          <a href="/" class:active={$isAriel}>ARIEL</a>
+          |
+          <a href="/ari" class:active={$isAri}>ARI.</a>
         {/if}
-
         {#if $isYGRG}
-          <div class="filter">
-            <input
-              class="filter-input"
-              type="text"
-              bind:value={queryTextsFilter}
-              on:keyup={filterTexts}
-              placeholder="Search in the YGRG Archive..." />
-            <div on:click={filterTexts} class="filter-icon">
-              <SubmitArrow />
-            </div>
-          </div>
-
-          <div class="tile-container" use:links>
-            {#each filteredTexts as t}
-              <TextTile
-                id={t._id}
-                title={t.title}
-                slug={t.slug.current}
-                date={t._createdAt} />
-            {/each}
-          </div>
+          <span
+            class="pseudo-link"
+            on:click={() => {
+              showAbout.set(false);
+              showSignIn = !showSignIn;
+            }}>
+            {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+          </span>
         {/if}
       </div>
-
+      <div class="left">
+        <span
+          on:click={() => {
+            showSignIn = false;
+            showAbout.set(true);
+          }}
+          class="pseudo-link">
+          ABOUT
+          {#if $isYGRG}YGRG{/if}
+        </span>
+      </div>
     </div>
-  {/if}
+
+    <div class="inner-container">
+
+      <!-- LOGO -->
+      {#if $isAriel}
+        <ArielLogo />
+      {/if}
+      {#if $isAri}
+        <AriLogo />
+      {/if}
+
+      {#if $isAriel || $isAri}
+        {#await generalInformation then generalInformation}
+          <div class="bottom-meta">
+            <div class="tagline">{generalInformation.tagline}</div>
+            <div class="address">
+              {@html generalInformation.address}
+            </div>
+          </div>
+        {/await}
+      {/if}
+
+      {#if $isYGRG}
+        <div class="filter">
+          <input
+            class="filter-input"
+            type="text"
+            bind:value={queryTextsFilter}
+            on:keyup={filterTexts}
+            placeholder="Search in the YGRG Archive..." />
+          <div on:click={filterTexts} class="filter-icon">
+            <SubmitArrow />
+          </div>
+        </div>
+
+        <div class="tile-container" use:links>
+          {#each filteredTexts as t}
+            <TextTile
+              id={t._id}
+              title={t.title}
+              slug={t.slug.current}
+              date={t._createdAt} />
+          {/each}
+        </div>
+      {/if}
+    </div>
+
+  </div>
 
   <!-- RIGHT PANE -->
-  <MediaQuery query="(min-width: 700px)" let:matches>
-    {#if matches || $showReadings || $showEvents || $showProgram}
-      <div class="half right">
+  <div class="half right">
 
-        <div class="top-bar right">
-          {#if $isAriel}
-            <div class="left">
-              {#await program then program}
-                <span
-                  class="pseudo-link"
-                  on:click={() => {
-                    setSlug(program[0].slug.current);
-                  }}>
-                  PROGRAM
-                </span>
-              {/await}
-            </div>
-            {#if slug}
-              <div class="right">
-                <span
-                  class="close"
-                  on:click={() => {
-                    setSlug(false);
-                  }}>
-                  <Cross />
-                </span>
-              </div>
-            {/if}
-          {/if}
-          {#if $isAri}
-            <div class="left">
-              <span>READINGS</span>
-            </div>
-            {#if slug}
-              <div class="right">
-                <span
-                  class="close"
-                  on:click={() => {
-                    setSlug(false);
-                  }}>
-                  <Cross />
-                </span>
-              </div>
-            {:else}
-              <div class="search">
-                <input
+    <div class="top-bar right">
+      {#if $isAriel}
+        <div class="left">
+          <a href="">PROGRAM</a>
+        </div>
+        {#if slug}
+          <div class="right">
+            <a href="">
+              <Cross />
+            </a>
+          </div>
+        {/if}
+      {/if}
+      {#if $isAri}
+        <div class="left">
+          <span>READINGS</span>
+        </div>
+        {#if slug}
+          <div class="right">
+            <a href="" class="close">
+              <Cross />
+            </a>
+          </div>
+        {:else}
+          <div class="search">
+            <!-- <input
                   class="search-input"
                   type="text"
                   bind:value={queryReadingsFilter}
@@ -670,103 +558,31 @@
                   placeholder="Search in ARI..." />
                 <div class="search-icon" on:click={filterReadings}>
                   <SubmitArrow />
-                </div>
-              </div>
-            {/if}
-          {/if}
-          {#if $isYGRG}
-            <div class="left">YGRG ARCHIVE</div>
-            {#if slug}
-              <div class="right">
-                <span
-                  class="close"
-                  on:click={() => {
-                    setSlug(false);
-                  }}>
-                  <Cross />
-                </span>
-              </div>
-            {/if}
-          {/if}
-        </div>
-
-        {#if slug}
-          <SinglePane {slug} {title} />
-        {:else}
-          <div class="inner-container" use:links>
-
-            <!-- ARIEL -->
-            {#if $isAriel}
-              {#await program then program}
-                {#each program as p}
-                  <div
-                    class="program"
-                    on:click={() => {
-                      setSlug(p.slug.current);
-                    }}>
-                    <div class="title">
-                      {@html renderBlockText(p.title)}
-                    </div>
-                    <div class="artist">
-                      {#each p.artists as a, i}
-                        {#if i != p.artists.length - 1}{a + ', '}{:else}{a}{/if}
-                      {/each}
-                    </div>
-                    <div class="date">
-                      {formattedDate(p.startDate, p.endDate)}
-                    </div>
-                    <div class="text">
-                      {@html renderBlockText(p.content)}
-                    </div>
-                  </div>
-                {/each}
-              {/await}
-            {/if}
-
-            <!-- ARI -->
-            {#if $isAri}
-              {#each filteredReadings as r}
-                <div
-                  class="reading"
-                  on:click={() => {
-                    setSlug(r.slug.current);
-                  }}>
-                  <div class="title">
-                    {@html renderBlockText(r.title)}
-                  </div>
-                  <div class="text">
-                    {@html renderBlockText(r.content)}
-                  </div>
-                </div>
-              {/each}
-            {/if}
-
-            <!-- YGRG -->
-            {#if $isYGRG}
-              {#await events then events}
-                {#each events as e}
-                  <div
-                    class="event"
-                    on:click={() => {
-                      setSlug(e.slug.current);
-                    }}>
-                    <div class="title">
-                      {@html renderBlockText(e.title)}
-                    </div>
-                    <div class="date">
-                      {formattedDate(e.startDate, e.endDate)}
-                    </div>
-                  </div>
-                {/each}
-              {/await}
-            {/if}
-
+                </div> -->
           </div>
         {/if}
+      {/if}
+      {#if $isYGRG}
+        <div class="left">YGRG ARCHIVE</div>
+        {#if slug}
+          <div class="right">
+            <a href="" class="close">
+              <Cross />
+            </a>
+          </div>
+        {/if}
+      {/if}
+    </div>
 
+    {#if slug}
+      <SinglePane {slug} {title} />
+    {:else}
+      <div class="inner-container" use:links>
+        <Listing />
       </div>
     {/if}
-  </MediaQuery>
+
+  </div>
 
   <!-- ABOUT PANE -->
   {#await about then about}
