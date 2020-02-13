@@ -8,7 +8,7 @@
   // *** IMPORT
   import { onMount } from "svelte";
   import { links } from "svelte-routing";
-  import { loadData, renderBlockText } from "../sanity.js";
+  import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import { format, getYear } from "date-fns";
@@ -50,24 +50,41 @@
   // *** VARIABLES
 
   let showSignIn = false;
-  let filterQuery = "";
 
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
   const program = loadData('*[_type in [ "program"]]', {});
-  const readings = loadData('*[_type in [ "reading"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
 
+  // TEXTS
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   let filteredTexts = [];
   let filterTexts = () => {};
-  let fuse = {};
-  const options = {
+  let fuseTexts = {};
+  let queryTextsFilter = "";
+  const optionsTextsFilter = {
     keys: ["title"],
+    tokenize: true,
+    matchAllTokens: true,
     shouldSort: true,
-    threshold: 0.6,
-    minMatchCharLength: 4
+    threshold: 0.2,
+    minMatchCharLength: 2
   };
 
+  // READINGS
+  const readings = loadData('*[_type in [ "reading"]]', {});
+  let filteredReadings = [];
+  let filterReadings = () => {};
+  let fuseReadings = {};
+  let queryReadingsFilter = "";
+  const optionsReadingsFilter = {
+    keys: ["plainText"],
+    shouldSort: true,
+    tokenize: true,
+    threshold: 0.4,
+    minMatchCharLength: 2
+  };
+
+  // ABOUT
   let aboutQuery = "";
   if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]';
   if ($isAri) aboutQuery = '*[_id == "aboutAri"][0]';
@@ -84,11 +101,29 @@
 
   texts.then(results => {
     filteredTexts = results;
-    fuse = new Fuse(results, options);
+    fuseTexts = new Fuse(results, optionsTextsFilter);
     filterTexts = () => {
-      console.log(filterQuery);
+      console.log(queryTextsFilter);
       filteredTexts =
-        filterQuery.length == 0 ? results : fuse.search(filterQuery);
+        queryTextsFilter.length == 0
+          ? results
+          : fuseTexts.search(queryTextsFilter);
+    };
+  });
+
+  readings.then(results => {
+    filteredReadings = results;
+    results.forEach(r => {
+      r.plainText = toPlainText(r.content);
+    });
+    console.dir(results);
+    fuseReadings = new Fuse(results, optionsReadingsFilter);
+    filterReadings = () => {
+      console.log(queryReadingsFilter);
+      filteredReadings =
+        queryReadingsFilter.length == 0
+          ? results
+          : fuseReadings.search(queryReadingsFilter);
     };
   });
 </script>
@@ -537,7 +572,7 @@
           <input
             class="filter-input"
             type="text"
-            bind:value={filterQuery}
+            bind:value={queryTextsFilter}
             on:keyup={filterTexts}
             placeholder="Search in the YGRG Archive..." />
           <div on:click={filterTexts} class="filter-icon">
@@ -606,8 +641,10 @@
             <input
               class="search-input"
               type="text"
+              bind:value={queryReadingsFilter}
+              on:keyup={filterReadings}
               placeholder="Search in ARI..." />
-            <div class="search-icon">
+            <div class="search-icon" on:click={filterReadings}>
               <SubmitArrow />
             </div>
           </div>
@@ -660,20 +697,18 @@
 
         <!-- ARI -->
         {#if $isAri}
-          {#await readings then readings}
-            {#each readings as r}
-              <div
-                class="reading"
-                on:click={() => {
-                  setSlug(r.slug.current);
-                }}>
-                <div class="title">{r.title}</div>
-                <div class="text">
-                  {@html renderBlockText(r.content)}
-                </div>
+          {#each filteredReadings as r}
+            <div
+              class="reading"
+              on:click={() => {
+                setSlug(r.slug.current);
+              }}>
+              <div class="title">{r.title}</div>
+              <div class="text">
+                {@html renderBlockText(r.content)}
               </div>
-            {/each}
-          {/await}
+            </div>
+          {/each}
         {/if}
 
         <!-- YGRG -->
