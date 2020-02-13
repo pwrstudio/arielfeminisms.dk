@@ -276,6 +276,12 @@
   //     margin-top: 0;
   //   }
   // }
+
+  .title {
+    p {
+      margin: 0;
+    }
+  }
 </style>
 
 <main>

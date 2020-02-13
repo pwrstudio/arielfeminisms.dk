@@ -59,6 +59,8 @@
   const program = loadData('*[_type in [ "program"]]', {});
   const events = loadData('*[_type in [ "event"]]', {});
 
+  console.dir(program);
+
   // TEXTS
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   let filteredTexts = [];
@@ -251,6 +253,10 @@
       text-align: center;
       margin-bottom: $line-height;
       text-transform: uppercase;
+
+      p {
+        margin: 0;
+      }
     }
 
     .date {
@@ -301,6 +307,7 @@
 
     .date {
       text-align: center;
+      margin-bottom: 2em;
     }
   }
 
@@ -694,10 +701,12 @@
                     on:click={() => {
                       setSlug(p.slug.current);
                     }}>
-                    <div class="title">{p.title}</div>
+                    <div class="title">
+                      {@html renderBlockText(p.title)}
+                    </div>
                     <div class="artist">
-                      {#each p.artists as a}
-                        <span>{a},</span>
+                      {#each p.artists as a, i}
+                        {#if i != p.artists.length - 1}{a + ', '}{:else}{a}{/if}
                       {/each}
                     </div>
                     <div class="date">
@@ -719,7 +728,9 @@
                   on:click={() => {
                     setSlug(r.slug.current);
                   }}>
-                  <div class="title">{r.title}</div>
+                  <div class="title">
+                    {@html renderBlockText(r.title)}
+                  </div>
                   <div class="text">
                     {@html renderBlockText(r.content)}
                   </div>
@@ -736,7 +747,9 @@
                     on:click={() => {
                       setSlug(e.slug.current);
                     }}>
-                    <div class="title">{e.title}</div>
+                    <div class="title">
+                      {@html renderBlockText(e.title)}
+                    </div>
                     <div class="date">
                       {formattedDate(e.startDate, e.endDate)}
                     </div>

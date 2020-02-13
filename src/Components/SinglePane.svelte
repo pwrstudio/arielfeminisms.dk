@@ -173,12 +173,14 @@
 
     <div class="bottom-text">
       <!-- // *** TITLE -->
-      <div class="title">{single.title}</div>
+      <div class="title">
+        {@html renderBlockText(single.title)}
+      </div>
       <!-- // *** ARTIST(S) -->
       {#if $isAriel}
         <div class="artist">
-          {#each single.artists as a}
-            <span>{a},</span>
+          {#each single.artists as a, i}
+            {#if i != single.artists.length - 1}{a + ', '}{:else}{a}{/if}
           {/each}
         </div>
       {/if}
