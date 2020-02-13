@@ -47,9 +47,22 @@
 
   .single {
     width: 100%;
+    height: calc(100vh - 80px);
     height: 100vh;
     margin: 0;
     padding: 0;
+    // background: yellow;
+    padding-top: 20vh;
+
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+
+    @include screen-size("small") {
+      width: 100%;
+      // background: purple;
+      height: calc(100vh - 160px);
+    }
 
     &.ariel {
       font-family: $font-stack-ariel;
@@ -65,15 +78,16 @@
     }
   }
 
-  .inner-container {
-    margin-top: $top-bar-height + 20px;
-    margin-right: 30px;
-    margin-left: 30px;
-    font-size: $font-size-medium;
-    font-weight: bold;
+  .slideshow-container {
+    // background: green;
+    width: 90%;
+    height: 40vh;
+    margin-left: 5%;
 
     @include screen-size("small") {
-      margin-top: 50px;
+      width: 100%;
+      margin-left: unset;
+      height: 30vh;
     }
   }
 
@@ -84,8 +98,7 @@
     width: 100%;
 
     @include screen-size("small") {
-      margin-top: $line-height * 6;
-      position: static;
+      bottom: 70px;
     }
 
     .title {
@@ -95,7 +108,7 @@
 
     .date {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
 
     .artist {
@@ -113,6 +126,9 @@
   .caption {
     padding-top: 40px;
     text-align: center;
+    @include screen-size("small") {
+      display: none;
+    }
   }
 
   .read-icon {
@@ -124,61 +140,58 @@
   }
 </style>
 
-<div class="single {title}" in:fade>
+<div class="single {title}" in:fade use:links>
 
-  <!-- INNER CONTAINER -->
-  <div class="inner-container" use:links>
+  {#await single then single}
 
-    {#await single then single}
-
-      {#if get(single, 'slideshow.length', 0) > 0}
+    {#if get(single, 'slideshow.length', 0) > 0}
+      <div class="slideshow-container">
         <SlideShow
           on:slideChange={e => {
             currentIndex = e.detail.index;
           }}
           slideArray={single.slideshow} />
-      {/if}
-
-      {#if single.slideshow}
-        {#if single.slideshow[currentIndex].textLink}
-          <div class="text-link" in:fade>
-            <a
-              href="/ygrg/text/{single.slideshow[currentIndex].textLink.slug.current}">
-              Read
-              <div class="read-icon">
-                <ReadIcon />
-              </div>
-            </a>
-          </div>
-        {/if}
-        {#if single.slideshow[currentIndex].caption}
-          <div class="caption" in:fade>
-            {single.slideshow[currentIndex].caption}
-          </div>
-        {/if}
-      {/if}
-
-      <div class="bottom-text">
-        <!-- // *** TITLE -->
-        <div class="title">{single.title}</div>
-        <!-- // *** ARTIST(S) -->
-        {#if $isAriel}
-          <div class="artist">
-            {#each single.artists as a}
-              <span>{a},</span>
-            {/each}
-          </div>
-        {/if}
-        <!-- // *** DATE -->
-        {#if $isYGRG || $isAriel}
-          <div class="date">
-            {formattedDate(single.startDate, single.endDate)}
-          </div>
-        {/if}
       </div>
+    {/if}
 
-    {/await}
+    {#if single.slideshow}
+      {#if single.slideshow[currentIndex].textLink}
+        <div class="text-link" in:fade>
+          <a
+            href="/ygrg/text/{single.slideshow[currentIndex].textLink.slug.current}">
+            Read
+            <div class="read-icon">
+              <ReadIcon />
+            </div>
+          </a>
+        </div>
+      {/if}
+      {#if single.slideshow[currentIndex].caption}
+        <div class="caption" in:fade>
+          {single.slideshow[currentIndex].caption}
+        </div>
+      {/if}
+    {/if}
 
-  </div>
+    <div class="bottom-text">
+      <!-- // *** TITLE -->
+      <div class="title">{single.title}</div>
+      <!-- // *** ARTIST(S) -->
+      {#if $isAriel}
+        <div class="artist">
+          {#each single.artists as a}
+            <span>{a},</span>
+          {/each}
+        </div>
+      {/if}
+      <!-- // *** DATE -->
+      {#if $isYGRG || $isAriel}
+        <div class="date">
+          {formattedDate(single.startDate, single.endDate)}
+        </div>
+      {/if}
+    </div>
+
+  {/await}
 
 </div>

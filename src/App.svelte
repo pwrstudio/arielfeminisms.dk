@@ -74,7 +74,7 @@
 
   .slideshow {
     width: 100%;
-    height: 300px;
+    height: 100%;
   }
 
   .slideshow__slide {
@@ -180,9 +180,17 @@
 
   .flickity-prev-next-button.previous {
     left: 0px;
+
+    @include screen-size("small") {
+      left: 20px;
+    }
   }
   .flickity-prev-next-button.next {
     right: 0px;
+
+    @include screen-size("small") {
+      right: 20px;
+    }
   }
   /* right to left */
   .flickity-rtl .flickity-prev-next-button.previous {
@@ -214,6 +222,11 @@
     list-style: none;
     text-align: center;
     line-height: 1;
+
+    @include screen-size("small") {
+      width: calc(100% - 80px);
+      left: 40px;
+    }
   }
 
   .flickity-rtl .flickity-page-dots {

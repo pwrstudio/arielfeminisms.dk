@@ -13,7 +13,15 @@
   import Cross from "../Graphics/Cross.svelte";
 
   // *** STORES
-  import { isYGRG, isAriel, isAri, showAbout } from "../stores.js";
+  import {
+    isYGRG,
+    isAriel,
+    isAri,
+    showAbout,
+    showProgram,
+    showEvents,
+    showReadings
+  } from "../stores.js";
 
   // *** VARIABLES
   let open = false;
@@ -132,9 +140,15 @@
       </div>
     {/if}
     <div class="inner">
-      <a href="/" class:active={$isAriel}>ARIEL</a>
-      |
-      <a href="/ari" class:active={$isAri}>ARI.</a>
+      {#if $isAriel || $isAri}
+        <a href="/" class:active={$isAriel}>ARIEL</a>
+        |
+        <a href="/ari" class:active={$isAri}>ARI.</a>
+      {/if}
+      {#if $isYGRG}
+        <a href="/ygrg">YGRG ARCHIVE</a>
+      {/if}
+
     </div>
   </div>
 
@@ -144,27 +158,27 @@
       in:slide={{ duration: 200 }}
       out:fade={{ duration: 200 }}>
       {#if $isAriel}
-        {#if $isAriel}
-          <div
-            class="mobile-menu-item"
-            on:click={() => {
-              open = false;
-            }}>
-            PROGRAM
-          </div>
-          <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
-        {/if}
+        <div
+          class="mobile-menu-item"
+          on:click={() => {
+            open = false;
+            showProgram.set(true);
+          }}>
+          PROGRAM
+        </div>
+        <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
+      {/if}
 
-        {#if $isAri}
-          <div
-            class="mobile-menu-item"
-            on:click={() => {
-              open = false;
-            }}>
-            READINGS
-          </div>
-          <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
-        {/if}
+      {#if $isAri}
+        <div
+          class="mobile-menu-item"
+          on:click={() => {
+            open = false;
+            showReadings.set(true);
+          }}>
+          READINGS
+        </div>
+        <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
       {/if}
 
       {#if $isYGRG}

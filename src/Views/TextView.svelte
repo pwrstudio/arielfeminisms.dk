@@ -24,12 +24,15 @@
   import SlideShow from "../Components/SlideShow.svelte";
 
   // *** STORES
-  import { isText, loggedInUser } from "../stores.js";
+  import { isText, isYGRG, isAriel, isAri, loggedInUser } from "../stores.js";
 
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
 
   // Set globals
   isText.set(true);
+  isAriel.set(false);
+  isAri.set(false);
+  isYGRG.set(true);
 
   // *** PROPS
   export let title = "";
@@ -219,6 +222,13 @@
     height: calc(100vh - 70px);
     width: calc(100vw - 500px);
 
+    @include screen-size("small") {
+      top: 90px;
+      right: 0px;
+      height: calc(100vh - 70px);
+      width: 100vw;
+    }
+
     iframe {
       height: 100%;
       width: 100%;
@@ -300,6 +310,9 @@
     height: calc(100vh - 290px);
     overflow-y: auto;
     padding-bottom: 20px;
+    @include screen-size("small") {
+      display: none;
+    }
   }
 
   .text-navigation {
@@ -311,6 +324,10 @@
     height: 180px;
     background: $brown;
     // box-shadow: 0px 0px 10px 10px $brown;
+
+    @include screen-size("small") {
+      display: none;
+    }
   }
 
   .blur {
@@ -320,7 +337,7 @@
     width: 380px;
     overflow-y: auto;
     height: 180px;
-    background: green;
+    // background: green;
     display: none;
   }
 

@@ -33,6 +33,9 @@
     isAriel,
     isAri,
     showAbout,
+    showProgram,
+    showEvents,
+    showReadings,
     loggedInUser
   } from "../stores.js";
 
@@ -50,6 +53,7 @@
   // *** VARIABLES
 
   let showSignIn = false;
+  let secondaryNavigation = false;
 
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
   const program = loadData('*[_type in [ "program"]]', {});
@@ -156,7 +160,7 @@
     @include hide-scroll;
 
     @include screen-size("small") {
-      margin-top: $top-bar-height;
+      padding-top: $top-bar-height;
       position: static;
       height: auto;
       width: 100vw;
@@ -165,16 +169,12 @@
     &.left {
       left: 0;
       @include screen-size("small") {
-        margin-top: 20px;
+        // background: orange;
       }
     }
 
     &.right {
       right: 0;
-      @include screen-size("small") {
-        padding-bottom: $line-height * 6;
-        margin-top: 20px;
-      }
     }
 
     .inner-container {
@@ -289,7 +289,7 @@
   }
 
   .event {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     display: inline-block;
     width: 100%;
     font-family: $font-stack-ygrg-extended;
@@ -297,6 +297,7 @@
 
     .title {
       text-align: center;
+      margin-bottom: 1em;
     }
 
     .date {
@@ -339,8 +340,8 @@
 
     @include screen-size("small") {
       width: 100vw;
-      top: 80px;
-      height: calc(100vh - 80px);
+      top: 0px;
+      height: 100vh;
       transform: translateY(100%);
     }
 
@@ -354,11 +355,20 @@
       // background: red;
       @include hide-scroll;
 
+      @include screen-size("small") {
+        width: 100%;
+      }
+
       .text {
         margin-right: 30px;
         margin-left: 30px;
         // background: green;
         // box-shadow: inset 0 0 10px #ff0000;
+        @include screen-size("small") {
+          padding-top: 40px;
+          margin-right: 20px;
+          margin-left: 20px;
+        }
       }
     }
 
@@ -513,227 +523,234 @@
 <div class="main-view" in:fade>
 
   <!-- LEFT PANE -->
-  <div class="half left">
+  {#if !($showReadings || $showEvents || $showProgram)}
+    <div class="half left">
 
-    <!-- TOP BAR -->
-    <div class="top-bar left" use:links>
-      <div class="right">
-        {#if $isAriel || $isAri}
-          <a href="/" class:active={$isAriel}>ARIEL</a>
-          |
-          <a href="ari" class:active={$isAri}>ARI.</a>
-        {/if}
-        {#if $isYGRG}
-          <span
-            class="pseudo-link"
-            on:click={() => {
-              showAbout.set(false);
-              showSignIn = !showSignIn;
-            }}>
-            {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
-          </span>
-        {/if}
-      </div>
-      <div class="left">
-        <span
-          on:click={() => {
-            showAbout.set(true);
-          }}
-          class="pseudo-link">
-          ABOUT
-          {#if $isYGRG}YGRG{/if}
-        </span>
-      </div>
-    </div>
-
-    <div class="inner-container">
-
-      <!-- LOGO -->
-      {#if $isAriel}
-        <ArielLogo />
-      {/if}
-      {#if $isAri}
-        <AriLogo />
-      {/if}
-
-      {#if $isAriel || $isAri}
-        {#await generalInformation then generalInformation}
-          <div class="bottom-meta">
-            <div class="tagline">{generalInformation.tagline}</div>
-            <div class="address">
-              {@html generalInformation.address}
-            </div>
-          </div>
-        {/await}
-      {/if}
-
-      {#if $isYGRG}
-        <div class="filter">
-          <input
-            class="filter-input"
-            type="text"
-            bind:value={queryTextsFilter}
-            on:keyup={filterTexts}
-            placeholder="Search in the YGRG Archive..." />
-          <div on:click={filterTexts} class="filter-icon">
-            <SubmitArrow />
-          </div>
-        </div>
-
-        <div class="tile-container" use:links>
-          {#each filteredTexts as t}
-            <TextTile
-              id={t._id}
-              title={t.title}
-              slug={t.slug.current}
-              date={t._createdAt} />
-          {/each}
-        </div>
-      {/if}
-    </div>
-
-  </div>
-
-  <!-- RIGHT PANE -->
-  <div class="half right">
-
-    <div class="top-bar right">
-      {#if $isAriel}
-        <div class="left">
-          {#await program then program}
+      <!-- TOP BAR -->
+      <div class="top-bar left" use:links>
+        <div class="right">
+          {#if $isAriel || $isAri}
+            <a href="/" class:active={$isAriel}>ARIEL</a>
+            |
+            <a href="ari" class:active={$isAri}>ARI.</a>
+          {/if}
+          {#if $isYGRG}
             <span
               class="pseudo-link"
               on:click={() => {
-                setSlug(program[0].slug.current);
+                showAbout.set(false);
+                showSignIn = !showSignIn;
               }}>
-              PROGRAM
+              {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
             </span>
-          {/await}
+          {/if}
         </div>
-        {#if slug}
-          <div class="right">
-            <span
-              class="close"
-              on:click={() => {
-                setSlug(false);
-              }}>
-              <Cross />
-            </span>
-          </div>
-        {/if}
-      {/if}
-      {#if $isAri}
         <div class="left">
-          <span>READINGS</span>
+          <span
+            on:click={() => {
+              showAbout.set(true);
+            }}
+            class="pseudo-link">
+            ABOUT
+            {#if $isYGRG}YGRG{/if}
+          </span>
         </div>
-        {#if slug}
-          <div class="right">
-            <span
-              class="close"
-              on:click={() => {
-                setSlug(false);
-              }}>
-              <Cross />
-            </span>
-          </div>
-        {:else}
-          <div class="search">
+      </div>
+
+      <div class="inner-container">
+
+        <!-- LOGO -->
+        {#if $isAriel}
+          <ArielLogo />
+        {/if}
+        {#if $isAri}
+          <AriLogo />
+        {/if}
+
+        {#if $isAriel || $isAri}
+          {#await generalInformation then generalInformation}
+            <div class="bottom-meta">
+              <div class="tagline">{generalInformation.tagline}</div>
+              <div class="address">
+                {@html generalInformation.address}
+              </div>
+            </div>
+          {/await}
+        {/if}
+
+        {#if $isYGRG}
+          <div class="filter">
             <input
-              class="search-input"
+              class="filter-input"
               type="text"
-              bind:value={queryReadingsFilter}
-              on:keyup={filterReadings}
-              placeholder="Search in ARI..." />
-            <div class="search-icon" on:click={filterReadings}>
+              bind:value={queryTextsFilter}
+              on:keyup={filterTexts}
+              placeholder="Search in the YGRG Archive..." />
+            <div on:click={filterTexts} class="filter-icon">
               <SubmitArrow />
             </div>
           </div>
-        {/if}
-      {/if}
-      {#if $isYGRG}
-        <div class="left">YGRG ARCHIVE</div>
-        {#if slug}
-          <div class="right">
-            <span
-              class="close"
-              on:click={() => {
-                setSlug(false);
-              }}>
-              <Cross />
-            </span>
+
+          <div class="tile-container" use:links>
+            {#each filteredTexts as t}
+              <TextTile
+                id={t._id}
+                title={t.title}
+                slug={t.slug.current}
+                date={t._createdAt} />
+            {/each}
           </div>
         {/if}
-      {/if}
+      </div>
+
     </div>
+  {/if}
 
-    {#if slug}
-      <SinglePane {slug} {title} />
-    {:else}
-      <div class="inner-container" use:links>
+  <!-- RIGHT PANE -->
+  <MediaQuery query="(min-width: 700px)" let:matches>
+    {#if matches || $showReadings || $showEvents || $showProgram}
+      <div class="half right">
 
-        <!-- ARIEL -->
-        {#if $isAriel}
-          {#await program then program}
-            {#each program as p}
-              <div
-                class="program"
-                on:click={() => {
-                  setSlug(p.slug.current);
-                }}>
-                <div class="title">{p.title}</div>
-                <div class="artist">
-                  {#each p.artists as a}
-                    <span>{a},</span>
-                  {/each}
-                </div>
-                <div class="date">{formattedDate(p.startDate, p.endDate)}</div>
-                <div class="text">
-                  {@html renderBlockText(p.content)}
-                </div>
-              </div>
-            {/each}
-          {/await}
-        {/if}
-
-        <!-- ARI -->
-        {#if $isAri}
-          {#each filteredReadings as r}
-            <div
-              class="reading"
-              on:click={() => {
-                setSlug(r.slug.current);
-              }}>
-              <div class="title">{r.title}</div>
-              <div class="text">
-                {@html renderBlockText(r.content)}
-              </div>
+        <div class="top-bar right">
+          {#if $isAriel}
+            <div class="left">
+              {#await program then program}
+                <span
+                  class="pseudo-link"
+                  on:click={() => {
+                    setSlug(program[0].slug.current);
+                  }}>
+                  PROGRAM
+                </span>
+              {/await}
             </div>
-          {/each}
-        {/if}
-
-        <!-- YGRG -->
-        {#if $isYGRG}
-          {#await events then events}
-            {#each events as e}
-              <div
-                class="event"
-                on:click={() => {
-                  setSlug(e.slug.current);
-                }}>
-                <div class="title">{e.title}</div>
-                <div class="date">{formattedDate(e.startDate, e.endDate)}</div>
-                <div class="text">
-                  {@html renderBlockText(e.content)}
+            {#if slug}
+              <div class="right">
+                <span
+                  class="close"
+                  on:click={() => {
+                    setSlug(false);
+                  }}>
+                  <Cross />
+                </span>
+              </div>
+            {/if}
+          {/if}
+          {#if $isAri}
+            <div class="left">
+              <span>READINGS</span>
+            </div>
+            {#if slug}
+              <div class="right">
+                <span
+                  class="close"
+                  on:click={() => {
+                    setSlug(false);
+                  }}>
+                  <Cross />
+                </span>
+              </div>
+            {:else}
+              <div class="search">
+                <input
+                  class="search-input"
+                  type="text"
+                  bind:value={queryReadingsFilter}
+                  on:keyup={filterReadings}
+                  placeholder="Search in ARI..." />
+                <div class="search-icon" on:click={filterReadings}>
+                  <SubmitArrow />
                 </div>
               </div>
-            {/each}
-          {/await}
+            {/if}
+          {/if}
+          {#if $isYGRG}
+            <div class="left">YGRG ARCHIVE</div>
+            {#if slug}
+              <div class="right">
+                <span
+                  class="close"
+                  on:click={() => {
+                    setSlug(false);
+                  }}>
+                  <Cross />
+                </span>
+              </div>
+            {/if}
+          {/if}
+        </div>
+
+        {#if slug}
+          <SinglePane {slug} {title} />
+        {:else}
+          <div class="inner-container" use:links>
+
+            <!-- ARIEL -->
+            {#if $isAriel}
+              {#await program then program}
+                {#each program as p}
+                  <div
+                    class="program"
+                    on:click={() => {
+                      setSlug(p.slug.current);
+                    }}>
+                    <div class="title">{p.title}</div>
+                    <div class="artist">
+                      {#each p.artists as a}
+                        <span>{a},</span>
+                      {/each}
+                    </div>
+                    <div class="date">
+                      {formattedDate(p.startDate, p.endDate)}
+                    </div>
+                    <div class="text">
+                      {@html renderBlockText(p.content)}
+                    </div>
+                  </div>
+                {/each}
+              {/await}
+            {/if}
+
+            <!-- ARI -->
+            {#if $isAri}
+              {#each filteredReadings as r}
+                <div
+                  class="reading"
+                  on:click={() => {
+                    setSlug(r.slug.current);
+                  }}>
+                  <div class="title">{r.title}</div>
+                  <div class="text">
+                    {@html renderBlockText(r.content)}
+                  </div>
+                </div>
+              {/each}
+            {/if}
+
+            <!-- YGRG -->
+            {#if $isYGRG}
+              {#await events then events}
+                {#each events as e}
+                  <div
+                    class="event"
+                    on:click={() => {
+                      setSlug(e.slug.current);
+                    }}>
+                    <div class="title">{e.title}</div>
+                    <div class="date">
+                      {formattedDate(e.startDate, e.endDate)}
+                    </div>
+                  </div>
+                {/each}
+              {/await}
+            {/if}
+
+          </div>
         {/if}
 
       </div>
     {/if}
-
-  </div>
+  </MediaQuery>
 
   <!-- ABOUT PANE -->
   {#await about then about}

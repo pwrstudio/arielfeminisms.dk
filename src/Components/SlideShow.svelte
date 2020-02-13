@@ -87,11 +87,9 @@
     object-fit: unset;
   }
 
-  // .slideshow__slide-textnav {
-  //   width: 100%;
-  //   height: 100%;
-  //   object-fit: cover;
-  // }
+  .slideshow {
+    // background: red;
+  }
 </style>
 
 <div class="carousel slideshow" bind:this={slideShowEl}>

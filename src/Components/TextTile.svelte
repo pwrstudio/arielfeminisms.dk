@@ -46,6 +46,9 @@
 
     @include screen-size("small") {
       border: $mobile-line-style;
+      height: 110px;
+      width: 110px;
+      padding-top: 15px;
     }
 
     .bookmark {
@@ -73,6 +76,12 @@
       padding-left: 10px;
       padding-right: 10px;
       margin-bottom: 4px;
+
+      @include screen-size("small") {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-bottom: 4px;
+      }
     }
 
     .time {
@@ -85,6 +94,10 @@
 
       span {
         border-bottom: 1px solid $black;
+      }
+
+      @include screen-size("small") {
+        display: none;
       }
     }
   }

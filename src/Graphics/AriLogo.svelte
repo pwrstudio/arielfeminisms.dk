@@ -17,8 +17,8 @@
     margin-right: auto;
 
     @include screen-size("small") {
-      width: 80%;
-      max-width: 500px;
+      width: 95%;
+      max-width: unset;
     }
   }
 </style>
