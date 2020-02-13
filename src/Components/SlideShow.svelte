@@ -23,6 +23,7 @@
 
   // *** VARIABLES
   let flkty = {};
+  let loaded = false;
 
   const flktyOption = isTextNavigation
     ? {
@@ -41,21 +42,25 @@
 
   // *** ON MOUNT
   onMount(async () => {
-    try {
-      flkty = new Flickity(slideShowEl, flktyOption);
-      flkty.on("change", i => {
-        dispatch("slideChange", { index: parseInt(i) });
-      });
-      if (isTextNavigation) {
-        flkty.on("staticClick", (event, pointer, cellElement, cellIndex) => {
-          console.log("/ygrg/text/" + slideArray[cellIndex].slug.current);
-          window.location = "/ygrg/text/" + slideArray[cellIndex].slug.current;
-          // navigate("/ygrg/text/" + slideArray[cellIndex].slug.current);
+    setTimeout(() => {
+      try {
+        flkty = new Flickity(slideShowEl, flktyOption);
+        flkty.on("change", i => {
+          dispatch("slideChange", { index: parseInt(i) });
         });
+        loaded = true;
+        if (isTextNavigation) {
+          flkty.on("staticClick", (event, pointer, cellElement, cellIndex) => {
+            console.log("/ygrg/text/" + slideArray[cellIndex].slug.current);
+            window.location =
+              "/ygrg/text/" + slideArray[cellIndex].slug.current;
+            // navigate("/ygrg/text/" + slideArray[cellIndex].slug.current);
+          });
+        }
+      } catch (err) {
+        console.error(err);
       }
-    } catch (err) {
-      console.error(err);
-    }
+    }, 1000);
   });
 </script>
 
@@ -91,14 +96,20 @@
 
   .slideshow {
     // background: red;
+    opacity: 0;
+    transition: opacity 0.2s $easing;
   }
 
   .textnav-image {
     cursor: pointer;
   }
+
+  .loaded {
+    opacity: 1;
+  }
 </style>
 
-<div class="carousel slideshow" bind:this={slideShowEl}>
+<div class="carousel slideshow" bind:this={slideShowEl} class:loaded>
   {#each slideArray as slide}
     <div class="carousel-cell slideshow__slide" class:free={isTextNavigation}>
       {#if isTextNavigation}
@@ -113,8 +124,6 @@
       {:else}
         <span />
         {#if slide.videoUrl}
-          <!-- <div class="video-container"> -->
-
           <div class="responsive-container">
             {#if slide.videoUrl.includes('youtube')}
               <iframe
@@ -140,7 +149,6 @@
                 allowfullscreen />
             {/if}
           </div>
-          <!-- </div> -->
         {:else}
           <img
             class="slideshow__slide-image"

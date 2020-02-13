@@ -240,7 +240,7 @@
 
   .close {
     position: absolute;
-    right: 10px;
+    right: 20px;
     top: 20px;
     height: 24px;
     width: 24px;
@@ -304,9 +304,9 @@
     left: 20px;
     top: 70px;
     width: 400px;
-    height: calc(100vh - 220px);
+    height: calc(100vh - 70px);
     overflow-y: auto;
-    padding-bottom: 20px;
+    padding-bottom: 140px;
     @include hide-scroll;
     @include screen-size("small") {
       display: none;
@@ -316,11 +316,14 @@
   .text-navigation {
     position: absolute;
     left: 20px;
-    bottom: 20px;
+    bottom: 0px;
     width: 380px;
     overflow-y: auto;
-    height: 120px;
+    height: 140px;
     background: $brown;
+    padding-bottom: 10px;
+    padding-top: 10px;
+
     // box-shadow: 0px 0px 10px 10px $brown;
 
     @include screen-size("small") {
