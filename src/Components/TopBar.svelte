@@ -154,7 +154,7 @@
   </div>
 
   {#if open}
-    <div class="mobile-menu" in:slide={{ duration: 200 }}>
+    <div class="mobile-menu" use:links in:slide={{ duration: 200 }}>
       {#if $isAriel}
         <a class="mobile-menu-item" href="/ariel/program">PROGRAM</a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
