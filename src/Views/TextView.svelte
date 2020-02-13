@@ -303,7 +303,7 @@
     left: 20px;
     top: 70px;
     width: 400px;
-    height: calc(100vh - 290px);
+    height: calc(100vh - 220px);
     overflow-y: auto;
     padding-bottom: 20px;
     @include hide-scroll;
@@ -318,7 +318,7 @@
     bottom: 20px;
     width: 380px;
     overflow-y: auto;
-    height: 180px;
+    height: 120px;
     background: $brown;
     // box-shadow: 0px 0px 10px 10px $brown;
 

@@ -87,6 +87,10 @@
   .slideshow {
     // background: red;
   }
+
+  .textnav-image {
+    cursor: pointer;
+  }
 </style>
 
 <div class="carousel slideshow" bind:this={slideShowEl}>
@@ -94,9 +98,9 @@
     <div class="carousel-cell slideshow__slide" class:free={isTextNavigation}>
       {#if isTextNavigation}
         <img
-          class="slideshow__slide-textnav"
+          class="textnav-image"
           src={urlFor(slide.image)
-            .height(180)
+            .height(120)
             .quality(80)
             .auto('format')
             .url()}

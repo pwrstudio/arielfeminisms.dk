@@ -72,6 +72,14 @@
     box-sizing: border-box;
   }
 
+  ::selection {
+    background: $accent-grey;
+  }
+
+  ::-moz-selection {
+    background: $accent-grey;
+  }
+
   .slideshow {
     width: 100%;
     height: 100%;

@@ -47,12 +47,7 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    // background: yellow;
     padding-top: 20vh;
-
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
 
     @include screen-size("small") {
       width: 100%;
@@ -62,10 +57,16 @@
 
     &.ariel {
       font-family: $font-stack-ariel;
+      font-size: $font-size-medium;
+
+      .bottom-text {
+        text-transform: uppercase;
+      }
     }
 
     &.ygrg {
       font-family: $font-stack-ygrg-extended;
+      font-size: $font-size-medium;
     }
 
     @include screen-size("small") {

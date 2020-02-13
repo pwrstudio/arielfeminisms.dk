@@ -547,6 +547,7 @@
         <div class="left">
           <span
             on:click={() => {
+              showSignIn = false;
               showAbout.set(true);
             }}
             class="pseudo-link">

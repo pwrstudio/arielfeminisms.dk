@@ -51,6 +51,10 @@
       padding-top: 15px;
     }
 
+    &:hover {
+      background: $accent-grey;
+    }
+
     .bookmark {
       height: 15px;
       position: absolute;

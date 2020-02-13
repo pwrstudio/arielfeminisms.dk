@@ -107,6 +107,7 @@
     width: 380px;
     background: $grey;
     padding: 15px;
+    padding-top: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
