@@ -520,20 +520,6 @@
                   slug={t.slug.current}
                   date={t._createdAt} />
               {/each}
-              {#each filteredTexts as t}
-                <TextTile
-                  id={t._id}
-                  title={t.title}
-                  slug={t.slug.current}
-                  date={t._createdAt} />
-              {/each}
-              {#each filteredTexts as t}
-                <TextTile
-                  id={t._id}
-                  title={t.title}
-                  slug={t.slug.current}
-                  date={t._createdAt} />
-              {/each}
             </div>
           {/if}
         </div>
