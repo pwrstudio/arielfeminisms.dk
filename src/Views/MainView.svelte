@@ -56,9 +56,6 @@
   isAri.set(title === "ari");
   isYGRG.set(title === "ygrg");
 
-  console.log("** single:", single);
-  console.log("** listing:", listing);
-
   // TEXTS
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
   let filteredTexts = [];
@@ -359,10 +356,11 @@
 
     @include screen-size("small") {
       width: 100vw;
-      top: 80px;
-      height: calc(100vh - 80px);
+      top: 0px;
+      height: 100vh;
       transform: translateY(100%);
     }
+
     &.open {
       transition: transform 0.2s $easing, opacity 0.3s $easing;
       transform: translateX(0);

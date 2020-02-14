@@ -132,6 +132,10 @@
     line-height: $line-height;
     width: calc(100% - 60px);
 
+    @include screen-size("small") {
+      width: calc(100% - 30px);
+    }
+
     input {
       font-size: $font-size-medium;
       width: 100%;
@@ -158,35 +162,6 @@
         border: 1px solid white;
       }
     }
-
-    // button {
-    //   display: block;
-    //   float: right;
-    //   background: transparent;
-    //   font-size: $font-size-large;
-    //   border: 0;
-    //   font-family: $font-stack-ariel;
-    //   font-weight: bold;
-    //   margin: 0;
-    //   padding: 0;
-    //   outline: none;
-
-    //   border-bottom: 2px solid transparent;
-
-    //   &.small {
-    //     font-size: $font-size-small;
-    //     border-bottom: 1px solid transparent;
-    //   }
-
-    //   &:hover {
-    //     border-bottom: $line-style;
-    //     cursor: pointer;
-
-    //     &.small {
-    //       border-bottom: 1px solid black;
-    //     }
-    //   }
-    // }
 
     button {
       background: black;
@@ -262,6 +237,10 @@
       border: 2px solid white;
       color: white;
       margin-bottom: $line-height;
+
+      @include screen-size("small") {
+        display: none;
+      }
     }
 
     .profile-picture-section {
@@ -269,6 +248,10 @@
       justify-content: center;
       width: 75%;
       margin-left: 25%;
+
+      @include screen-size("small") {
+        font-size: $font-size-mobile-medium;
+      }
     }
 
     .profile-section {

@@ -62,6 +62,10 @@
       top: 5px;
       right: 5px;
 
+      @include screen-size("small") {
+        display: none;
+      }
+
       svg {
         polygon {
           fill: none;

@@ -6,11 +6,12 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { links } from "svelte-routing";
+  import { links, navigate } from "svelte-routing";
   import { slide, fade } from "svelte/transition";
 
   // *** GRAPHICS
   import Cross from "../Graphics/Cross.svelte";
+  import Ellipse from "../Graphics/Ellipse.svelte";
 
   // *** STORES
   import {
@@ -20,7 +21,9 @@
     showAbout,
     showProgram,
     showEvents,
-    showReadings
+    showReadings,
+    userLoaded,
+    loggedInUser
   } from "../stores.js";
 
   // *** VARIABLES
@@ -156,45 +159,50 @@
   {#if open}
     <div class="mobile-menu" use:links in:slide={{ duration: 200 }}>
       {#if $isAriel}
-        <a
+        <div
           class="mobile-menu-item"
-          href="/ariel/program"
           on:click={() => {
             open = false;
+            navigate('/ariel/program');
           }}>
           PROGRAM
-        </a>
+        </div>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
       {/if}
 
       {#if $isAri}
-        <a
-          href="/ari/readings"
+        <div
           class="mobile-menu-item"
           on:click={() => {
             open = false;
+            navigate('/ari/readings');
           }}>
           READINGS
-        </a>
+        </div>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
       {/if}
 
       {#if $isYGRG}
-        <a
-          href="/ygrg/events"
+        <div
           class="mobile-menu-item"
           on:click={() => {
             open = false;
+            navigate('/ygrg/events');
           }}>
           EVENTS
-        </a>
+        </div>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT YGRG</div>
         <div
           class="mobile-menu-item"
           on:click={() => {
             open = false;
+            navigate('/ygrg/profile');
           }}>
-          SIGN IN
+          {#if $userLoaded}
+            {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+          {:else}
+            <Ellipse />
+          {/if}
         </div>
       {/if}
 
