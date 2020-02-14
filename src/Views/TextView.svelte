@@ -214,6 +214,7 @@
     margin: 0;
     padding: 0;
     background: $brown;
+    z-index: 100;
   }
 
   .pdf-viewer {
@@ -267,6 +268,10 @@
     height: 20px;
     overflow: visible;
     width: calc(100vw - 480px);
+
+    @include screen-size("small") {
+      display: none;
+    }
 
     .menu-bar-item {
       display: inline-flex;

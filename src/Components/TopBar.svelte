@@ -156,17 +156,38 @@
   {#if open}
     <div class="mobile-menu" use:links in:slide={{ duration: 200 }}>
       {#if $isAriel}
-        <a class="mobile-menu-item" href="/ariel/program">PROGRAM</a>
+        <a
+          class="mobile-menu-item"
+          href="/ariel/program"
+          on:click={() => {
+            open = false;
+          }}>
+          PROGRAM
+        </a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARIEL</div>
       {/if}
 
       {#if $isAri}
-        <a href="/ari/readings" class="mobile-menu-item">READINGS</a>
+        <a
+          href="/ari/readings"
+          class="mobile-menu-item"
+          on:click={() => {
+            open = false;
+          }}>
+          READINGS
+        </a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT ARI.</div>
       {/if}
 
       {#if $isYGRG}
-        <a href="/ygrg/events" class="mobile-menu-item">EVENTS</a>
+        <a
+          href="/ygrg/events"
+          class="mobile-menu-item"
+          on:click={() => {
+            open = false;
+          }}>
+          EVENTS
+        </a>
         <div class="mobile-menu-item" on:click={toggleAbout}>ABOUT YGRG</div>
         <div
           class="mobile-menu-item"
