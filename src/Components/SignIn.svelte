@@ -18,7 +18,13 @@
   import Ellipse from "../Graphics/Ellipse.svelte";
 
   // *** STORES
-  import { isYGRG, isAriel, isAri, loggedInUser } from "../stores.js";
+  import {
+    isYGRG,
+    isAriel,
+    isAri,
+    loggedInUser,
+    userLoaded
+  } from "../stores.js";
 
   // *** PROPS
 
@@ -153,23 +159,58 @@
       }
     }
 
-    button {
-      display: block;
-      float: right;
-      background: transparent;
-      font-size: $font-size-large;
-      border: 0;
-      font-family: $font-stack-ariel;
-      font-weight: bold;
-      margin: 0;
-      padding: 0;
-      outline: none;
+    // button {
+    //   display: block;
+    //   float: right;
+    //   background: transparent;
+    //   font-size: $font-size-large;
+    //   border: 0;
+    //   font-family: $font-stack-ariel;
+    //   font-weight: bold;
+    //   margin: 0;
+    //   padding: 0;
+    //   outline: none;
 
-      border-bottom: 2px solid transparent;
+    //   border-bottom: 2px solid transparent;
+
+    //   &.small {
+    //     font-size: $font-size-small;
+    //     border-bottom: 1px solid transparent;
+    //   }
+
+    //   &:hover {
+    //     border-bottom: $line-style;
+    //     cursor: pointer;
+
+    //     &.small {
+    //       border-bottom: 1px solid black;
+    //     }
+    //   }
+    // }
+
+    button {
+      background: black;
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+      border: 0;
+      outline: none;
+      font-family: $font-stack-ariel;
+      font-size: $font-size-medium;
+
+      &.small {
+        width: 200px;
+        height: 40px;
+        line-height: 40px;
+        float: right;
+      }
 
       &:hover {
-        border-bottom: $line-style;
-        cursor: pointer;
+        background: rgba(40, 40, 40, 1);
       }
     }
 
@@ -187,8 +228,6 @@
 
     .sign-up-link {
       margin-top: $line-height;
-      font-size: $font-size-large;
-      font-family: $font-stack-ariel;
       float: right;
     }
   }
@@ -297,141 +336,147 @@
 
 <div class="identity">
 
-  <!-- SIGN IN  -->
-  {#if !$loggedInUser && !signUpActive}
-    <form class="sign-in">
-      {#if msgSignIn}
-        <fieldset
-          class="sign-in-section error"
-          on:click={() => {
-            msgSignIn = false;
-          }}
-          out:fade>
-          <span class="sign-up-link">{msgSignIn}</span>
-        </fieldset>
-      {/if}
-      <fieldset>
-        <input
-          type="text"
-          autocomplete="username"
-          class:disabled={processing}
-          placeholder="email"
-          bind:value={email} />
-        <input
-          type="password"
-          autocomplete="current-password"
-          class:disabled={processing}
-          placeholder="password"
-          bind:value={password} />
-      </fieldset>
-      <fieldset>
-        {#if !processing}
-          <button on:click={signIn}>Sign In</button>
-        {:else}
-          <div class="loading">
-            <Ellipse />
-          </div>
-        {/if}
-      </fieldset>
-      <fieldset>
-        <button>Recover password</button>
-      </fieldset>
-      {#if !processing}
-        <fieldset>
-          <span
-            class="sign-up-link pseudo-link"
+  {#if $userLoaded}
+    <!-- SIGN IN  -->
+    {#if !$loggedInUser && !signUpActive}
+      <form class="sign-in">
+        {#if msgSignIn}
+          <fieldset
+            class="sign-in-section error"
             on:click={() => {
-              signUpActive = true;
-            }}>
-            Create account
-          </span>
-        </fieldset>
-      {/if}
-    </form>
-  {/if}
-
-  <!-- SIGN UP -->
-  {#if signUpActive}
-    <form>
-      {#if msgSignUp}
-        <fieldset
-          class="sign-in-section error"
-          on:click={() => {
-            msgSignUp = false;
-          }}
-          out:fade>
-          <span class="sign-up-link">{msgSignUp}</span>
-        </fieldset>
-      {/if}
-      <input
-        type="text"
-        class:disabled={processing}
-        placeholder="Name"
-        bind:value={nameUp} />
-      <input
-        type="text"
-        autocomplete="username"
-        class:disabled={processing}
-        placeholder="Email"
-        bind:value={emailUp} />
-      <input
-        type="password"
-        autocomplete="current-password"
-        class:disabled={processing}
-        placeholder="Password"
-        bind:value={passwordUp} />
-      <fieldset>
-        {#if !processing}
-          <button on:click={signUp}>Sign up</button>
-        {:else}
-          <div class="loading">
-            <Ellipse />
-          </div>
+              msgSignIn = false;
+            }}
+            out:fade>
+            <span class="sign-up-link">{msgSignIn}</span>
+          </fieldset>
         {/if}
-      </fieldset>
-    </form>
-  {/if}
+        <fieldset>
+          <input
+            type="text"
+            autocomplete="username"
+            class:disabled={processing}
+            placeholder="email"
+            bind:value={email} />
+          <input
+            type="password"
+            autocomplete="current-password"
+            class:disabled={processing}
+            placeholder="password"
+            bind:value={password} />
+        </fieldset>
+        <fieldset>
+          {#if !processing}
+            <button on:click={signIn}>Sign In</button>
+          {:else}
+            <div class="loading">
+              <Ellipse />
+            </div>
+          {/if}
+        </fieldset>
+        <fieldset>
+          <!-- <button class="small">Recover password</button> -->
+        </fieldset>
+        {#if !processing}
+          <fieldset>
+            <button
+              on:click={() => {
+                signUpActive = true;
+              }}>
+              Create account
+            </button>
+          </fieldset>
+        {/if}
+      </form>
+    {/if}
 
-  <!-- PROFILE -->
-  {#if $loggedInUser}
-    <form class="profile">
-      <div>
-        <div class="profile-header">
-          {$loggedInUser.user_metadata.name} ∙ profile
+    <!-- SIGN UP -->
+    {#if signUpActive}
+      <form>
+        {#if msgSignUp}
+          <fieldset
+            class="sign-in-section error"
+            on:click={() => {
+              msgSignUp = false;
+            }}
+            out:fade>
+            <span class="sign-up-link">{msgSignUp}</span>
+          </fieldset>
+        {/if}
+        <fieldset>
+          <input
+            type="text"
+            class:disabled={processing}
+            placeholder="Name"
+            bind:value={nameUp} />
+          <input
+            type="text"
+            autocomplete="username"
+            class:disabled={processing}
+            placeholder="Email"
+            bind:value={emailUp} />
+          <input
+            type="password"
+            autocomplete="current-password"
+            class:disabled={processing}
+            placeholder="Password"
+            bind:value={passwordUp} />
+        </fieldset>
+        <fieldset>
+          {#if !processing}
+            <button on:click={signUp}>Sign up</button>
+          {:else}
+            <div class="loading">
+              <Ellipse />
+            </div>
+          {/if}
+        </fieldset>
+      </form>
+    {/if}
+
+    <!-- PROFILE -->
+    {#if $loggedInUser}
+      <form class="profile">
+        <div>
+          <div class="profile-header">
+            {$loggedInUser.user_metadata.name} ∙ profile
+          </div>
         </div>
-      </div>
 
-      <div class="profile-picture-section">
-        <div class="profile-picture">Upload avatar</div>
-      </div>
+        <div class="profile-picture-section">
+          <div class="profile-picture">Upload avatar</div>
+        </div>
 
-      <div class="profile-section">
-        <label>Name</label>
-        <input
-          type="text"
-          class="read-only"
-          value={$loggedInUser.user_metadata.name} />
-      </div>
+        <fieldset>
 
-      <div class="profile-section">
-        <label>Email</label>
-        <input type="text" class="read-only" value={$loggedInUser.email} />
-      </div>
+          <div class="profile-section">
+            <label>Name</label>
+            <input
+              type="text"
+              class="read-only"
+              value={$loggedInUser.user_metadata.name} />
+          </div>
 
-      <div class="profile-section">
-        <label>Biography</label>
-        <textarea />
-      </div>
+          <div class="profile-section">
+            <label>Email</label>
+            <input type="text" class="read-only" value={$loggedInUser.email} />
+          </div>
 
-      <fieldset>
-        <button class="sign-up-link" on:click={logOut}>LOG OUT</button>
-      </fieldset>
+          <div class="profile-section">
+            <label>Biography</label>
+            <textarea />
+          </div>
+        </fieldset>
 
-      <fieldset>
-        <button class="sign-up-link">DELETE ACCOUNT</button>
-      </fieldset>
+        <fieldset>
+          <button class="small" on:click={logOut}>Sign out</button>
+        </fieldset>
 
-    </form>
+        <fieldset>
+          <button class="small">Delete Account</button>
+        </fieldset>
+
+      </form>
+    {/if}
   {/if}
 
 </div>

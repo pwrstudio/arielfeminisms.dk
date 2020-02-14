@@ -7,7 +7,7 @@
 
   // *** IMPORT
   import { onMount } from "svelte";
-  import { links } from "svelte-routing";
+  import { links, navigate } from "svelte-routing";
   import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
@@ -27,6 +27,7 @@
   import AriLogo from "../Graphics/AriLogo.svelte";
   import Cross from "../Graphics/Cross.svelte";
   import SubmitArrow from "../Graphics/SubmitArrow.svelte";
+  import Ellipse from "../Graphics/Ellipse.svelte";
 
   // *** STORES
   import {
@@ -37,7 +38,8 @@
     showProgram,
     showEvents,
     showReadings,
-    loggedInUser
+    loggedInUser,
+    userLoaded
   } from "../stores.js";
 
   // *** PROPS
@@ -46,6 +48,7 @@
   export let location = {};
   export let listing = false;
   export let single = false;
+  export let profile = false;
 
   // Set globals
   showAbout.set(false);
@@ -55,9 +58,6 @@
 
   console.log("** single:", single);
   console.log("** listing:", listing);
-
-  // *** VARIABLES
-  let showSignIn = false;
 
   // TEXTS
   const texts = loadData('*[_type in [ "ygrgText"]]', {});
@@ -459,16 +459,20 @@
                 class="pseudo-link"
                 on:click={() => {
                   showAbout.set(false);
-                  showSignIn = !showSignIn;
+                  navigate('/ygrg/profile');
                 }}>
-                {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+                {#if $userLoaded}
+                  {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+                {:else}
+                  <Ellipse />
+                {/if}
               </span>
             {/if}
           </div>
           <div class="left">
             <span
               on:click={() => {
-                showSignIn = false;
+                profile = false;
                 showAbout.set(true);
               }}
               class="pseudo-link">
@@ -536,7 +540,7 @@
         <div class="top-bar right">
           {#if $isAriel}
             <div class="left">
-              <a href="">PROGRAM</a>
+              <span>PROGRAM</span>
             </div>
             {#if slug}
               <div class="right">
@@ -622,16 +626,12 @@
   {/await}
 
   <!-- SIGN IN -->
-  <div class="sign-in" class:open={showSignIn}>
+  <div class="sign-in" class:open={profile} use:links>
     <SignIn />
 
-    <div
-      class="close"
-      on:click={() => {
-        showSignIn = false;
-      }}>
+    <a href="/ygrg" class="close">
       <Cross />
-    </div>
+    </a>
 
   </div>
 

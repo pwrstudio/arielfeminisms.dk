@@ -19,7 +19,14 @@
   import { auth } from "./global.js";
 
   // *** STORES
-  import { isYGRG, isAriel, isAri, isText, loggedInUser } from "./stores.js";
+  import {
+    isYGRG,
+    isAriel,
+    isAri,
+    isText,
+    loggedInUser,
+    userLoaded
+  } from "./stores.js";
 
   // ** VIEWS
   import MainView from "./Views/MainView.svelte";
@@ -35,10 +42,14 @@
       .then(response => {
         // HACK
         loggedInUser.set(auth.currentUser());
+        userLoaded.set(true);
       })
       .catch(err => {
+        userLoaded.set(true);
         console.log("Sign in failed: " + err.json.error_description);
       });
+  } else {
+    userLoaded.set(true);
   }
 </script>
 
@@ -309,6 +320,11 @@
 
     <!-- YGRG -->
     <Route path="/ygrg" component={MainView} title="ygrg" />
+    <Route
+      path="/ygrg/profile"
+      component={MainView}
+      title="ygrg"
+      profile={true} />
     <Route
       path="/ygrg/events"
       component={MainView}

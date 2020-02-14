@@ -441,6 +441,7 @@
     outline: none;
     font-family: $font-stack-ygrg-regular;
     font-size: $font-size-medium;
+    display: block;
 
     &:hover {
       background: rgba(40, 40, 40, 1);
@@ -477,7 +478,7 @@
             Send comment
           </button>
         {:else}
-          <div class="black-button">Sign in to comment</div>
+          <a href="/ygrg/profile" class="black-button">Sign in to comment</a>
         {/if}
       </div>
 
