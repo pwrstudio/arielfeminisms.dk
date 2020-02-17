@@ -75,7 +75,6 @@
     filteredTexts = results;
     fuseTexts = new Fuse(results, optionsTextsFilter);
     filterTexts = () => {
-      console.log(queryTextsFilter);
       filteredTexts =
         queryTextsFilter.length == 0
           ? results
@@ -84,16 +83,16 @@
   });
 
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
+
   const latestReading = loadData(
     '*[_type == "reading"][0]{"slug": slug.current}',
     {}
   );
-  console.dir(latestReading);
+
   const latestProgram = loadData(
     '*[_type == "program"][0]{"slug": slug.current}',
     {}
   );
-  console.dir(latestProgram);
 
   // ABOUT
   let aboutQuery = "";

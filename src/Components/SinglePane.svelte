@@ -34,8 +34,6 @@
   );
 
   let currentIndex = 0;
-
-  console.dir(single);
 </script>
 
 <style lang="scss">

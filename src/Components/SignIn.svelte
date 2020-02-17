@@ -49,7 +49,6 @@
       .login(email, password)
       .then(response => {
         // HACK
-        console.dir(response);
         Cookies.set(
           "ygrgLoggedInUser",
           JSON.stringify({
@@ -75,7 +74,6 @@
     msgSignIn = false;
     msgSignUp = false;
 
-    console.log(passwordUp);
     auth
       .signup(emailUp, passwordUp, {
         name: nameUp,
@@ -83,7 +81,6 @@
         biography: ""
       })
       .then(response => {
-        console.dir(response);
         // RESET
         processing = false;
         signUpActive = false;

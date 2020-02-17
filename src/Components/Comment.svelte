@@ -33,17 +33,12 @@
 
   const dispatch = createEventDispatcher();
 
-  console.dir(content);
-
   const deleteComment = () => {
     if (!$loggedInUser) return false;
 
     let jwt = $loggedInUser.jwt();
 
     jwt.then(jwt => {
-      console.dir(jwt);
-      console.log(commentId);
-
       const url =
         "https://arielfeminisms.netlify.com/.netlify/functions/comment?id=" +
         encodeURIComponent(commentId);
@@ -56,7 +51,6 @@
       })
         .then(response => {
           console.log("SUCCESS");
-          console.dir(response);
         })
         .catch(err => {
           console.log("ERROR");
@@ -71,9 +65,6 @@
     let jwt = $loggedInUser.jwt();
 
     jwt.then(jwt => {
-      console.dir(jwt);
-      console.log(commentId);
-
       const url =
         "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
         encodeURIComponent("EDITED: XXXX") +
@@ -89,7 +80,6 @@
         .then(response => {
           console.log("SUCCESS");
           newComment = "";
-          console.dir(response);
         })
         .catch(err => {
           console.log("ERROR");

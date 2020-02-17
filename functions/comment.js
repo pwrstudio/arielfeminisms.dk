@@ -75,7 +75,6 @@ exports.handler = function (event, context, callback) {
                 .set({ content: commentContent }) // Shallow merge
                 .commit() // Perform the patch and return a promise
                 .then(updatedComment => {
-                    console.log(updatedComment)
                     callback(
                         null, {
                         statusCode: 200,

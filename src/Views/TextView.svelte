@@ -130,9 +130,6 @@
       let jwt = $loggedInUser.jwt();
 
       jwt.then(jwt => {
-        console.dir(jwt);
-        console.log(t.id);
-
         getCurrentPage();
 
         const url =
@@ -154,7 +151,6 @@
           .then(response => {
             console.log("SUCCESS");
             newComment = "";
-            console.dir(response);
             comments = loadData(
               "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
               { id: t.id }
@@ -172,14 +168,10 @@
 
       if (!user) return false;
 
-      console.dir(user.user_metadata);
-
       const oldBookmarkList = user.user_metadata.bookmarks;
       const newBookmarkList = oldBookmarkList.includes(t.id)
         ? oldBookmarkList.filter(item => item !== t.id)
         : [...oldBookmarkList, t.id];
-
-      console.dir(newBookmarkList);
 
       user
         .update({ data: { bookmarks: newBookmarkList } })

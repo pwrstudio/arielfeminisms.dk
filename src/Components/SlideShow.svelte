@@ -51,7 +51,6 @@
         loaded = true;
         if (isTextNavigation) {
           flkty.on("staticClick", (event, pointer, cellElement, cellIndex) => {
-            console.log("/ygrg/text/" + slideArray[cellIndex].slug.current);
             window.location =
               "/ygrg/text/" + slideArray[cellIndex].slug.current;
             // navigate("/ygrg/text/" + slideArray[cellIndex].slug.current);

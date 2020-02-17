@@ -41,9 +41,6 @@
   // *** PROPS
   export let location = {};
 
-  console.log("postType:", $postType);
-  console.log("activeSection:", $activeSection);
-
   // *** VARIABLES
   let listing = "";
   if ($isAriel) listing = loadData('*[_type in [ "program"]]', {});
@@ -71,7 +68,6 @@
     });
     fuseReadings = new Fuse(results, optionsReadingsFilter);
     filterReadings = () => {
-      console.log(queryReadingsFilter);
       filteredReadings =
         queryReadingsFilter.length == 0
           ? results
