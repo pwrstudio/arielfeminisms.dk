@@ -57,7 +57,7 @@
   isYGRG.set(title === "ygrg");
 
   // TEXTS
-  const texts = loadData('*[_type in [ "ygrgText"]]', {});
+  const texts = loadData('*[_type == "ygrgText"]', {});
   let filteredTexts = [];
   let filterTexts = () => {};
   let fuseTexts = {};
@@ -84,6 +84,16 @@
   });
 
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
+  const latestReading = loadData(
+    '*[_type == "reading"][0]{"slug": slug.current}',
+    {}
+  );
+  console.dir(latestReading);
+  const latestProgram = loadData(
+    '*[_type == "program"][0]{"slug": slug.current}',
+    {}
+  );
+  console.dir(latestProgram);
 
   // ABOUT
   let aboutQuery = "";
@@ -538,7 +548,9 @@
         <div class="top-bar right">
           {#if $isAriel}
             <div class="left">
-              <span>PROGRAM</span>
+              {#await latestProgram then latestProgram}
+                <a href="/ariel/program/{latestProgram.slug}">PROGRAM</a>
+              {/await}
             </div>
             {#if slug}
               <div class="right">
@@ -550,7 +562,9 @@
           {/if}
           {#if $isAri}
             <div class="left">
-              <span>READINGS</span>
+              {#await latestReading then latestReading}
+                <a href="/ari/readings/{latestReading.slug}">READINGS</a>
+              {/await}
             </div>
             {#if slug}
               <div class="right">
