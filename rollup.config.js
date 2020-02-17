@@ -52,7 +52,7 @@ export default {
 						targets: {
 							chrome: '70',
 							edge: '16',
-							firefox: '52',
+							firefox: '60',
 							safari: '10',
 							ios: '10'
 						},
