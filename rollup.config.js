@@ -39,39 +39,38 @@ export default {
 		}),
 		commonjs(),
 
-		// production &&
-		// babel({
-		// 	extensions: ['.js', '.mjs', '.html', '.svelte'],
-		// 	runtimeHelpers: true,
-		// 	exclude: ['node_modules/@babel/**', 'node_modules/core-js/**'],
-		// 	presets: [
-		// 		[
-		// 			'@babel/preset-env',
-		// 			{
-		// 				// targets: '> 0.25%, not dead',
-		// 				targets: {
-		// 					chrome: '58',
-		// 					edge: '16',
-		// 					ie: '11',
-		// 					firefox: '52',
-		// 					safari: '10',
-		// 					ios: '10'
-		// 				},
-		// 				useBuiltIns: 'usage',
-		// 				corejs: 3
-		// 			}
-		// 		]
-		// 	],
-		// 	plugins: [
-		// 		'@babel/plugin-syntax-dynamic-import',
-		// 		[
-		// 			'@babel/plugin-transform-runtime',
-		// 			{
-		// 				useESModules: true
-		// 			}
-		// 		]
-		// 	]
-		// }),
+		production &&
+		babel({
+			extensions: ['.js', '.mjs', '.html', '.svelte'],
+			runtimeHelpers: true,
+			exclude: ['node_modules/@babel/**', 'node_modules/core-js/**'],
+			presets: [
+				[
+					'@babel/preset-env',
+					{
+						// targets: '> 0.25%, not dead',
+						targets: {
+							chrome: '70',
+							edge: '16',
+							firefox: '52',
+							safari: '10',
+							ios: '10'
+						},
+						useBuiltIns: 'usage',
+						corejs: 3
+					}
+				]
+			],
+			plugins: [
+				'@babel/plugin-syntax-dynamic-import',
+				[
+					'@babel/plugin-transform-runtime',
+					{
+						useESModules: true
+					}
+				]
+			]
+		}),
 
 		// In dev mode, call `npm run start` once
 		// the bundle has been generated
