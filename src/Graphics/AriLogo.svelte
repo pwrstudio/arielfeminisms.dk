@@ -18,7 +18,7 @@
 
     @include screen-size("small") {
       width: 95%;
-      max-width: unset;
+      max-width: 400px;
     }
   }
 </style>
