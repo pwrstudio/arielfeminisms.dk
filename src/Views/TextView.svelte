@@ -36,7 +36,6 @@
   isYGRG.set(true);
 
   // *** PROPS
-  export let title = "";
   export let slug = "";
   export let location = {};
 
@@ -87,19 +86,23 @@
   );
 
   const getCurrentPage = () => {
-    currentPage = get(
-      pdfViewerIframe,
-      "contentWindow.PDFViewerApplication.page",
-      0
-    );
+    if (pdfViewerIframe) {
+      currentPage = get(
+        pdfViewerIframe,
+        "contentWindow.PDFViewerApplication.page",
+        0
+      );
+    }
   };
 
   const getTotalPages = () => {
-    totalPages = get(
-      pdfViewerIframe,
-      "contentWindow.PDFViewerApplication.pagesCount",
-      0
-    );
+    if (pdfViewerIframe) {
+      totalPages = get(
+        pdfViewerIframe,
+        "contentWindow.PDFViewerApplication.pagesCount",
+        0
+      );
+    }
   };
 
   const getSelection = () => {
