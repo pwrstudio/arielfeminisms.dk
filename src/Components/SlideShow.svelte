@@ -52,8 +52,7 @@
         if (isTextNavigation) {
           flkty.on("staticClick", (event, pointer, cellElement, cellIndex) => {
             window.location =
-              "/ygrg/text/" + slideArray[cellIndex].slug.current;
-            // navigate("/ygrg/text/" + slideArray[cellIndex].slug.current);
+              "/ygrg/texts/" + slideArray[cellIndex].slug.current;
           });
         }
       } catch (err) {
