@@ -176,7 +176,9 @@
     <div class="bottom-text">
       <!-- // *** TITLE -->
       <div class="title">
-        {@html renderBlockText(single.title)}
+        {#if single.title}
+          {@html renderBlockText(single.title)}
+        {/if}
       </div>
       <!-- // *** ARTIST(S) -->
       {#if $isAriel}
