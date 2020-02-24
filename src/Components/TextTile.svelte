@@ -39,10 +39,11 @@
     margin-right: 8px;
     margin-bottom: 8px;
     text-align: center;
-    padding-top: 30px;
+    padding-top: 20px;
     font-family: $font-stack-ygrg-regular;
     line-height: $line-height;
     position: relative;
+    overflow: hidden;
 
     @include screen-size("small") {
       font-size: $font-size-mobile-medium;
@@ -84,22 +85,36 @@
     .title {
       padding-left: 10px;
       padding-right: 10px;
-      margin-bottom: 4px;
+      overflow: hidden;
+
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      line-clamp: 3;
+      -webkit-line-clamp: 3;
 
       @include screen-size("small") {
-        padding-left: 10px;
-        padding-right: 10px;
-        margin-bottom: 4px;
+        padding-left: 5px;
+        padding-right: 5px;
       }
     }
 
     .time {
+      position: absolute;
+      top: 80px;
+      width: 100%;
+
       font-size: $font-size-small;
-      margin-bottom: 20px;
+
+      @include screen-size("small") {
+        top: 70px;
+      }
     }
 
     .preview {
       font-size: $font-size-small;
+      position: absolute;
+      top: 110px;
+      width: 100%;
 
       span {
         border-bottom: 1px solid $black;
