@@ -7,7 +7,7 @@
 
   // *** IMPORT
   import { links } from "svelte-routing";
-  import { loadData, renderBlockText } from "../sanity.js";
+  import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import get from "lodash/get";
@@ -16,6 +16,7 @@
 
   // *** COMPONENTS
   import SlideShow from "../Components/SlideShow.svelte";
+  import MetaData from "../Components/MetaData.svelte";
 
   // *** GRAPHICS
   import ReadIcon from "../Graphics/ReadIcon.svelte";
@@ -143,6 +144,8 @@
 <div class="single {title}" in:fade use:links>
 
   {#await single then single}
+
+    <MetaData post={{ title: toPlainText(single.title) }} />
 
     {#if get(single, 'slideshow.length', 0) > 0}
       <div class="slideshow-container">

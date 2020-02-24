@@ -88,7 +88,7 @@
     }
 
     .list-item {
-      margin-bottom: 20px;
+      margin-bottom: 60px;
       display: inline-block;
       width: 100%;
       cursor: pointer;
@@ -100,7 +100,7 @@
 
       .date {
         text-align: center;
-        margin-bottom: $line-height * 3;
+        // margin-bottom: $line-height * 3;
       }
 
       .artist {
@@ -196,7 +196,7 @@
         {/if}
 
         <!-- TEXT -->
-        {#if $isAri || $isAriel}
+        {#if item.content}
           <div class="text">
             {@html renderBlockText(item.content)}
           </div>

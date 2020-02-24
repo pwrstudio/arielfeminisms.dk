@@ -417,6 +417,9 @@
     font-weight: 200;
     color: white;
     font-family: $font-stack-ygrg-regular;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 
   .buttons {

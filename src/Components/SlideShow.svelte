@@ -29,9 +29,6 @@
     ? {
         prevNextButtons: false,
         pageDots: false
-        // selectedAttraction: 0.2,
-        // friction: 0.9,
-        // wrapAround: true
       }
     : {
         prevNextButtons: true,
