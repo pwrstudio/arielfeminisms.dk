@@ -413,7 +413,7 @@
   }
 
   .filter {
-    margin-bottom: $line-height * 2;
+    margin-bottom: $line-height;
     width: 400px;
     max-width: 90%;
     position: relative;
@@ -440,7 +440,31 @@
       top: $line-height * 0.5;
       width: $line-height * 1.5;
       height: $line-height * 1.5;
+      cursor: pointer;
+      transition: none;
+      &:hover {
+        transition: transform 0.2s ease-out;
+        transform: scale(1.05);
+      }
     }
+
+    .filter-clear {
+      position: absolute;
+      right: $line-height * 0.5;
+      top: $line-height * 0.5;
+      width: $line-height * 1.5;
+      height: $line-height * 1.5;
+      cursor: pointer;
+      transition: none;
+      &:hover {
+        transition: transform 0.2s ease-out;
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .text-counter {
+    margin-bottom: $line-height;
   }
 </style>
 
@@ -518,9 +542,28 @@
                 bind:value={queryTextsFilter}
                 on:keyup={filterTexts}
                 placeholder="Search in the YGRG Archive..." />
-              <div on:click={filterTexts} class="filter-icon">
-                <SubmitArrow />
-              </div>
+              {#if queryTextsFilter.length == 0}
+                <div on:click={filterTexts} class="filter-icon">
+                  <SubmitArrow />
+                </div>
+              {/if}
+
+              {#if queryTextsFilter.length > 0}
+                <div
+                  on:click={() => {
+                    queryTextsFilter = '';
+                    filterTexts();
+                  }}
+                  class="filter-clear">
+                  <Cross />
+                </div>
+              {/if}
+            </div>
+
+            <div class="text-counter">
+              {#if queryTextsFilter.length > 0}
+                {filteredTexts.length} found matching '{queryTextsFilter}'
+              {:else}{filteredTexts.length} texts in Archive{/if}
             </div>
 
             <div class="tile-container" use:links>
