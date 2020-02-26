@@ -115,6 +115,10 @@
     text-align: center;
     font-family: $font-stack-ygrg-extended;
     font-size: $font-size-large;
+
+    @include screen-size("small") {
+      font-size: $font-size-mobile-large;
+    }
   }
 
   .caption {
@@ -134,9 +138,9 @@
     top: 20px;
 
     @include screen-size("small") {
-      height: 40px;
-      width: 40px;
-      top: 15px;
+      height: 30px;
+      width: 30px;
+      top: 12px;
     }
   }
 </style>
