@@ -41,7 +41,7 @@
   .top-bar {
     position: fixed;
     top: 0;
-    height: 80px;
+    height: 60px;
     width: 100vw;
     background: $grey;
     border-bottom: $line-style;
@@ -55,7 +55,7 @@
       height: 100%;
       width: 100%;
       text-align: center;
-      line-height: 80px;
+      line-height: 60px;
 
       .active {
         border-bottom: $line-style;
@@ -65,7 +65,7 @@
 
   .hamburger {
     position: absolute;
-    top: 15px;
+    top: 5px;
     left: 20px;
 
     transition: transform 0.3s $easing;
@@ -85,16 +85,16 @@
 
   .mobile-menu {
     position: fixed;
-    top: 80px;
+    top: 60px;
     width: 100vw;
   }
 
   .mobile-menu-item {
     display: block;
-    height: 80px;
+    height: 60px;
     width: 100vw;
     text-align: center;
-    line-height: 80px;
+    line-height: 60px;
     border-bottom: $line-style;
     cursor: pointer;
     background: $grey;
@@ -107,7 +107,7 @@
   .close {
     position: absolute;
     left: 26px;
-    top: 26px;
+    top: 16px;
     font-size: $font-size-large;
     height: 26px;
     width: 26px;
