@@ -282,6 +282,8 @@
       .text {
         margin-right: 30px;
         margin-left: 30px;
+        padding-top: 40px;
+
         @include screen-size("small") {
           padding-top: 40px;
           margin-right: 20px;
@@ -291,9 +293,12 @@
     }
 
     .bottom-text {
-      margin-top: $line-height;
+      position: absolute;
+      top: calc(100% - 110px);
+      padding-top: $line-height;
       text-align: center;
       margin-bottom: $line-height * 4;
+      width: 100%;
       @include screen-size("small") {
         font-size: $font-size-mobile-medium;
       }

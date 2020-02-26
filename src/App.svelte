@@ -286,6 +286,12 @@
       margin: 0;
     }
   }
+
+  .bottom-text {
+    p {
+      margin: 0;
+    }
+  }
 </style>
 
 <main>
