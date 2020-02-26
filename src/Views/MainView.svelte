@@ -141,9 +141,6 @@
 
       &.left {
         left: 0;
-        @include screen-size("small") {
-          // background: orange;
-        }
       }
 
       &.right {
@@ -161,21 +158,22 @@
         @include screen-size("small") {
           margin-right: 10px;
           margin-left: 10px;
-          margin-top: 40px;
+          margin-top: 20px;
         }
       }
 
       .bottom-meta {
         position: fixed;
         bottom: 40px;
-        left: 0;
-        width: 50vw;
+        left: 80px;
+        width: calc(50vw - 80px);
         margin-top: 30px;
         text-align: center;
 
         @include screen-size("small") {
           bottom: 90px;
-          width: 100%;
+          width: calc(100vw - 20px);
+          left: 10px;
         }
       }
     }

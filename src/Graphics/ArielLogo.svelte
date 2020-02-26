@@ -13,12 +13,14 @@
     display: block;
     width: 100%;
     max-width: 450px;
+    max-height: calc(100vh - 180px);
     margin-left: auto;
     margin-right: auto;
 
     @include screen-size("small") {
       width: 95%;
       max-width: 400px;
+      max-height: calc(100vh - 280px);
     }
   }
 </style>
