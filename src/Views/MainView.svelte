@@ -94,6 +94,11 @@
     {}
   );
 
+  const latestEvent = loadData(
+    '*[_type == "event"][0]{"slug": slug.current}',
+    {}
+  );
+
   // ABOUT
   let aboutQuery = "";
   if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]';
@@ -632,7 +637,11 @@
             {/if}
           {/if}
           {#if $isYGRG}
-            <div class="left">YGRG ARCHIVE</div>
+            <div class="left">
+              {#await latestEvent then latestEvent}
+                <a href="/ygrg/events/{latestEvent.slug}">YGRG ARCHIVE</a>
+              {/await}
+            </div>
             {#if slug}
               <div class="right">
                 <a href="/ygrg/events" class="close">
