@@ -88,7 +88,7 @@
         passwordUp = "";
         nameUp = "";
         msgSignIn =
-          "Account created. Sign in with your email and password below.";
+          "A confirmation email has been sent to your address. Please click the link in the email to activate your account.";
       })
       .catch(err => {
         processing = false;

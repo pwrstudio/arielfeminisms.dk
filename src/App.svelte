@@ -6,7 +6,7 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { Router, Route, links } from "svelte-routing";
+  import { Router, Route, links, navigate } from "svelte-routing";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import * as Cookies from "es-cookie";
@@ -33,6 +33,20 @@
   import TextView from "./Views/TextView.svelte";
 
   const userCookie = Cookies.get("ygrgLoggedInUser");
+
+  if (window.location.hash) {
+    console.log(window.location.hash);
+    const confirmationToken = window.location.hash.substring(20);
+    console.log(confirmationToken);
+
+    auth
+      .confirm(confirmationToken)
+      .then(response => {
+        console.log("Confirmation email sent", JSON.stringify({ response }));
+        navigate("/ygrg/profile/");
+      })
+      .catch(e => console.log(e));
+  }
 
   if (userCookie) {
     console.dir(userCookie);
