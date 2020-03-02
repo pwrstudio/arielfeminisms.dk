@@ -445,21 +445,39 @@
       background: rgba(40, 40, 40, 1);
     }
   }
+
+  .pop-over {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    background: $grey;
+    width: 500px;
+    max-width: 90vw;
+    padding: 20px;
+    padding-bottom: 40px;
+
+    p {
+      text-align: center;
+      font-family: $font-stack-ygrg-extended;
+      font-size: $font-size-large;
+    }
+  }
 </style>
 
 <div class="text-view" use:links>
 
-  {#await text then text}
+  {#if $loggedInUser}
+    {#await text then text}
 
-    <MetaData post={text} />
+      <MetaData post={text} />
 
-    <div class="title">{text.title}</div>
+      <div class="title">{text.title}</div>
 
-    <div class="comment-container">
+      <div class="comment-container">
 
-      <!-- <button on:click={getSelection}>Get selection</button> -->
-      <div class="comment">
-        {#if $loggedInUser}
+        <!-- <button on:click={getSelection}>Get selection</button> -->
+        <div class="comment">
           <textarea
             class:disabled={!$loggedInUser}
             bind:value={newComment}
@@ -475,103 +493,106 @@
             on:click={submitComment}>
             Send comment
           </button>
-        {:else}
-          <a href="/ygrg/profile" class="black-button">Sign in to comment</a>
+        </div>
+
+        <div class="comment-list">
+          {#await comments then comments}
+
+            {#each comments as c}
+              <Comment
+                on:goto={goToPage}
+                commentId={c._id}
+                authorId={c.authorId}
+                authorName={c.authorName}
+                date={c._createdAt}
+                location={c.location}
+                content={c.content} />
+            {/each}
+
+          {/await}
+
+        </div>
+
+      </div>
+
+      <div class="blur" />
+
+      {#await texts then texts}
+        <div class="text-navigation">
+          <SlideShow slideArray={texts} isTextNavigation={true} />
+        </div>
+      {/await}
+
+      <div class="pdf-viewer">
+        <iframe
+          title={text.title}
+          bind:this={pdfViewerIframe}
+          src={'/pdfjs/web/viewer.html?file=' + encodeURIComponent(text.pdfFile) + '#page=1&zoom=page-width'} />
+      </div>
+
+      <div class="menu-bar">
+        {#if currentPage && totalPages}
+          <div class="page-info">{currentPage} / {totalPages}</div>
         {/if}
-      </div>
 
-      <div class="comment-list">
-        {#await comments then comments}
+        <!-- DOWNLOAD -->
+        <div class="buttons">
 
-          {#each comments as c}
-            <Comment
-              on:goto={goToPage}
-              commentId={c._id}
-              authorId={c.authorId}
-              authorName={c.authorName}
-              date={c._createdAt}
-              location={c.location}
-              content={c.content} />
-          {/each}
+          <a
+            href={text.pdfFile}
+            target="_blank"
+            download={slug}
+            class="menu-bar-item download">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.6 23.32">
+              <polygon
+                class="cls-1"
+                points="4.76 0 4.8 18.91 2.57 17 0.04 17.03 5.76 21.71 0.02
+                21.67 0 23.32 11.58 23.24 11.6 21.75 5.78 21.69 11.58 17.09 9.09
+                17.07 6.75 18.91 6.69 0.02 4.76 0" />
+            </svg>
+          </a>
 
-        {/await}
-
-      </div>
-
-    </div>
-
-    <div class="blur" />
-
-    {#await texts then texts}
-      <div class="text-navigation">
-        <SlideShow slideArray={texts} isTextNavigation={true} />
-      </div>
-    {/await}
-
-    <div class="pdf-viewer">
-      <iframe
-        title={text.title}
-        bind:this={pdfViewerIframe}
-        src={'/pdfjs/web/viewer.html?file=' + encodeURIComponent(text.pdfFile) + '#page=1&zoom=page-width'} />
-    </div>
-
-    <div class="menu-bar">
-      {#if currentPage && totalPages}
-        <div class="page-info">{currentPage} / {totalPages}</div>
-      {/if}
-
-      <!-- DOWNLOAD -->
-      <div class="buttons">
-
-        <a
-          href={text.pdfFile}
-          target="_blank"
-          download={slug}
-          class="menu-bar-item download">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.6 23.32">
-            <polygon
-              class="cls-1"
-              points="4.76 0 4.8 18.91 2.57 17 0.04 17.03 5.76 21.71 0.02 21.67
-              0 23.32 11.58 23.24 11.6 21.75 5.78 21.69 11.58 17.09 9.09 17.07
-              6.75 18.91 6.69 0.02 4.76 0" />
-          </svg>
-        </a>
-
-        <div
-          class="menu-bar-item bookmark"
-          class:disabled={!$loggedInUser}
-          class:marked
-          on:click={submitBookmark}>
-          <!-- BOOKMARK -->
-          <svg
-            class="bookmark"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlns:xlink="http://www.w3.org/1999/xlink"
-            viewBox="0 0 14.07 23.74">
-            <defs>
-              <clipPath id="clip-path" transform="translate(0 0)">
-                <rect class="cls-1" width="14.07" height="23.74" />
-              </clipPath>
-            </defs>
-            <g id="Layer_2" data-name="Layer 2">
-              <g id="Layer_1-2" data-name="Layer 1">
-                <g class="cls-2">
-                  <polygon
-                    class="cls-3"
-                    points="0.75 0.75 0.75 22.2 6.95 17.35 13.32 22.2 13.32 0.75
-                    0.75 0.75" />
+          <div
+            class="menu-bar-item bookmark"
+            class:disabled={!$loggedInUser}
+            class:marked
+            on:click={submitBookmark}>
+            <!-- BOOKMARK -->
+            <svg
+              class="bookmark"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              viewBox="0 0 14.07 23.74">
+              <defs>
+                <clipPath id="clip-path" transform="translate(0 0)">
+                  <rect class="cls-1" width="14.07" height="23.74" />
+                </clipPath>
+              </defs>
+              <g id="Layer_2" data-name="Layer 2">
+                <g id="Layer_1-2" data-name="Layer 1">
+                  <g class="cls-2">
+                    <polygon
+                      class="cls-3"
+                      points="0.75 0.75 0.75 22.2 6.95 17.35 13.32 22.2 13.32
+                      0.75 0.75 0.75" />
+                  </g>
                 </g>
               </g>
-            </g>
-          </svg>
+            </svg>
+          </div>
         </div>
       </div>
+
+      <a href="/ygrg" class="close">
+        <Cross />
+      </a>
+
+    {/await}
+  {:else}
+    <div class="pop-over">
+      <p>Please sign in to read the text and comment</p>
+      <a href="/ygrg/profile" class="black-button">Sign in</a>
     </div>
-
-    <a href="/ygrg" class="close">
-      <Cross />
-    </a>
-
-  {/await}
+  {/if}
 
 </div>
