@@ -58,10 +58,10 @@
     }
 
     .bookmark {
-      height: 15px;
+      height: 10px;
       position: absolute;
-      top: 5px;
-      right: 5px;
+      top: 3px;
+      right: 3px;
 
       @include screen-size("small") {
         display: none;
