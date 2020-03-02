@@ -32,8 +32,8 @@
   .tile {
     border: $line-style;
     border-radius: 8px;
-    height: 150px;
-    width: 150px;
+    height: 140px;
+    width: 140px;
     display: block;
     float: left;
     margin-right: 8px;

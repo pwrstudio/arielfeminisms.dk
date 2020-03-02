@@ -451,7 +451,7 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    background: $grey;
+    // background: $grey;
     width: 500px;
     max-width: 90vw;
     padding: 20px;
