@@ -150,7 +150,7 @@
         <a href="/ari" class:active={$isAri}>ARI.</a>
       {/if}
       {#if $isYGRG}
-        <a href="/ygrg">YGRG ARCHIVE</a>
+        <a href="/ygrg">YGRG EVENT ARCHIVE</a>
       {/if}
 
     </div>

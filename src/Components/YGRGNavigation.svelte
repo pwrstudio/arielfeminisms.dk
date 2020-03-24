@@ -156,5 +156,5 @@
       </div>
     {/if}
   </MediaQuery>
-  <div class="inner">YGRG Archive</div>
+  <div class="inner">YGRG EVENT AARCHIVE</div>
 </div>

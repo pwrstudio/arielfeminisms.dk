@@ -639,7 +639,7 @@
           {#if $isYGRG}
             <div class="left">
               {#await latestEvent then latestEvent}
-                <a href="/ygrg/events/{latestEvent.slug}">YGRG ARCHIVE</a>
+                <a href="/ygrg/events/{latestEvent.slug}">YGRG EVENT ARCHIVE</a>
               {/await}
             </div>
             {#if slug}
