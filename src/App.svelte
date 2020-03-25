@@ -317,6 +317,26 @@
       }
     }
   }
+
+  .avatar-dropzone {
+    font-size: $font-size-medium;
+    width: 150px;
+    outline: none;
+    line-height: $line-height;
+    height: 150px;
+    line-height: 140px;
+    text-align: center;
+    padding: 5px;
+    border-radius: 5px;
+    background: $brown;
+    border: 2px solid white;
+    color: white;
+    margin-bottom: $line-height;
+  }
+
+  .avatar-dropzone-hover {
+    background: $red;
+  }
 </style>
 
 <main>

@@ -11,6 +11,17 @@
   import { fade } from "svelte/transition";
   import * as Cookies from "es-cookie";
   import get from "lodash/get";
+  import Dropzone from "svelte-dropzone";
+
+  const addedfile = file => {
+    console.log(file);
+  };
+
+  const drop = event => {
+    console.log(event);
+  };
+
+  const init = () => console.log("dropzone init ! 😍");
 
   // *** GLOBALS
   import { auth } from "../global.js";
@@ -40,9 +51,11 @@
   let msgSignIn = false;
   let signUpActive = false;
   let signUpMessage = false;
+  let myDropzone = {};
 
   // *** DOM REFERENCES
   let bioEl = {};
+  let uploadEl = {};
 
   const signIn = () => {
     processing = true;
@@ -250,7 +263,7 @@
       outline: none;
       line-height: $line-height;
       height: 200px;
-      line-height: 200px;
+      // line-height: 200px;
       text-align: center;
       padding: 5px;
       border-radius: 5px;
@@ -262,6 +275,48 @@
       @include screen-size("small") {
         display: none;
       }
+    }
+
+    // .avatar-upload {
+    //   background: red;
+    //   font-size: $font-size-medium;
+    //   width: auto;
+    //   outline: none;
+    //   line-height: $line-height;
+    //   height: auto;
+    //   text-align: center;
+    //   padding: 5px;
+    //   border-radius: 5px;
+    //   background: $brown;
+    //   border: 2px solid white;
+    //   color: white;
+
+    //   @include screen-size("small") {
+    //     display: none;
+    //   }
+    // }
+
+    .avatar-upload {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+    }
+
+    .avatar-upload-label {
+      font-size: 1.25em;
+      font-weight: 700;
+      color: white;
+      background-color: black;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .inputfile:focus + label,
+    .inputfile + label:hover {
+      background-color: red;
     }
 
     .profile-picture-section {
@@ -383,7 +438,7 @@
         </fieldset>
         <fieldset>
           {#if !processing}
-            <button on:click={signIn}>Sign In</button>
+            <div class="action" on:click={signIn}>Sign In</div>
           {:else}
             <div class="loading">
               <Ellipse />
@@ -391,16 +446,17 @@
           {/if}
         </fieldset>
         <fieldset>
-          <!-- <button class="small">Recover password</button> -->
+          <!-- <div class='action' class="small">Recover password</div> -->
         </fieldset>
         {#if !processing}
           <fieldset>
-            <button
+            <div
+              class="action"
               on:click={() => {
                 signUpActive = true;
               }}>
               Create account
-            </button>
+            </div>
           </fieldset>
         {/if}
       </form>
@@ -440,7 +496,7 @@
         </fieldset>
         <fieldset>
           {#if !processing}
-            <button on:click={signUp}>Sign up</button>
+            <div class="action" on:click={signUp}>Sign up</div>
           {:else}
             <div class="loading">
               <Ellipse />
@@ -460,7 +516,14 @@
         </div>
 
         <div class="profile-picture-section">
-          <div class="profile-picture">Upload avatar</div>
+          <!-- <div class="profile-picture" /> -->
+          <Dropzone
+            dropzoneClass="avatar-dropzone"
+            hooveringClass="avatar-dropzone-hover"
+            dropzoneEvents={{ addedfile, drop, init }}
+            options={{ url: 'https://arielfeminisms.netlify.com/.netlify/functions/avatar', clickable: true, acceptedFiles: 'image/*', resizeWidth: 40, resizeHeight: 40, init }}>
+            Upload Image
+          </Dropzone>
         </div>
 
         <fieldset>
