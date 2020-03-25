@@ -12,16 +12,7 @@
   import * as Cookies from "es-cookie";
   import get from "lodash/get";
   import Dropzone from "svelte-dropzone";
-
-  const addedfile = file => {
-    console.log(file);
-  };
-
-  const drop = event => {
-    console.log(event);
-  };
-
-  const init = () => console.log("dropzone init ! 😍");
+  import resizebase64 from "resize-base64";
 
   // *** GLOBALS
   import { auth } from "../global.js";
@@ -95,7 +86,8 @@
       .signup(emailUp, passwordUp, {
         name: nameUp,
         bookmarks: [],
-        biography: ""
+        biography: "",
+        avatar: ""
       })
       .then(response => {
         // RESET
@@ -136,6 +128,8 @@
 
     if (!user) return false;
 
+    console.dir(user);
+
     const newBiography = bioEl.value;
 
     user
@@ -149,6 +143,33 @@
         throw error;
       });
   };
+
+  const addedfile = file => {
+    console.dir(file);
+    // const user = auth.currentUser();
+    // console.dir($loggedInUser);
+    // if (!user) return false;
+    // setTimeout(() => {
+    //   const scaledImage = resizebase64(file.dataURL, 130, 130);
+    //   console.dir(scaledImage);
+    //   user
+    //     .update({ data: { avatar: scaledImage } })
+    //     .then(user => {
+    //       console.log("Updated user avatar %s", user);
+    //       console.dir(user);
+    //     })
+    //     .catch(error => {
+    //       console.log("Failed to update user: %o", error);
+    //       throw error;
+    //     });
+    // }, 1000);
+  };
+
+  // const drop = event => {
+  //   console.log(event);
+  // };
+
+  const init = () => console.log("dropzone init ! 😍");
 </script>
 
 <style lang="scss">
@@ -516,12 +537,14 @@
         </div>
 
         <div class="profile-picture-section">
-          <!-- <div class="profile-picture" /> -->
+          <div class="profile-picture">
+            <img src={$loggedInUser.user_metadata.avatar} />
+          </div>
           <Dropzone
             dropzoneClass="avatar-dropzone"
             hooveringClass="avatar-dropzone-hover"
-            dropzoneEvents={{ addedfile, drop, init }}
-            options={{ url: 'https://arielfeminisms.netlify.com/.netlify/functions/avatar', clickable: true, acceptedFiles: 'image/*', resizeWidth: 40, resizeHeight: 40, init }}>
+            dropzoneEvents={{ addedfile, init }}
+            options={{ url: 'https://arielfeminisms.netlify.com/.netlify/functions/avatar/?id=' + $loggedInUser.id, clickable: true, acceptedFiles: 'image/*', resizeWidth: 40, resizeHeight: 40, init }}>
             Upload Image
           </Dropzone>
         </div>
