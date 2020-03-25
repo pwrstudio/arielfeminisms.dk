@@ -9,9 +9,6 @@ export const auth = new GoTrue({
 
 export const formattedDate = (start, end) => {
 
-    console.dir(start)
-    console.dir(end)
-
     const startDate = Date.parse(start);
 
     if (!end) {

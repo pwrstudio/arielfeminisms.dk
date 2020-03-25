@@ -280,9 +280,6 @@
         margin-left: 5px;
       }
 
-      &.download {
-      }
-
       &.print {
       }
 
@@ -323,8 +320,6 @@
     background: $brown;
     padding-bottom: 10px;
     padding-top: 10px;
-
-    // box-shadow: 0px 0px 10px 10px $brown;
 
     @include screen-size("small") {
       display: none;
@@ -451,7 +446,6 @@
     top: 50%;
     left: 50%;
     transform: translateX(-50%) translateY(-50%);
-    // background: $grey;
     width: 500px;
     max-width: 90vw;
     padding: 20px;

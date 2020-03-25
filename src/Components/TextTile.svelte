@@ -19,8 +19,7 @@
   export let slug = "";
   export let date = "";
   export let id = "";
-
-  $: marked = get($loggedInUser, "user_metadata.bookmarks", []).includes(id);
+  export let marked = false;
 
   const formattedDuration = date =>
     formatDistanceToNow(Date.parse(date), { addSuffix: true });

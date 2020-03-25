@@ -12,7 +12,9 @@
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import Fuse from "fuse.js";
+  import get from "lodash/get";
 
+  // *** GLOBALS
   import { formattedDate } from "../global.js";
 
   // *** COMPONENTS
@@ -474,6 +476,11 @@
   .text-counter {
     margin-bottom: $line-height;
   }
+
+  .tile-container {
+    display: inline-block;
+    padding-bottom: 60px;
+  }
 </style>
 
 <MetaData post={{ title: title.toUpperCase() }} />
@@ -575,12 +582,25 @@
             </div>
 
             <div class="tile-container" use:links>
-              {#each filteredTexts as t}
+              {#each filteredTexts.filter(text =>
+                get($loggedInUser, 'user_metadata.bookmarks', []).includes(
+                  text._id
+                )
+              ) as t}
                 <TextTile
                   id={t._id}
                   title={t.title}
                   slug={t.slug.current}
-                  date={t._createdAt} />
+                  date={t._createdAt}
+                  marked={true} />
+              {/each}
+              {#each filteredTexts.filter(text => !get($loggedInUser, 'user_metadata.bookmarks', []).includes(text._id)) as t}
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt}
+                  marked={false} />
               {/each}
             </div>
           {/if}
