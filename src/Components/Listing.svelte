@@ -14,6 +14,7 @@
   import { format, getYear } from "date-fns";
   import Fuse from "fuse.js";
 
+  // *** GLOBALS
   import { formattedDate } from "../global.js";
 
   // *** COMPONENTS

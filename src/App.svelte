@@ -16,6 +16,7 @@
   import YGRGNavigation from "./Components/YGRGNavigation.svelte";
   import TopBar from "./Components/TopBar.svelte";
 
+  // *** GLOBALS
   import { auth } from "./global.js";
 
   // *** STORES

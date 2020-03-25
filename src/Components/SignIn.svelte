@@ -12,6 +12,7 @@
   import * as Cookies from "es-cookie";
   import get from "lodash/get";
 
+  // *** GLOBALS
   import { auth } from "../global.js";
 
   // *** GRAPHICS
@@ -39,6 +40,9 @@
   let msgSignIn = false;
   let signUpActive = false;
   let signUpMessage = false;
+
+  // *** DOM REFERENCES
+  let bioEl = {};
 
   const signIn = () => {
     processing = true;
@@ -113,6 +117,25 @@
         throw error;
       });
   };
+
+  const updateProfile = () => {
+    const user = auth.currentUser();
+
+    if (!user) return false;
+
+    const newBiography = bioEl.value;
+
+    user
+      .update({ data: { biography: newBiography } })
+      .then(user => {
+        console.log("Updated user biography %s", user);
+        console.dir(user);
+      })
+      .catch(error => {
+        console.log("Failed to update user: %o", error);
+        throw error;
+      });
+  };
 </script>
 
 <style lang="scss">
@@ -160,7 +183,7 @@
       }
     }
 
-    button {
+    .action {
       background: black;
       width: 100%;
       height: 60px;
@@ -173,6 +196,7 @@
       outline: none;
       font-family: $font-stack-ariel;
       font-size: $font-size-medium;
+      user-select: none;
 
       &.small {
         width: 200px;
@@ -279,6 +303,11 @@
         opacity: 0.5;
       }
 
+      &.read-only {
+        pointer-events: none;
+        background: $accent-grey;
+      }
+
       @include screen-size("small") {
         border: 1px solid black;
       }
@@ -309,8 +338,16 @@
     }
   }
 
-  .read-only {
-    pointer-events: none;
+  .danger-zone {
+    background: black;
+    width: 200px;
+    float: right;
+    height: 2px;
+    line-height: 60px;
+
+    @include screen-size("small") {
+      height: 1px;
+    }
   }
 </style>
 
@@ -443,16 +480,28 @@
 
           <div class="profile-section">
             <label>Biography</label>
-            <textarea />
+            <textarea
+              bind:this={bioEl}
+              value={$loggedInUser.user_metadata.biography} />
           </div>
         </fieldset>
 
         <fieldset>
-          <button class="small" on:click={logOut}>Sign out</button>
+          <div class="action small" on:click={updateProfile}>
+            Update Biography
+          </div>
         </fieldset>
 
         <fieldset>
-          <button class="small">Delete Account</button>
+          <div class="danger-zone" />
+        </fieldset>
+
+        <fieldset>
+          <div class="action small" on:click={logOut}>Sign out</div>
+        </fieldset>
+
+        <fieldset>
+          <div class="action small">Delete Account</div>
         </fieldset>
 
       </form>

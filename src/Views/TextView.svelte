@@ -13,6 +13,7 @@
   import { format, getYear } from "date-fns";
   import get from "lodash/get";
 
+  // *** GLOBALS
   import { auth } from "../global.js";
 
   // *** GRAPHICS
