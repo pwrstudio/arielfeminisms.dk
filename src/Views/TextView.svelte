@@ -27,8 +27,6 @@
   // *** STORES
   import { isText, isYGRG, isAriel, isAri, loggedInUser } from "../stores.js";
 
-  const texts = loadData('*[_type in [ "ygrgText"]]', {});
-
   // Set globals
   isText.set(true);
   isAriel.set(false);
@@ -81,9 +79,11 @@
   // }
 
   const text = loadData(
-    "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title}",
+    "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title, relatedTexts[]->{title, image, slug}}",
     { slug: slug }
   );
+
+  console.dir(text);
 
   const getCurrentPage = () => {
     if (pdfViewerIframe) {
@@ -120,6 +120,8 @@
     // HACK
     setInterval(getCurrentPage, 200);
     setInterval(getTotalPages, 2000);
+
+    console.dir(t);
 
     // LOGIC
     submitComment = () => {
@@ -509,13 +511,12 @@
 
       </div>
 
-      <div class="blur" />
-
-      {#await texts then texts}
+      {#if text.relatedTexts}
+        <div class="blur" />
         <div class="text-navigation">
-          <SlideShow slideArray={texts} isTextNavigation={true} />
+          <SlideShow slideArray={text.relatedTexts} isTextNavigation={true} />
         </div>
-      {/await}
+      {/if}
 
       <div class="pdf-viewer">
         <iframe
