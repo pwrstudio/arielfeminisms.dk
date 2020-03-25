@@ -12,7 +12,6 @@
   import * as Cookies from "es-cookie";
   import get from "lodash/get";
   import Dropzone from "svelte-dropzone";
-  import resizebase64 from "resize-base64";
 
   // *** GLOBALS
   import { auth } from "../global.js";
@@ -544,7 +543,7 @@
             dropzoneClass="avatar-dropzone"
             hooveringClass="avatar-dropzone-hover"
             dropzoneEvents={{ addedfile, init }}
-            options={{ url: 'https://arielfeminisms.netlify.com/.netlify/functions/avatar/?id=' + $loggedInUser.id, clickable: true, acceptedFiles: 'image/*', resizeWidth: 40, resizeHeight: 40, init }}>
+            options={{ url: 'https://arielfeminisms.netlify.com/.netlify/functions/avatar/?id=' + $loggedInUser.id, clickable: true, acceptedFiles: 'image/*', resizeWidth: 200, resizeHeight: 200, init }}>
             Upload Image
           </Dropzone>
         </div>
