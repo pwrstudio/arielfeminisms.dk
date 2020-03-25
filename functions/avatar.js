@@ -19,11 +19,11 @@ exports.handler = function (event, context, callback) {
     const id = get(event, 'queryStringParameters.id', false)
 
     // console.log(user)
-    console.dir(event.body)
+    console.dir(event)
     console.log(id)
 
     client.assets
-        .upload('image', event.body, { filename: id + '.jpg' })
+        .upload('image', event.body, { contentType: 'image/jpeg', filename: id + '.jpg' })
         .then(document => {
             console.dir(document)
 
@@ -47,7 +47,6 @@ exports.handler = function (event, context, callback) {
                 });
             })
         })
-
         .catch(error => {
             console.error('Upload failed:', error.message)
             callback(
