@@ -56,16 +56,100 @@
       font-size: $font-size-mobile-medium;
     }
 
+    .bottom-text {
+      padding-top: $line-height * 2;
+      width: 100%;
+      // background: lightgreen;
+
+      @include screen-size("small") {
+        padding-top: $line-height;
+        bottom: 100px;
+      }
+
+      .title {
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: $line-height;
+        width: 90%;
+        max-width: 50ch;
+
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .date {
+        text-transform: uppercase;
+        text-align: center;
+        margin-bottom: $line-height;
+        width: 90%;
+        max-width: 50ch;
+
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .artist {
+        text-transform: uppercase;
+        margin-top: 20px;
+        text-align: center;
+        width: 90%;
+        max-width: 50ch;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .text {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
     &.ariel {
       font-family: $font-stack-ariel;
-
-      .bottom-text {
-        text-transform: uppercase;
-      }
     }
 
     &.ygrg {
       font-family: $font-stack-ygrg-extended;
+
+      .bottom-text {
+        padding-top: $line-height * 2;
+        width: 100%;
+        // background: lightgreen;
+
+        @include screen-size("small") {
+          padding-top: $line-height;
+
+          bottom: 100px;
+        }
+
+        .title {
+          text-align: center;
+          margin-bottom: $line-height;
+          width: 90%;
+          max-width: 30ch;
+        }
+
+        .date {
+          text-align: center;
+          margin-bottom: $line-height;
+          width: 90%;
+          max-width: 30ch;
+        }
+
+        .artist {
+          margin-top: 20px;
+          text-align: center;
+          width: 90%;
+          max-width: 30ch;
+        }
+
+        .text {
+          text-align: center;
+          width: 90%;
+          max-width: 30ch;
+        }
+      }
     }
 
     @include screen-size("small") {
@@ -85,55 +169,8 @@
     @include screen-size("small") {
       width: 100%;
       margin-left: unset;
-      height: 40vh;
+      height: 30vh;
       margin-bottom: 40px;
-    }
-  }
-
-  .bottom-text {
-    padding-top: $line-height * 2;
-    width: 100%;
-    // background: lightgreen;
-
-    @include screen-size("small") {
-      padding-top: $line-height;
-
-      bottom: 100px;
-    }
-
-    .title {
-      text-align: center;
-      margin-bottom: $line-height;
-      width: 90vw;
-      max-width: 30ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .date {
-      text-align: center;
-      margin-bottom: $line-height;
-      width: 90vw;
-      max-width: 30ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .artist {
-      margin-top: 20px;
-      text-align: center;
-      width: 90vw;
-      max-width: 30ch;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .text {
-      text-align: center;
-      width: 90vw;
-      max-width: 30ch;
-      margin-left: auto;
-      margin-right: auto;
     }
   }
 
@@ -190,7 +227,7 @@
       </div>
     {/if}
 
-    {#if single.slideshow}
+    {#if single.slideshow && single.slideshow[currentIndex]}
       {#if single.slideshow[currentIndex].textLink}
         <div class="text-link" in:fade>
           <a

@@ -108,16 +108,12 @@
           margin-bottom: $line-height * 0.5;
         }
 
-        width: 90vw;
-        max-width: 30ch;
         margin-left: auto;
         margin-right: auto;
       }
 
       .date {
         text-align: center;
-        width: 90vw;
-        max-width: 30ch;
         margin-left: auto;
         margin-right: auto;
       }
@@ -125,15 +121,11 @@
       .artist {
         text-align: center;
         text-transform: uppercase;
-        width: 90vw;
-        max-width: 30ch;
         margin-left: auto;
         margin-right: auto;
       }
 
       .text {
-        text-align: center;
-        max-width: 30ch;
         margin-left: auto;
         margin-right: auto;
       }
@@ -166,6 +158,27 @@
 
     &.ygrg {
       font-family: $font-stack-ygrg-extended;
+
+      .title {
+        width: 90%;
+        max-width: 30ch;
+      }
+
+      .date {
+        width: 90vw;
+        max-width: 30ch;
+      }
+
+      .artist {
+        width: 90%;
+        max-width: 30ch;
+      }
+
+      .text {
+        width: 90%;
+        max-width: 30ch;
+        text-align: center;
+      }
     }
   }
 

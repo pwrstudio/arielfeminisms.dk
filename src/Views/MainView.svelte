@@ -178,9 +178,12 @@
         text-align: center;
 
         @include screen-size("small") {
+          position: static;
           bottom: 90px;
           width: calc(100vw - 20px);
           left: 10px;
+          bottom: unset;
+          left: unset;
         }
       }
     }
@@ -268,8 +271,10 @@
     @include screen-size("small") {
       width: 100vw;
       top: 0px;
-      height: 100vh;
+      height: auto;
       transform: translateY(100%);
+      overflow-y: auto;
+      background: green;
     }
 
     .inner-container {
@@ -284,6 +289,7 @@
       @include screen-size("small") {
         width: 100%;
         font-size: $font-size-mobile-large;
+        height: 100vh;
       }
 
       .text {
@@ -292,7 +298,7 @@
         padding-top: 40px;
 
         @include screen-size("small") {
-          padding-top: 40px;
+          padding-top: 30px;
           margin-right: 20px;
           margin-left: 20px;
         }
@@ -303,11 +309,17 @@
       position: absolute;
       top: calc(100% - 110px);
       padding-top: $line-height;
+      padding-bottom: $line-height;
       text-align: center;
       margin-bottom: $line-height * 4;
       width: 100%;
+
       @include screen-size("small") {
+        padding-top: 0;
+        padding-bottom: 0;
         font-size: $font-size-mobile-medium;
+        position: static;
+        top: unset;
       }
     }
 
@@ -479,7 +491,7 @@
 
   .tile-container {
     display: inline-block;
-    padding-bottom: 60px;
+    padding-bottom: 120px;
   }
 </style>
 
@@ -695,11 +707,12 @@
         <div class="text">
           {@html renderBlockText(about.content)}
         </div>
-      </div>
 
-      <!-- BOTTOM TEXT -->
-      <div class="bottom-text">
-        {@html renderBlockText(about.bottomText)}
+        <!-- BOTTOM TEXT -->
+        <div class="bottom-text">
+          {@html renderBlockText(about.bottomText)}
+        </div>
+
       </div>
 
       <div

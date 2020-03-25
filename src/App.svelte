@@ -301,15 +301,20 @@
     }
   }
 
-  .bottom-text {
-    p {
-      margin: 0;
-    }
-  }
-
   p {
     margin-top: $line-height;
     margin-bottom: $line-height;
+  }
+
+  .about {
+    .bottom-text {
+      p {
+        margin: 0;
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
   }
 </style>
 
