@@ -592,6 +592,7 @@
                   title={t.title}
                   slug={t.slug.current}
                   date={t._createdAt}
+                  image={t.image}
                   marked={true} />
               {/each}
               {#each filteredTexts.filter(text => !get($loggedInUser, 'user_metadata.bookmarks', []).includes(text._id)) as t}
@@ -600,6 +601,7 @@
                   title={t.title}
                   slug={t.slug.current}
                   date={t._createdAt}
+                  image={t.image}
                   marked={false} />
               {/each}
             </div>

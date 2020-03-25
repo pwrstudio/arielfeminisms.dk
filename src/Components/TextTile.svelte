@@ -10,6 +10,7 @@
   import MediaQuery from "svelte-media-query";
   import { formatDistanceToNow } from "date-fns";
   import get from "lodash/get";
+  import { urlFor } from "../sanity.js";
 
   // *** STORES
   import { loggedInUser } from "../stores.js";
@@ -17,6 +18,7 @@
   // *** PROPS
   export let title = "";
   export let slug = "";
+  export let image = {};
   export let date = "";
   export let id = "";
   export let marked = false;
@@ -50,10 +52,6 @@
       height: 105px;
       width: 105px;
       padding-top: 15px;
-    }
-
-    &:hover {
-      background: $accent-grey;
     }
 
     .bookmark {
@@ -123,6 +121,20 @@
         display: none;
       }
     }
+
+    .image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    }
+
+    &:hover {
+      .image {
+        opacity: 1;
+        transition: opacity 0.4s $easing;
+      }
+    }
   }
 </style>
 
@@ -168,4 +180,12 @@
   <div class="preview">
     <span>Preview</span>
   </div>
+  <img
+    src={urlFor(image)
+      .height(140)
+      .width(140)
+      .quality(80)
+      .auto('format')
+      .url()}
+    class="image" />
 </a>
