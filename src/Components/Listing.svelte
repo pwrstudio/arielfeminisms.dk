@@ -43,9 +43,12 @@
 
   // *** VARIABLES
   let listing = "";
-  if ($isAriel) listing = loadData('*[_type in [ "program"]]', {});
-  if ($isAri) listing = loadData('*[_type in [ "reading"]]', {});
-  if ($isYGRG) listing = loadData('*[_type in [ "event"]]', {});
+  if ($isAriel)
+    listing = loadData('*[_type in [ "program"]] | order(startDate desc)', {});
+  if ($isAri)
+    listing = loadData('*[_type in [ "reading"]] | order(startDate desc)', {});
+  if ($isYGRG)
+    listing = loadData('*[_type in [ "event"]] | order(startDate desc)', {});
 
   let filteredListing = [];
 
