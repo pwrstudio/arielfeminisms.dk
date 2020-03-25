@@ -535,29 +535,14 @@
           <div class="page-info">{currentPage} / {totalPages}</div>
         {/if}
 
-        <!-- DOWNLOAD -->
         <div class="buttons">
 
-          <a
-            href={text.pdfFile}
-            target="_blank"
-            download={slug}
-            class="menu-bar-item download">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 11.6 23.32">
-              <polygon
-                class="cls-1"
-                points="4.76 0 4.8 18.91 2.57 17 0.04 17.03 5.76 21.71 0.02
-                21.67 0 23.32 11.58 23.24 11.6 21.75 5.78 21.69 11.58 17.09 9.09
-                17.07 6.75 18.91 6.69 0.02 4.76 0" />
-            </svg>
-          </a>
-
+          <!-- BOOKMARK -->
           <div
             class="menu-bar-item bookmark"
             class:disabled={!$loggedInUser}
             class:marked
             on:click={submitBookmark}>
-            <!-- BOOKMARK -->
             <svg
               class="bookmark"
               xmlns="http://www.w3.org/2000/svg"
