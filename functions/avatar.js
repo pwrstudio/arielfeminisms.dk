@@ -5,6 +5,8 @@
  */
 
 const get = require('lodash/get');
+const Base64_Blob = require('base64-blob')
+
 
 const sanityClient = require('@sanity/client')
 const client = sanityClient({
@@ -22,8 +24,14 @@ exports.handler = function (event, context, callback) {
     console.dir(event)
     console.log(id)
 
+    const imageBase64 = 'data:image/jpeg;base64,' + event.body;
+    const imageBlob = Base64_Blob.base64ToBlob(imageBase64)
+
+    console.dir(imageBase64)
+    console.dir(imageBlob)
+
     client.assets
-        .upload('image', event.body, { contentType: 'image/jpeg', filename: id + '.jpg' })
+        .upload('image', imageBlob, { contentType: 'image/jpeg', filename: id + '.jpg' })
         .then(document => {
             console.dir(document)
 
