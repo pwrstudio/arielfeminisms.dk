@@ -8,6 +8,10 @@ export const auth = new GoTrue({
 });
 
 export const formattedDate = (start, end) => {
+
+    console.dir(start)
+    console.dir(end)
+
     const startDate = Date.parse(start);
 
     if (!end) {
@@ -15,6 +19,10 @@ export const formattedDate = (start, end) => {
     }
 
     const endDate = Date.parse(end);
+
+    if (format(startDate, "dd.MM.yyyy") == format(endDate, "dd.MM.yyyy")) {
+        return format(startDate, "dd.MM.yyyy");
+    }
 
     const startFormat =
         getYear(startDate) == getYear(endDate) ? "dd.MM" : "dd.MM.yyyy";
