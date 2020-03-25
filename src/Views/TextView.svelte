@@ -536,7 +536,6 @@
         {/if}
 
         <div class="buttons">
-
           <!-- BOOKMARK -->
           <div
             class="menu-bar-item bookmark"
@@ -568,10 +567,6 @@
         </div>
       </div>
 
-      <a href="/ygrg" class="close">
-        <Cross />
-      </a>
-
     {/await}
   {:else}
     <div class="pop-over">
@@ -579,5 +574,9 @@
       <a href="/ygrg/profile" class="black-button">Sign in</a>
     </div>
   {/if}
+
+  <a href="/ygrg" class="close">
+    <Cross />
+  </a>
 
 </div>
