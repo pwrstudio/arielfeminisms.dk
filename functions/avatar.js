@@ -25,13 +25,13 @@ exports.handler = function (event, context, callback) {
     console.log(id)
 
     const imageBase64 = 'data:image/jpeg;base64,' + event.body;
-    const imageBlob = Base64_Blob.base64ToBlob(imageBase64)
+    // const imageBlob = Base64_Blob.base64ToBlob(imageBase64)
 
     console.dir(imageBase64)
-    console.dir(imageBlob)
+    // console.dir(imageBlob)
 
     client.assets
-        .upload('image', imageBlob, { contentType: 'image/jpeg', filename: id + '.jpg' })
+        .upload('image', imageBase64, { contentType: 'image/jpeg', filename: id + '.jpg' })
         .then(document => {
             console.dir(document)
 
