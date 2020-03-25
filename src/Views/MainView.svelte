@@ -488,7 +488,7 @@
 <div class="main-view" class:listing class:single in:fade>
 
   <!-- LEFT PANE -->
-  <MediaQuery query="(min-width: 700px)" let:matches>
+  <MediaQuery query="(min-width: 800px)" let:matches>
     {#if matches || (!listing && !single)}
       <div class="half left">
 
@@ -613,7 +613,7 @@
   </MediaQuery>
 
   <!-- RIGHT PANE -->
-  <MediaQuery query="(min-width: 700px)" let:matches>
+  <MediaQuery query="(min-width: 800px)" let:matches>
     {#if matches || (listing || single)}
       <div class="half right">
 

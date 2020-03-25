@@ -41,18 +41,18 @@
   @import "../variables.scss";
 
   .single {
+    display: inline-block;
     width: 100%;
-    height: calc(100vh - 80px);
-    height: 100vh;
+    height: auto;
     margin: 0;
     padding: 0;
-    padding-top: 20vh;
+    padding-bottom: 120px;
+    padding-top: 10vh;
     font-size: $font-size-medium;
+    // background: lightblue;
 
     @include screen-size("small") {
-      padding-top: 15vh;
-      width: 100%;
-      height: calc(100vh - 160px);
+      padding-top: 20px;
       font-size: $font-size-mobile-medium;
     }
 
@@ -76,48 +76,77 @@
 
   .slideshow-container {
     width: 90%;
-    height: 40vh;
+    height: 50vh;
+    max-height: 350px;
     margin-left: 5%;
+    margin-bottom: 50px;
+    // background: lightcoral;
 
     @include screen-size("small") {
       width: 100%;
       margin-left: unset;
-      height: 30vh;
+      height: 40vh;
+      margin-bottom: 40px;
     }
   }
 
   .bottom-text {
-    position: absolute;
-    bottom: 40px;
-    left: 0;
+    padding-top: $line-height * 2;
     width: 100%;
+    // background: lightgreen;
 
     @include screen-size("small") {
+      padding-top: $line-height;
+
       bottom: 100px;
     }
 
     .title {
       text-align: center;
+      margin-bottom: $line-height;
+      width: 90vw;
+      max-width: 30ch;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .date {
       text-align: center;
+      margin-bottom: $line-height;
+      width: 90vw;
+      max-width: 30ch;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .artist {
       margin-top: 20px;
       text-align: center;
+      width: 90vw;
+      max-width: 30ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .text {
+      text-align: center;
+      width: 90vw;
+      max-width: 30ch;
+      margin-left: auto;
+      margin-right: auto;
     }
   }
 
   .text-link {
-    padding-top: 40px;
+    margin-top: -10px;
+    margin-bottom: 10px;
     text-align: center;
     font-family: $font-stack-ygrg-extended;
-    font-size: $font-size-large;
+    font-size: $font-size-medium;
+    // background: lightyellow;
 
     @include screen-size("small") {
-      font-size: $font-size-mobile-large;
+      font-size: $font-size-mobile-medium;
     }
   }
 
@@ -131,11 +160,11 @@
   }
 
   .read-icon {
-    height: 50px;
-    width: 50px;
+    height: 40px;
+    width: 40px;
     display: inline-block;
     position: relative;
-    top: 20px;
+    top: 15px;
 
     @include screen-size("small") {
       height: 30px;
@@ -199,6 +228,12 @@
       {#if $isYGRG || $isAriel}
         <div class="date">
           {formattedDate(single.startDate, single.endDate)}
+        </div>
+      {/if}
+      <!-- TEXT -->
+      {#if single.content}
+        <div class="text">
+          {@html renderBlockText(single.content)}
         </div>
       {/if}
     </div>

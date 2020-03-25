@@ -248,7 +248,7 @@
   .flickity-page-dots {
     position: absolute;
     width: calc(100% - 40px);
-    bottom: -30px;
+    bottom: -25px;
     left: 20px;
     padding: 0;
     margin: 0;
@@ -306,6 +306,11 @@
       margin: 0;
     }
   }
+
+  p {
+    margin-top: $line-height;
+    margin-bottom: $line-height;
+  }
 </style>
 
 <main>
@@ -361,7 +366,7 @@
     <Route component={MainView} title="ariel" />
   </Router>
 
-  <MediaQuery query="(max-width: 700px)" let:matches>
+  <MediaQuery query="(max-width: 800px)" let:matches>
     {#if matches}
       <TopBar />
     {/if}

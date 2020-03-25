@@ -146,7 +146,7 @@
 
 <div on:click={transition} class="ariel-navigation" class:expanded>
   <div class="side-bar-background" />
-  <MediaQuery query="(max-width: 700px)" let:matches>
+  <MediaQuery query="(max-width: 800px)" let:matches>
     {#if matches}
       <div class="arrow-up">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40.21 10.36">
@@ -156,7 +156,7 @@
     {/if}
   </MediaQuery>
   <div class="inner">
-    <MediaQuery query="(max-width: 700px)" let:matches>
+    <MediaQuery query="(max-width: 800px)" let:matches>
       {#if matches}
         <ArielHorizontalLogo />
       {:else}

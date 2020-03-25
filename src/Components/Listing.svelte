@@ -91,24 +91,51 @@
     }
 
     .list-item {
-      margin-bottom: 60px;
+      margin-bottom: $line-height * 3;
       display: inline-block;
       width: 100%;
       cursor: pointer;
 
+      @include screen-size("small") {
+        margin-bottom: $line-height * 2;
+      }
+
       .title {
         text-align: center;
         margin-bottom: $line-height;
+
+        @include screen-size("small") {
+          margin-bottom: $line-height * 0.5;
+        }
+
+        width: 90vw;
+        max-width: 30ch;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .date {
         text-align: center;
-        // margin-bottom: $line-height * 3;
+        width: 90vw;
+        max-width: 30ch;
+        margin-left: auto;
+        margin-right: auto;
       }
 
       .artist {
         text-align: center;
         text-transform: uppercase;
+        width: 90vw;
+        max-width: 30ch;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .text {
+        text-align: center;
+        max-width: 30ch;
+        margin-left: auto;
+        margin-right: auto;
       }
     }
 
@@ -129,7 +156,11 @@
 
       .date {
         text-align: center;
-        margin-bottom: $line-height * 1;
+        margin-bottom: $line-height;
+
+        @include screen-size("small") {
+          margin-bottom: $line-height * 0.5;
+        }
       }
     }
 
