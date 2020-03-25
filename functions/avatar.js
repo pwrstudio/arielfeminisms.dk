@@ -36,8 +36,9 @@ exports.handler = function (event, context, callback) {
     //         console.dir(document)
 
     const doc = {
+        _id: id,
         _type: 'userAvatar',
-        title: id,
+        title: 'Avatar ' + id,
         image: imageBase64
     }
 
