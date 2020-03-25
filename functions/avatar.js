@@ -17,6 +17,8 @@ exports.handler = function (event, context, callback) {
 
     const { user } = context.clientContext;
 
+    console.log(user)
+
     if (!user) {
         callback(
             null, {
@@ -28,6 +30,7 @@ exports.handler = function (event, context, callback) {
         user
             .update({ data: { avatar: 'XXX' } })
             .then(user => {
+                console.log(user)
                 callback(
                     null, {
                     statusCode: 200,
@@ -35,12 +38,12 @@ exports.handler = function (event, context, callback) {
                 });
             })
             .catch(error => {
+                console.log(error)
                 callback(
                     null, {
                     statusCode: 500,
                     body: JSON.stringify(event)
                 });
             });
-
     }
 }
