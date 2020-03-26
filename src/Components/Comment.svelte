@@ -128,7 +128,7 @@
     .location {
       font-family: $font-stack-ariel;
       font-size: $font-size-small;
-      margin-bottom: 1em;
+      margin-bottom: 1.5em;
       cursor: pointer;
 
       &:hover {
@@ -144,17 +144,26 @@
   .delete {
     cursor: pointer;
     font-size: $font-size-small;
-    background: $red;
-    padding: 5px;
+    color: $red;
+    text-decoration: none;
+    padding-left: 15px;
     border-radius: 4px;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 
   .avatar {
-    height: 40px;
-    width: 40px;
+    height: 50px;
+    width: 50px;
     object-fit: cover;
-    border-radius: 40px;
+    border-radius: 50px;
     float: right;
+    border: 2px solid $accent-grey;
+    position: relative;
+    top: -3px;
+    right: -7px;
   }
 </style>
 
@@ -162,7 +171,12 @@
   {#if avatarImage}
     <img src={avatarImage} class="avatar" />
   {/if}
-  <div class="meta">{authorName}</div>
+  <div class="meta">
+    {authorName}
+    {#if $loggedInUser && $loggedInUser.id == authorId}
+      <span class="delete" on:click={deleteComment}>(Delete comment)</span>
+    {/if}
+  </div>
   <div class="meta">{formattedDuration(date)}</div>
   <div
     class="location"
@@ -173,9 +187,8 @@
   </div>
   <div class="comment-text">{content}</div>
   {#if $loggedInUser && $loggedInUser.id == authorId}
-    <div class="actions">
-      <span class="delete" on:click={deleteComment}>Delete comment</span>
-    </div>
+    <!-- <div class="actions">
+    </div> -->
     <!-- <span
         class="edit"
         on:click={() => {

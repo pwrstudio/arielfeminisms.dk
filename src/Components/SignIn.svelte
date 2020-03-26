@@ -359,7 +359,7 @@
 
       &.read-only {
         pointer-events: none;
-        background: $accent-grey;
+        background: white;
       }
 
       @include screen-size("small") {
