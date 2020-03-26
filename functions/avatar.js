@@ -16,33 +16,43 @@ const client = sanityClient({
 exports.handler = function (event, context, callback) {
 
     const { user } = context.clientContext;
-    const id = get(event, 'queryStringParameters.id', false)
+    // const id = get(event, 'queryStringParameters.id', false)
 
-    // console.log(user)
     console.dir(event)
-    console.log(id)
+    // console.log(id)
     console.dir(user)
 
-    const doc = {
-        _id: id,
-        _type: 'userAvatar',
-        title: 'Avatar ' + id,
-        image: event.body
-    }
+    if (!user || !user.sub) {
+        // Break if not authorized
+        callback(
+            null, {
+            statusCode: 401,
+            body: 'Unauthorized'
+        });
+    } else {
 
-    client.createOrReplace(doc).then(res => {
-        callback(
-            null, {
-            statusCode: 201,
-            body: JSON.stringify(res)
-        });
-    }).catch(err => {
-        console.error(err.message)
-        callback(
-            null, {
-            statusCode: 500,
-            body: err.message
-        });
-    })
+        const doc = {
+            _id: user.sub,
+            _type: 'userAvatar',
+            title: 'Avatar for ' + get(user, 'user_metadata.name', user.sub),
+            image: event.body
+        }
+
+        client.createOrReplace(doc).then(res => {
+            callback(
+                null, {
+                statusCode: 201,
+                body: JSON.stringify(res)
+            });
+        }).catch(err => {
+            console.error(err.message)
+            callback(
+                null, {
+                statusCode: 500,
+                body: err.message
+            });
+        })
+
+    }
 
 }

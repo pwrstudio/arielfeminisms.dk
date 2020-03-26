@@ -175,7 +175,7 @@
         encodeURIComponent($loggedInUser.id);
 
       setTimeout(() => {
-        const scaledImage = resizebase64(file.dataURL, 200, 200);
+        const scaledImage = resizebase64(file.dataURL, 200);
         console.dir(scaledImage);
 
         fetch(url, {
