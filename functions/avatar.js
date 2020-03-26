@@ -1,12 +1,10 @@
 /**
  *
- * Add, edit and delete comments
+ * Upload avatar picture
  *
  */
 
 const get = require('lodash/get');
-const Base64_Blob = require('base64-blob')
-
 
 const sanityClient = require('@sanity/client')
 const client = sanityClient({
@@ -17,29 +15,19 @@ const client = sanityClient({
 
 exports.handler = function (event, context, callback) {
 
-    // const { user } = context.clientContext;
+    const { user } = context.clientContext;
     const id = get(event, 'queryStringParameters.id', false)
 
     // console.log(user)
     console.dir(event)
     console.log(id)
-
-    const imageBase64 = 'data:image/jpeg;base64,' + event.body;
-    // const imageBlob = Base64_Blob.base64ToBlob(imageBase64)
-
-    console.dir(imageBase64)
-    // console.dir(imageBlob)
-
-    // client.assets
-    //     .upload('image', imageBase64, { contentType: 'image/jpeg', filename: id + '.jpg' })
-    //     .then(document => {
-    //         console.dir(document)
+    console.dir(user)
 
     const doc = {
         _id: id,
         _type: 'userAvatar',
         title: 'Avatar ' + id,
-        image: imageBase64
+        image: event.body
     }
 
     client.createOrReplace(doc).then(res => {
@@ -56,13 +44,5 @@ exports.handler = function (event, context, callback) {
             body: err.message
         });
     })
-    // })
-    // .catch(error => {
-    //     console.error('Upload failed:', error.message)
-    //     callback(
-    //         null, {
-    //         statusCode: 666,
-    //         body: JSON.stringify(error.message)
-    //     });
-    // })
+
 }

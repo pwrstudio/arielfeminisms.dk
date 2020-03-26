@@ -12,6 +12,8 @@
   import * as Cookies from "es-cookie";
   import get from "lodash/get";
   import Dropzone from "svelte-dropzone";
+  import { loadData, renderBlockText, toPlainText } from "../sanity.js";
+  import resizebase64 from "resize-base64";
 
   // *** GLOBALS
   import { auth } from "../global.js";
@@ -42,6 +44,24 @@
   let signUpActive = false;
   let signUpMessage = false;
   let myDropzone = {};
+
+  let avatarImage = false;
+
+  $: {
+    if ($loggedInUser) {
+      console.log($loggedInUser.id);
+      let avatar = loadData("*[_type == 'userAvatar' &&_id == $id][0]", {
+        id: $loggedInUser.id
+      });
+      avatar.then(a => {
+        // console.dir(a.image);
+        avatarImage = a.image;
+      });
+    }
+  }
+
+  // *** CONSTANTS
+  // const user = auth.currentUser();
 
   // *** DOM REFERENCES
   let bioEl = {};
@@ -144,24 +164,37 @@
   };
 
   const addedfile = file => {
+    if (!$loggedInUser) return false;
     console.dir(file);
-    // const user = auth.currentUser();
-    // console.dir($loggedInUser);
-    // if (!user) return false;
-    // setTimeout(() => {
-    //   const scaledImage = resizebase64(file.dataURL, 130, 130);
-    //   console.dir(scaledImage);
-    //   user
-    //     .update({ data: { avatar: scaledImage } })
-    //     .then(user => {
-    //       console.log("Updated user avatar %s", user);
-    //       console.dir(user);
-    //     })
-    //     .catch(error => {
-    //       console.log("Failed to update user: %o", error);
-    //       throw error;
-    //     });
-    // }, 1000);
+
+    let jwt = $loggedInUser.jwt();
+
+    jwt.then(jwt => {
+      const url =
+        "https://arielfeminisms.netlify.com/.netlify/functions/avatar/?id=" +
+        encodeURIComponent($loggedInUser.id);
+
+      setTimeout(() => {
+        const scaledImage = resizebase64(file.dataURL, 200, 200);
+        console.dir(scaledImage);
+
+        fetch(url, {
+          method: "POST",
+          headers: new Headers({
+            Authorization: "Bearer " + jwt
+          }),
+          body: scaledImage
+        })
+          .then(response => {
+            console.log("SUCCESS");
+            console.dir(response);
+          })
+          .catch(err => {
+            console.log("ERROR");
+            console.error(err);
+          });
+      }, 1000);
+    });
   };
 
   // const drop = event => {
@@ -536,14 +569,16 @@
         </div>
 
         <div class="profile-picture-section">
-          <div class="profile-picture">
-            <img src={$loggedInUser.user_metadata.avatar} />
-          </div>
+          {#if avatarImage}
+            <div class="profile-picture">
+              <img src={avatarImage} height="150" width="150" />
+            </div>
+          {/if}
           <Dropzone
             dropzoneClass="avatar-dropzone"
             hooveringClass="avatar-dropzone-hover"
             dropzoneEvents={{ addedfile, init }}
-            options={{ url: 'https://arielfeminisms.netlify.com/.netlify/functions/avatar/?id=' + $loggedInUser.id, clickable: true, acceptedFiles: 'image/*', resizeWidth: 200, resizeHeight: 200, resizeMimeType: 'image/jpeg', init }}>
+            options={{ clickable: true, acceptedFiles: 'image/*', init }}>
             Upload Image
           </Dropzone>
         </div>
