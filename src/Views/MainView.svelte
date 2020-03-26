@@ -493,6 +493,24 @@
     display: inline-block;
     padding-bottom: 120px;
   }
+
+  .bar {
+    position: relative;
+    top: -2px;
+  }
+
+  .link {
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+
+    &:hover {
+      border-bottom: 2px solid black;
+    }
+  }
+
+  .line {
+    margin-bottom: 4px;
+  }
 </style>
 
 <MetaData post={{ title: title.toUpperCase() }} />
@@ -709,8 +727,56 @@
         </div>
 
         <!-- BOTTOM TEXT -->
-        <div class="bottom-text">
-          {@html renderBlockText(about.bottomText)}
+        <div class="bottom-text" use:links>
+          {#if $isAriel}
+            <div class="line">
+              <span>NIELS HEMMINGSENS GADE 8–10 1153 CPH K</span>
+            </div>
+            <div class="line">
+              <a
+                href="mailto:arielfeminisms@gmail.com"
+                target="_blank"
+                class="link">
+                CONTACT
+              </a>
+              <span class="bar">|</span>
+              <span class="link">NEWSLETTER ARIEL</span>
+            </div>
+          {/if}
+          {#if $isAri}
+            <div class="line">
+              <a href="/ari/readings" class="link">ARI. READINGS</a>
+              <span class="bar">|</span>
+              <span>THE WOMEN´S BUILDING</span>
+            </div>
+            <div class="line">
+              <span>FREE ACCESS</span>
+              <span class="bar">|</span>
+              <a
+                href="mailto:arielfeminisms@gmail.com"
+                target="_blank"
+                class="link">
+                SIGN UP
+              </a>
+            </div>
+          {/if}
+          {#if $isYGRG}
+            <div class="line">
+              <a href="/ygrg/events" class="link">YGRG ARCHIVE</a>
+              <span class="bar">|</span>
+              <a href="/ygrg/profile" class="link">SIGN IN / SIGN UP</a>
+            </div>
+            <div class="line">
+              <a
+                href="mailto:younggirlreadinggroup@gmail.com"
+                target="_blank"
+                class="link">
+                CONTACT
+              </a>
+              <span class="bar">|</span>
+              <span class="link">NEWSLETTER YGRG</span>
+            </div>
+          {/if}
         </div>
 
       </div>
