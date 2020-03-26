@@ -44,19 +44,24 @@
   let signUpActive = false;
   let signUpMessage = false;
   let myDropzone = {};
-
   let avatarImage = false;
+  let bioUpdateDone = false;
 
   $: {
     if ($loggedInUser) {
       console.log($loggedInUser.id);
-      let avatar = loadData("*[_type == 'userAvatar' &&_id == $id][0]", {
+      let avatar = loadData("*[_type == 'userAvatar' && _id == $id][0]", {
         id: $loggedInUser.id
       });
-      avatar.then(a => {
-        // console.dir(a.image);
-        avatarImage = a.image;
-      });
+      console.dir(avatar);
+      avatar
+        .then(a => {
+          console.dir(a);
+          avatarImage = a.image;
+        })
+        .catch(err => {
+          console.dir(err);
+        });
     }
   }
 
@@ -147,8 +152,6 @@
 
     if (!user) return false;
 
-    console.dir(user);
-
     const newBiography = bioEl.value;
 
     user
@@ -161,6 +164,8 @@
         console.log("Failed to update user: %o", error);
         throw error;
       });
+
+    bioUpdateDone = true;
   };
 
   const addedfile = file => {
@@ -171,12 +176,12 @@
 
     jwt.then(jwt => {
       const url =
-        "https://arielfeminisms.netlify.com/.netlify/functions/avatar/?id=" +
-        encodeURIComponent($loggedInUser.id);
+        "https://arielfeminisms.netlify.com/.netlify/functions/avatar/";
 
       setTimeout(() => {
         const scaledImage = resizebase64(file.dataURL, 200);
         console.dir(scaledImage);
+        avatarImage = scaledImage;
 
         fetch(url, {
           method: "POST",
@@ -214,6 +219,7 @@
 
     @include screen-size("small") {
       width: calc(100% - 30px);
+      font-size: $font-size-mobile-large;
     }
 
     input {
@@ -268,6 +274,12 @@
       &:hover {
         background: rgba(40, 40, 40, 1);
       }
+
+      &.done {
+        background: white;
+        color: black;
+        pointer-events: none;
+      }
     }
 
     .loading {
@@ -304,11 +316,6 @@
       margin-bottom: $line-height;
     }
 
-    .inputfile:focus + label,
-    .inputfile + label:hover {
-      background-color: red;
-    }
-
     .profile-picture-section {
       display: flex;
       justify-content: center;
@@ -317,6 +324,8 @@
 
       @include screen-size("small") {
         font-size: $font-size-mobile-medium;
+        width: 100%;
+        margin-left: unset;
       }
     }
 
@@ -355,6 +364,7 @@
 
       @include screen-size("small") {
         border: 1px solid black;
+        width: 100%;
       }
     }
 
@@ -379,6 +389,7 @@
 
       @include screen-size("small") {
         border: 1px solid black;
+        width: 100%;
       }
     }
   }
@@ -507,7 +518,7 @@
 
         <div class="profile-picture-section">
 
-          <div class="profile-picture">
+          <div class="profile-picture" class:no-image={!avatarImage}>
 
             {#if avatarImage}
               <img src={avatarImage} class="profile-picture-image" />
@@ -549,8 +560,11 @@
         </fieldset>
 
         <fieldset>
-          <div class="action small" on:click={updateProfile}>
-            Update Biography
+          <div
+            class="action small"
+            class:done={bioUpdateDone}
+            on:click={updateProfile}>
+            {#if bioUpdateDone}Biography updated{:else}Update Biography{/if}
           </div>
         </fieldset>
 

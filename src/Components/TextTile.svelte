@@ -8,12 +8,14 @@
   // *** IMPORT
   import { Route, links } from "svelte-routing";
   import MediaQuery from "svelte-media-query";
-  import { formatDistanceToNow } from "date-fns";
   import get from "lodash/get";
   import { urlFor } from "../sanity.js";
 
   // *** STORES
   import { loggedInUser } from "../stores.js";
+
+  // *** GLOBALS
+  import { formattedDuration } from "../global.js";
 
   // *** PROPS
   export let title = "";
@@ -22,9 +24,6 @@
   export let date = "";
   export let id = "";
   export let marked = false;
-
-  const formattedDuration = date =>
-    formatDistanceToNow(Date.parse(date), { addSuffix: true });
 </script>
 
 <style lang="scss">
@@ -61,7 +60,9 @@
       right: 3px;
 
       @include screen-size("small") {
-        display: none;
+        // display: none;
+        top: 2px;
+        right: 2px;
       }
 
       svg {

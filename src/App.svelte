@@ -333,6 +333,10 @@
     line-height: 130px;
 
     opacity: 0;
+
+    @include screen-size("small") {
+      display: none;
+    }
   }
 
   .avatar-dropzone-hover {
@@ -358,10 +362,6 @@
     margin-bottom: $line-height;
     position: relative;
 
-    @include screen-size("small") {
-      display: none;
-    }
-
     img {
       position: absolute;
       top: 5px;
@@ -371,7 +371,8 @@
       object-fit: cover;
     }
 
-    &:hover {
+    &:hover,
+    &.no-image {
       img {
         opacity: 0.15;
         filter: grayscale(1);

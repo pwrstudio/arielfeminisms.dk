@@ -64,12 +64,15 @@ export const loadData = async (query, params) => {
     try {
         const res = await client.fetch(query, params)
 
+        console.dir(res)
+
         if (res === null) {
-            return Promise.reject(new Error(404));
+            return Promise.reject();
         }
         return res
 
     } catch (err) {
+        console.dir(err)
         // Sentry.captureException(err)
         return Promise.reject(new Error(404));
     }

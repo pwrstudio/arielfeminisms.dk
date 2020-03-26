@@ -1,5 +1,5 @@
 import GoTrue from "gotrue-js";
-import { format, getYear } from "date-fns";
+import { format, getYear, formatDistanceToNow } from "date-fns";
 
 
 export const auth = new GoTrue({
@@ -27,3 +27,6 @@ export const formattedDate = (start, end) => {
 
     return format(startDate, startFormat) + " – " + format(endDate, endFormat);
 };
+
+export const formattedDuration = date =>
+    formatDistanceToNow(Date.parse(date), { addSuffix: true });

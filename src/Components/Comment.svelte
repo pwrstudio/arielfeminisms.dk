@@ -8,10 +8,11 @@
   // *** IMPORT
   import { createEventDispatcher } from "svelte";
   import { fade, slide } from "svelte/transition";
-  import { formatDistanceToNow } from "date-fns";
   import get from "lodash/get";
+  import { loadData } from "../sanity.js";
 
-  import { auth } from "../global.js";
+  // *** GLOBALS
+  import { auth, formattedDuration } from "../global.js";
 
   // *** COMPONENTS
   import Cross from "../Graphics/Cross.svelte";
@@ -28,8 +29,10 @@
   export let content = "";
   export let delay = 0;
 
+  // *** VARIABLES
   let editMode = false;
   let editedContent = content;
+  let avatarImage = false;
 
   const dispatch = createEventDispatcher();
 
@@ -88,8 +91,18 @@
     });
   };
 
-  const formattedDuration = date =>
-    formatDistanceToNow(Date.parse(date), { addSuffix: true });
+  let avatar = loadData("*[_type == 'userAvatar' && _id == $id][0]", {
+    id: authorId
+  });
+  console.dir(avatar);
+  avatar
+    .then(a => {
+      console.dir(a);
+      avatarImage = a.image;
+    })
+    .catch(err => {
+      console.dir(err);
+    });
 </script>
 
 <style lang="scss">
@@ -135,10 +148,22 @@
     padding: 5px;
     border-radius: 4px;
   }
+
+  .avatar {
+    height: 40px;
+    width: 40px;
+    object-fit: cover;
+    border-radius: 40px;
+    float: right;
+  }
 </style>
 
 <div class="comment-box" in:slide={{ duration: 100 + delay * 100 }}>
-  <div class="meta">Posted {formattedDuration(date)} by {authorName}</div>
+  {#if avatarImage}
+    <img src={avatarImage} class="avatar" />
+  {/if}
+  <div class="meta">{authorName}</div>
+  <div class="meta">{formattedDuration(date)}</div>
   <div
     class="location"
     on:click={() => {
