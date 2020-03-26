@@ -162,7 +162,7 @@
     float: right;
     border: 2px solid $accent-grey;
     position: relative;
-    top: -3px;
+    top: -5px;
     right: -7px;
   }
 </style>
