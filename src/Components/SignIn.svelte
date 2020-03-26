@@ -196,12 +196,6 @@
       }, 1000);
     });
   };
-
-  // const drop = event => {
-  //   console.log(event);
-  // };
-
-  const init = () => console.log("dropzone init ! 😍");
 </script>
 
 <style lang="scss">
@@ -308,63 +302,6 @@
     .profile-header {
       text-align: right;
       margin-bottom: $line-height;
-    }
-
-    .profile-picture {
-      font-size: $font-size-medium;
-      width: 150px;
-      outline: none;
-      line-height: $line-height;
-      height: 200px;
-      // line-height: 200px;
-      text-align: center;
-      padding: 5px;
-      border-radius: 5px;
-      background: $brown;
-      border: 2px solid white;
-      color: white;
-      margin-bottom: $line-height;
-
-      @include screen-size("small") {
-        display: none;
-      }
-    }
-
-    // .avatar-upload {
-    //   background: red;
-    //   font-size: $font-size-medium;
-    //   width: auto;
-    //   outline: none;
-    //   line-height: $line-height;
-    //   height: auto;
-    //   text-align: center;
-    //   padding: 5px;
-    //   border-radius: 5px;
-    //   background: $brown;
-    //   border: 2px solid white;
-    //   color: white;
-
-    //   @include screen-size("small") {
-    //     display: none;
-    //   }
-    // }
-
-    .avatar-upload {
-      width: 0.1px;
-      height: 0.1px;
-      opacity: 0;
-      overflow: hidden;
-      position: absolute;
-      z-index: -1;
-    }
-
-    .avatar-upload-label {
-      font-size: 1.25em;
-      font-weight: 700;
-      color: white;
-      background-color: black;
-      display: inline-block;
-      cursor: pointer;
     }
 
     .inputfile:focus + label,
@@ -569,18 +506,23 @@
         </div>
 
         <div class="profile-picture-section">
-          {#if avatarImage}
-            <div class="profile-picture">
-              <img src={avatarImage} height="150" width="150" />
-            </div>
-          {/if}
-          <Dropzone
-            dropzoneClass="avatar-dropzone"
-            hooveringClass="avatar-dropzone-hover"
-            dropzoneEvents={{ addedfile, init }}
-            options={{ clickable: true, acceptedFiles: 'image/*', init }}>
-            Upload Image
-          </Dropzone>
+
+          <div class="profile-picture">
+
+            {#if avatarImage}
+              <img src={avatarImage} class="profile-picture-image" />
+            {/if}
+
+            <Dropzone
+              dropzoneClass="avatar-dropzone"
+              hooveringClass="avatar-dropzone-hover"
+              dropzoneEvents={{ addedfile }}
+              options={{ clickable: true, acceptedFiles: 'image/*' }}>
+              Upload Image
+            </Dropzone>
+
+          </div>
+
         </div>
 
         <fieldset>

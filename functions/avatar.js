@@ -14,12 +14,9 @@ const client = sanityClient({
 })
 
 exports.handler = function (event, context, callback) {
-
     const { user } = context.clientContext;
-    // const id = get(event, 'queryStringParameters.id', false)
 
     console.dir(event)
-    // console.log(id)
     console.dir(user)
 
     if (!user || !user.sub) {

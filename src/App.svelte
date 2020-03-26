@@ -320,11 +320,35 @@
 
   .avatar-dropzone {
     font-size: $font-size-medium;
+    outline: none;
+    text-align: center;
+    padding: 5px;
+    color: black;
+    margin-bottom: $line-height;
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width: 135px;
+    height: 135px;
+    line-height: 130px;
+
+    opacity: 0;
+  }
+
+  .avatar-dropzone-hover {
+    transition: background 0.5s $easing;
+    background: white;
+    color: black;
+    opacity: 1;
+  }
+
+  .profile-picture {
+    font-size: $font-size-medium;
     width: 150px;
     outline: none;
     line-height: $line-height;
     height: 150px;
-    line-height: 140px;
+    // line-height: 200px;
     text-align: center;
     padding: 5px;
     border-radius: 5px;
@@ -332,10 +356,31 @@
     border: 2px solid white;
     color: white;
     margin-bottom: $line-height;
-  }
+    position: relative;
 
-  .avatar-dropzone-hover {
-    background: $red;
+    @include screen-size("small") {
+      display: none;
+    }
+
+    img {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      width: 135px;
+      height: 135px;
+      object-fit: cover;
+    }
+
+    &:hover {
+      img {
+        opacity: 0.15;
+        filter: grayscale(1);
+      }
+
+      .avatar-dropzone {
+        opacity: 1;
+      }
+    }
   }
 </style>
 
