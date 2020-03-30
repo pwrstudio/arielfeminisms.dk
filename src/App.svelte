@@ -383,6 +383,16 @@
       }
     }
   }
+
+  .text {
+    a {
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
 </style>
 
 <main>
