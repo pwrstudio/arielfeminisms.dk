@@ -416,7 +416,7 @@
       single={true} />
 
     <!-- YGRG -->
-    <Route path="/ygrg" component={MainView} title="ygrg" />
+    <Route path="/ygrg" component={MainView} title="ygrg" single={true} />
     <Route
       path="/ygrg/profile"
       component={MainView}

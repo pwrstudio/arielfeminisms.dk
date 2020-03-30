@@ -59,7 +59,7 @@
   isYGRG.set(title === "ygrg");
 
   // TEXTS
-  const texts = loadData('*[_type == "ygrgText"]', {});
+  const texts = loadData('*[_type == "ygrgText"] | order(_createdAt desc)', {});
   let filteredTexts = [];
   let filterTexts = () => {};
   let fuseTexts = {};
@@ -87,17 +87,17 @@
   const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
 
   const latestReading = loadData(
-    '*[_type == "reading"][0]{"slug": slug.current}',
+    '*[_type == "reading"] | order(startDate desc) [0] {"slug": slug.current}',
     {}
   );
 
   const latestProgram = loadData(
-    '*[_type == "program"][0]{"slug": slug.current}',
+    '*[_type == "program"] | order(startDate desc) [0] {"slug": slug.current}',
     {}
   );
 
   const latestEvent = loadData(
-    '*[_type == "event"][0]{"slug": slug.current}',
+    '*[_type == "event"] | order(startDate desc) [0] {"slug": slug.current}',
     {}
   );
 
@@ -674,25 +674,11 @@
                   <Cross />
                 </a>
               </div>
-            {:else}
-              <div class="search">
-                <!-- <input
-                  class="search-input"
-                  type="text"
-                  bind:value={queryReadingsFilter}
-                  on:keyup={filterReadings}
-                  placeholder="Search in ARI..." />
-                <div class="search-icon" on:click={filterReadings}>
-                  <SubmitArrow />
-                </div> -->
-              </div>
             {/if}
           {/if}
           {#if $isYGRG}
             <div class="left">
-              {#await latestEvent then latestEvent}
-                <a href="/ygrg/events/{latestEvent.slug}">YGRG EVENT ARCHIVE</a>
-              {/await}
+              <a href="/ygrg/events">YGRG EVENT ARCHIVE</a>
             </div>
             {#if slug}
               <div class="right">
@@ -704,8 +690,14 @@
           {/if}
         </div>
 
-        {#if slug}
-          <SinglePane {slug} {title} />
+        {#if single}
+          {#if slug}
+            <SinglePane {slug} {title} />
+          {:else}
+            {#await latestEvent then latestEvent}
+              <SinglePane slug={latestEvent.slug} {title} />
+            {/await}
+          {/if}
         {:else}
           <div class="inner-container" use:links>
             <Listing />
