@@ -111,6 +111,22 @@
 
   onMount(async () => {
     window.scrollTo(0, 0);
+
+    // window.addEventListener(
+    //   "hashchange",
+    //   e => {
+    //     console.log("hash");
+    //     console.dir(e);
+    //     console.log(location.hash);
+
+    //     const sectionId = location.hash.substring(1);
+
+    //     const targetEl = document.querySelector(location.hash);
+
+    //     console.dir(targetEl);
+    //   },
+    //   false
+    // );
   });
 </script>
 
@@ -560,7 +576,7 @@
 
         </div>
 
-        <div class="inner-container" use:links>
+        <div class="inner-container">
 
           {#if $isAriel || $isAri}
             <Listing />

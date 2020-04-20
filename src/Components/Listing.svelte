@@ -78,6 +78,17 @@
           : fuseReadings.search(queryReadingsFilter);
     };
   });
+
+  const scrollNavigate = e => {
+    const newHash = e.target.dataset.target;
+    const targetEl = document.querySelector(newHash);
+    if (history.pushState) {
+      history.pushState(null, null, newHash);
+    } else {
+      location.hash = newHash;
+    }
+    targetEl.scrollIntoView({ behavior: "smooth" });
+  };
 </script>
 
 <style lang="scss">
@@ -104,6 +115,7 @@
       .title {
         text-align: center;
         // margin-bottom: $line-height;
+        pointer-events: none;
 
         @include screen-size("small") {
           margin-bottom: $line-height * 0.5;
@@ -117,6 +129,7 @@
         text-align: left;
         margin-left: auto;
         margin-right: auto;
+        pointer-events: none;
       }
 
       .artist {
@@ -124,11 +137,7 @@
         text-transform: uppercase;
         margin-left: auto;
         margin-right: auto;
-      }
-
-      .text {
-        margin-left: auto;
-        margin-right: auto;
+        pointer-events: none;
       }
 
       &:hover {
@@ -228,9 +237,10 @@
 
     <!-- ARIEL -->
     {#each listing as item}
-      <a
-        href={'/' + $activeSection + '/' + $postType + '/' + item.slug.current}
-        class="list-item">
+      <div
+        data-target={'#' + item.slug.current}
+        class="list-item"
+        on:click={scrollNavigate}>
 
         <!-- TITLE -->
         <div class="title">
@@ -251,7 +261,7 @@
           <div class="date">{formattedDate(item.startDate, item.endDate)}</div>
         {/if}
 
-      </a>
+      </div>
     {/each}
   {/await}
 

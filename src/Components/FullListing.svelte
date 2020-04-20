@@ -50,6 +50,17 @@
   if ($isAri)
     listing = loadData('*[_type in [ "reading"]] | order(startDate desc)', {});
   let currentIndex = 0;
+
+  onMount(async () => {
+    if (window.location.hash) {
+      setTimeout(() => {
+        const targetEl = document.querySelector(window.location.hash);
+        if (targetEl) {
+          targetEl.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 500);
+    }
+  });
 </script>
 
 <style lang="scss">
@@ -57,6 +68,8 @@
 
   .full-listing {
     font-size: $font-size-medium;
+    scroll-behavior: smooth;
+    padding-bottom: 60vh;
 
     @include screen-size("small") {
       padding-bottom: 300px;
@@ -64,7 +77,13 @@
     }
 
     .list-item {
-      margin-bottom: $line-height * 3;
+      // margin-bottom: $line-height * 3;
+      padding-top: $line-height * 3;
+
+      &:first-child {
+        padding-top: 0;
+      }
+
       display: inline-block;
       width: 100%;
       cursor: pointer;
@@ -175,9 +194,7 @@
 
     <!-- ARIEL -->
     {#each listing as item}
-      <div
-        href={'/' + $activeSection + '/' + $postType + '/' + item.slug.current}
-        class="list-item">
+      <div id={item.slug.current} class="list-item">
 
         <!-- SLIDESHOW -->
         {#if get(item, 'slideshow.length', 0) > 0}
