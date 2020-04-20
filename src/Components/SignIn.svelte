@@ -176,7 +176,7 @@
 
     jwt.then(jwt => {
       const url =
-        "https://arielfeminisms.netlify.com/.netlify/functions/avatar/";
+        "https://arielfeminisms.netlify.app/.netlify/functions/avatar/";
 
       setTimeout(() => {
         const scaledImage = resizebase64(file.dataURL, 200);

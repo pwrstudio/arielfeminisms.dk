@@ -43,7 +43,7 @@
 
     jwt.then(jwt => {
       const url =
-        "https://arielfeminisms.netlify.com/.netlify/functions/comment?id=" +
+        "https://arielfeminisms.netlify.app/.netlify/functions/comment?id=" +
         encodeURIComponent(commentId);
 
       fetch(url, {
@@ -69,7 +69,7 @@
 
     jwt.then(jwt => {
       const url =
-        "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
+        "https://arielfeminisms.netlify.app/.netlify/functions/comment?comment=" +
         encodeURIComponent("EDITED: XXXX") +
         "&id=" +
         encodeURIComponent(commentId);

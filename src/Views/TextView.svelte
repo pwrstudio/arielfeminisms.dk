@@ -136,7 +136,7 @@
         getCurrentPage();
 
         const url =
-          "https://arielfeminisms.netlify.com/.netlify/functions/comment?comment=" +
+          "https://arielfeminisms.netlify.app/.netlify/functions/comment?comment=" +
           encodeURIComponent(newComment) +
           "&id=" +
           encodeURIComponent(t.id) +
