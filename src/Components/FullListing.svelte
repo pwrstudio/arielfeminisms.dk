@@ -70,6 +70,7 @@
     font-size: $font-size-medium;
     scroll-behavior: smooth;
     padding-bottom: 60vh;
+    margin-top: 20px;
 
     @include screen-size("small") {
       padding-bottom: 300px;
@@ -79,10 +80,6 @@
     .list-item {
       // margin-bottom: $line-height * 3;
       padding-top: $line-height * 3;
-
-      &:first-child {
-        padding-top: 0;
-      }
 
       display: inline-block;
       width: 100%;

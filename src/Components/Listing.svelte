@@ -97,6 +97,8 @@
   .listing {
     font-size: $font-size-medium;
 
+    margin-top: $top-bar-height + 20px;
+
     @include screen-size("small") {
       padding-bottom: 300px;
       font-size: $font-size-mobile-medium;

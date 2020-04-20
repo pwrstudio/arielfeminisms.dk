@@ -172,7 +172,7 @@
       }
 
       .inner-container {
-        margin-top: $top-bar-height + 20px;
+        // margin-top: $top-bar-height + 20px;
         margin-right: 30px;
         margin-left: 30px;
         font-size: $font-size-medium;
