@@ -1,7 +1,7 @@
 <script>
   // # # # # # # # # # # # # # # #
   //
-  //  Listing
+  //  Full Listing
   //
   // # # # # # # # # # # # # # # #
 
@@ -12,12 +12,13 @@
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
   import { format, getYear } from "date-fns";
-  import Fuse from "fuse.js";
+  import get from "lodash/get";
 
   // *** GLOBALS
   import { formattedDate } from "../global.js";
 
   // *** COMPONENTS
+  import SlideShow from "../Components/SlideShow.svelte";
 
   // *** GRAPHICS
   import ArielLogo from "../Graphics/ArielLogo.svelte";
@@ -48,42 +49,13 @@
     listing = loadData('*[_type in [ "program"]] | order(startDate desc)', {});
   if ($isAri)
     listing = loadData('*[_type in [ "reading"]] | order(startDate desc)', {});
-  if ($isYGRG)
-    listing = loadData('*[_type in [ "event"]] | order(startDate desc)', {});
-
-  let filteredListing = [];
-
-  // READINGS
-  let filterReadings = () => {};
-  let fuseReadings = {};
-  let queryReadingsFilter = "";
-  const optionsReadingsFilter = {
-    keys: ["plainText"],
-    shouldSort: true,
-    tokenize: true,
-    threshold: 0.4,
-    minMatchCharLength: 2
-  };
-
-  listing.then(results => {
-    filteredListing = results;
-    results.forEach(r => {
-      r.plainText = toPlainText(r.content);
-    });
-    fuseReadings = new Fuse(results, optionsReadingsFilter);
-    filterReadings = () => {
-      filteredReadings =
-        queryReadingsFilter.length == 0
-          ? results
-          : fuseReadings.search(queryReadingsFilter);
-    };
-  });
+  let currentIndex = 0;
 </script>
 
 <style lang="scss">
   @import "../variables.scss";
 
-  .listing {
+  .full-listing {
     font-size: $font-size-medium;
 
     @include screen-size("small") {
@@ -101,9 +73,23 @@
         margin-bottom: $line-height * 2;
       }
 
+      .slideshow-container {
+        width: 100%;
+        height: 50vh;
+        max-height: 350px;
+        margin-bottom: 50px;
+
+        @include screen-size("small") {
+          width: 100%;
+          margin-left: unset;
+          height: 30vh;
+          margin-bottom: 40px;
+        }
+      }
+
       .title {
         text-align: center;
-        // margin-bottom: $line-height;
+        margin-bottom: $line-height;
 
         @include screen-size("small") {
           margin-bottom: $line-height * 0.5;
@@ -114,13 +100,13 @@
       }
 
       .date {
-        text-align: left;
+        text-align: center;
         margin-left: auto;
         margin-right: auto;
       }
 
       .artist {
-        text-align: left;
+        text-align: center;
         text-transform: uppercase;
         margin-left: auto;
         margin-right: auto;
@@ -129,14 +115,6 @@
       .text {
         margin-left: auto;
         margin-right: auto;
-      }
-
-      &:hover {
-        color: $purple;
-      }
-
-      &:active {
-        text-decoration: underline;
       }
     }
 
@@ -190,47 +168,46 @@
       }
     }
   }
-
-  .filter {
-    margin-bottom: $line-height * 2;
-    width: 400px;
-    max-width: 90%;
-    position: relative;
-
-    .filter-input {
-      font-size: $font-size-medium;
-      width: 100%;
-      border: $line-style;
-      outline: none;
-      line-height: $line-height;
-      height: $line-height * 2.5;
-      padding: 5px;
-      border-radius: 5px;
-      background: $grey;
-
-      @include screen-size("small") {
-        border: $mobile-line-style;
-      }
-    }
-
-    .filter-icon {
-      position: absolute;
-      right: $line-height * 0.5;
-      top: $line-height * 0.5;
-      width: $line-height * 1.5;
-      height: $line-height * 1.5;
-    }
-  }
 </style>
 
-<div class="listing {$activeSection}">
+<div class="full-listing {$activeSection}">
   {#await listing then listing}
 
     <!-- ARIEL -->
     {#each listing as item}
-      <a
+      <div
         href={'/' + $activeSection + '/' + $postType + '/' + item.slug.current}
         class="list-item">
+
+        <!-- SLIDESHOW -->
+        {#if get(item, 'slideshow.length', 0) > 0}
+          <div class="slideshow-container">
+            <SlideShow
+              on:slideChange={e => {
+                currentIndex = e.detail.index;
+              }}
+              slideArray={item.slideshow} />
+          </div>
+        {/if}
+
+        {#if item.slideshow && item.slideshow[currentIndex]}
+          {#if item.slideshow[currentIndex].textLink}
+            <div class="text-link" in:fade>
+              <a
+                href="/ygrg/texts/{item.slideshow[currentIndex].textLink.slug.current}">
+                Read
+                <div class="read-icon">
+                  <ReadIcon />
+                </div>
+              </a>
+            </div>
+          {/if}
+          <!-- {#if item.slideshow[currentIndex].caption}
+            <div class="caption" in:fade>
+              {item.slideshow[currentIndex].caption}
+            </div>
+          {/if} -->
+        {/if}
 
         <!-- TITLE -->
         <div class="title">
@@ -247,11 +224,17 @@
         {/if}
 
         <!-- DATE -->
-        {#if $isYGRG || $isAriel}
+        {#if $isAriel}
           <div class="date">{formattedDate(item.startDate, item.endDate)}</div>
         {/if}
 
-      </a>
+        <!-- TEXT -->
+        {#if item.content}
+          <div class="text">
+            {@html renderBlockText(item.content)}
+          </div>
+        {/if}
+      </div>
     {/each}
   {/await}
 

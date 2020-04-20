@@ -211,7 +211,7 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: $brown;
+    background: $red-gradient;
     z-index: 100;
   }
 
@@ -320,7 +320,7 @@
     width: 380px;
     overflow-y: auto;
     height: 140px;
-    background: $brown;
+    background: $red-gradient;
     padding-bottom: 10px;
     padding-top: 10px;
 
@@ -353,7 +353,7 @@
       height: $line-height * 6;
       padding: 5px;
       border-radius: 5px;
-      background: $brown;
+      background: $red-gradient;
       resize: none;
       color: white;
 

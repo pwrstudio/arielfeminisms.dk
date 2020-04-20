@@ -23,6 +23,7 @@
   import TextTile from "../Components/TextTile.svelte";
   import MetaData from "../Components/MetaData.svelte";
   import Listing from "../Components/Listing.svelte";
+  import FullListing from "../Components/FullListing.svelte";
 
   // *** GRAPHICS
   import ArielLogo from "../Graphics/ArielLogo.svelte";
@@ -206,7 +207,10 @@
 
       a {
         &:hover {
-          border-bottom: 2px solid $black;
+          color: $purple;
+        }
+        &:active {
+          border-bottom: 2px solid $purple;
         }
       }
 
@@ -237,6 +241,10 @@
 
   .active {
     border-bottom: 2px solid $black;
+
+    &:hover {
+      border-bottom: 2px solid $purple;
+    }
   }
 
   .about {
@@ -274,7 +282,6 @@
       height: auto;
       transform: translateY(100%);
       overflow-y: auto;
-      background: green;
     }
 
     .inner-container {
@@ -378,7 +385,7 @@
     background: $grey;
     z-index: 10000;
     transform: translateX(100%);
-    background: $brown;
+    background: $red-gradient;
     opacity: 1;
     font-family: $font-stack-ygrg-regular;
     font-weight: normal;
@@ -524,11 +531,16 @@
 
         <!-- TOP BAR -->
         <div class="top-bar left" use:links>
-          <div class="right">
+
+          <div class="left">
             {#if $isAriel || $isAri}
               <a href="/" class:active={$isAriel}>ARIEL</a>
-              |
-              <a href="/ari" class:active={$isAri}>ARI.</a>
+            {/if}
+          </div>
+
+          <div class="right">
+            {#if $isAriel || $isAri}
+              <a href="/ari" class:active={$isAri}>ARI.INDEX</a>
             {/if}
             {#if $isYGRG}
               <span
@@ -545,38 +557,13 @@
               </span>
             {/if}
           </div>
-          <div class="left">
-            <span
-              on:click={() => {
-                profile = false;
-                showAbout.set(true);
-              }}
-              class="pseudo-link">
-              ABOUT
-              {#if $isYGRG}YGRG{/if}
-            </span>
-          </div>
+
         </div>
 
-        <div class="inner-container">
-
-          <!-- LOGO -->
-          {#if $isAriel}
-            <ArielLogo />
-          {/if}
-          {#if $isAri}
-            <AriLogo />
-          {/if}
+        <div class="inner-container" use:links>
 
           {#if $isAriel || $isAri}
-            {#await generalInformation then generalInformation}
-              <div class="bottom-meta">
-                <div class="tagline">{generalInformation.tagline}</div>
-                <div class="address">
-                  {@html generalInformation.address}
-                </div>
-              </div>
-            {/await}
+            <Listing />
           {/if}
 
           {#if $isYGRG}
@@ -648,7 +635,16 @@
       <div class="half right">
 
         <div class="top-bar right">
-          {#if $isAriel}
+          <span
+            on:click={() => {
+              profile = false;
+              showAbout.set(!$showAbout);
+            }}
+            class="pseudo-link">
+            ABOUT
+            {#if $isYGRG}YGRG{/if}
+          </span>
+          <!-- {#if $isAriel}
             <div class="left">
               {#await latestProgram then latestProgram}
                 <a href="/ariel/program/{latestProgram.slug}">PROGRAM</a>
@@ -661,8 +657,8 @@
                 </a>
               </div>
             {/if}
-          {/if}
-          {#if $isAri}
+          {/if} -->
+          <!-- {#if $isAri}
             <div class="left">
               {#await latestReading then latestReading}
                 <a href="/ari/readings/{latestReading.slug}">READINGS</a>
@@ -675,8 +671,8 @@
                 </a>
               </div>
             {/if}
-          {/if}
-          {#if $isYGRG}
+          {/if} -->
+          <!-- {#if $isYGRG}
             <div class="left">
               <a href="/ygrg/events">YGRG EVENT ARCHIVE</a>
             </div>
@@ -687,7 +683,7 @@
                 </a>
               </div>
             {/if}
-          {/if}
+          {/if} -->
         </div>
 
         {#if single}
@@ -700,7 +696,7 @@
           {/if}
         {:else}
           <div class="inner-container" use:links>
-            <Listing />
+            <FullListing />
           </div>
         {/if}
 
@@ -773,13 +769,13 @@
 
       </div>
 
-      <div
+      <!-- <div
         class="close"
         on:click={() => {
           showAbout.set(false);
         }}>
         <Cross />
-      </div>
+      </div> -->
 
     </div>
   {/await}

@@ -230,7 +230,7 @@
       height: $line-height * 2.5;
       padding: 5px;
       border-radius: 5px;
-      background: $brown;
+      background: $red-gradient;
       border: 2px solid white;
       color: white;
       margin-bottom: $line-height;
@@ -343,7 +343,7 @@
       height: $line-height * 2.5;
       padding: 5px;
       border-radius: 5px;
-      background: $brown;
+      background: $red-gradient;
       border: 2px solid black;
       color: black;
       margin-bottom: $line-height;
@@ -376,7 +376,7 @@
       line-height: $line-height;
       padding: 5px;
       border-radius: 5px;
-      background: $brown;
+      background: $red-gradient;
       border: 2px solid black;
       color: black;
       margin-bottom: $line-height;

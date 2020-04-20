@@ -49,7 +49,6 @@
     padding-bottom: 120px;
     padding-top: 10vh;
     font-size: $font-size-medium;
-    // background: lightblue;
 
     @include screen-size("small") {
       padding-top: 20px;
@@ -180,7 +179,6 @@
     text-align: center;
     font-family: $font-stack-ygrg-extended;
     font-size: $font-size-medium;
-    // background: lightyellow;
 
     @include screen-size("small") {
       font-size: $font-size-mobile-medium;
