@@ -111,22 +111,6 @@
 
   onMount(async () => {
     window.scrollTo(0, 0);
-
-    // window.addEventListener(
-    //   "hashchange",
-    //   e => {
-    //     console.log("hash");
-    //     console.dir(e);
-    //     console.log(location.hash);
-
-    //     const sectionId = location.hash.substring(1);
-
-    //     const targetEl = document.querySelector(location.hash);
-
-    //     console.dir(targetEl);
-    //   },
-    //   false
-    // );
   });
 </script>
 
@@ -267,27 +251,29 @@
     position: fixed;
     top: 0;
     height: 100vh;
-    width: 50vw;
+    width: 80px;
     z-index: 1000;
-    opacity: 0;
+    opacity: 1;
     z-index: 100;
     overflow-y: hidden;
+    transition: transform 0.3s $easing;
 
     &.ari,
     &.ariel {
       background: $purple-gradient;
       left: 0;
-      transform: translateX(-100%);
+      transform: translateX(calc(-100% + 80px));
     }
 
     &.ygrg {
       background: $red-gradient;
       right: 0;
-      transform: translateX(100%);
+      transform: translateX(calc(100% - 80px));
     }
 
     &.open {
-      transition: transform 0.2s $easing, opacity 0.3s $easing;
+      width: 50vw;
+      transition: transform 0.3s $easing;
       transform: translateX(0);
       opacity: 1;
     }
@@ -325,6 +311,13 @@
           margin-right: 20px;
           margin-left: 20px;
         }
+      }
+
+      opacity: 0;
+
+      &.open {
+        transition: opacity 0.4s $easing;
+        opacity: 1;
       }
     }
 
@@ -462,6 +455,7 @@
     width: 400px;
     max-width: 90%;
     position: relative;
+    margin-top: $top-bar-height + 20px;
 
     .filter-input {
       font-size: $font-size-medium;
@@ -552,12 +546,6 @@
             {#if $isAriel || $isAri}
               <a href="/" class:active={$isAriel}>ARIEL</a>
             {/if}
-          </div>
-
-          <div class="right">
-            {#if $isAriel || $isAri}
-              <a href="/ari" class:active={$isAri}>ARI.INDEX</a>
-            {/if}
             {#if $isYGRG}
               <span
                 class="pseudo-link"
@@ -570,6 +558,22 @@
                 {:else}
                   <Ellipse />
                 {/if}
+              </span>
+            {/if}
+          </div>
+
+          <div class="right">
+            {#if $isAriel || $isAri}
+              <a href="/ari" class:active={$isAri}>ARI.INDEX</a>
+            {/if}
+            {#if $isYGRG}
+              <span
+                on:click={() => {
+                  profile = false;
+                  showAbout.set(!$showAbout);
+                }}
+                class="pseudo-link">
+                ABOUT YGRG
               </span>
             {/if}
           </div>
@@ -651,7 +655,7 @@
       <div class="half right">
 
         <div class="top-bar right">
-          <span
+          <!-- <span
             on:click={() => {
               profile = false;
               showAbout.set(!$showAbout);
@@ -659,7 +663,7 @@
             class="pseudo-link">
             ABOUT
             {#if $isYGRG}YGRG{/if}
-          </span>
+          </span> -->
           <!-- {#if $isAriel}
             <div class="left">
               {#await latestProgram then latestProgram}
@@ -725,7 +729,7 @@
     <div class="about {title}" class:open={$showAbout}>
 
       <!-- MAIN TEXT -->
-      <div class="inner-container">
+      <div class="inner-container" class:open={$showAbout}>
         <div class="text">
           {@html renderBlockText(about.content)}
         </div>
