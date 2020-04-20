@@ -211,7 +211,7 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: $red-gradient;
+    background: white;
     z-index: 100;
   }
 

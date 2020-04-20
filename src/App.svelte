@@ -356,7 +356,6 @@
     text-align: center;
     padding: 5px;
     border-radius: 5px;
-    background: $red-gradient;
     border: 2px solid white;
     color: white;
     margin-bottom: $line-height;

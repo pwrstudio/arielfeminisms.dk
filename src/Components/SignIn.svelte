@@ -376,7 +376,7 @@
       line-height: $line-height;
       padding: 5px;
       border-radius: 5px;
-      background: $red-gradient;
+      background: white;
       border: 2px solid black;
       color: black;
       margin-bottom: $line-height;
