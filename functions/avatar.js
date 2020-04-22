@@ -16,9 +16,6 @@ const client = sanityClient({
 exports.handler = function (event, context, callback) {
     const { user } = context.clientContext;
 
-    console.dir(event)
-    console.dir(user)
-
     if (!user || !user.sub) {
         // Break if not authorized
         callback(

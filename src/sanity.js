@@ -34,7 +34,10 @@ const serializers = {
 export const renderBlockText = text =>
     blocksToHtml({
         blocks: text,
-        serializers: serializers
+        serializers: serializers,
+        imageOptions: { w: 600, h: 400, fit: 'max' },
+        projectId: '883bmkra',
+        dataset: 'production'
     })
 
 export const toPlainText = (blocks = []) => {
@@ -63,9 +66,6 @@ export const urlFor = source => builder.image(source)
 export const loadData = async (query, params) => {
     try {
         const res = await client.fetch(query, params)
-
-        console.dir(res)
-
         if (res === null) {
             return Promise.reject();
         }

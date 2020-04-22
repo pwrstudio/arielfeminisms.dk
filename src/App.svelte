@@ -36,9 +36,7 @@
   const userCookie = Cookies.get("ygrgLoggedInUser");
 
   if (window.location.hash) {
-    console.log(window.location.hash);
     const confirmationToken = window.location.hash.substring(20);
-    console.log(confirmationToken);
 
     auth
       .confirm(confirmationToken)
@@ -50,7 +48,6 @@
   }
 
   if (userCookie) {
-    console.dir(userCookie);
     const userCookieObject = JSON.parse(userCookie);
     auth
       .login(userCookieObject.email, userCookieObject.password)
@@ -389,6 +386,14 @@
 
       &:hover {
         text-decoration: none;
+      }
+    }
+
+    figure {
+      margin: 0;
+
+      img {
+        max-width: 100%;
       }
     }
   }
