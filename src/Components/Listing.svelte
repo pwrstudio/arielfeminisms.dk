@@ -83,10 +83,10 @@
   const scrollNavigate = e => {
     if (single || window.matchMedia("(max-width: 800px)").matches) {
       const newLink = e.target.dataset.link;
+      window.alert(newLink);
       window.location = newLink;
       return;
     }
-
     const newHash = e.target.dataset.target;
     const targetEl = document.querySelector(newHash);
     if (history.pushState) {
@@ -186,22 +186,28 @@
       .title {
         width: 90%;
         max-width: 30ch;
+        pointer-events: none;
       }
 
       .date {
         width: 90vw;
         max-width: 30ch;
+        pointer-events: none;
       }
 
       .artist {
         width: 90%;
         max-width: 30ch;
+        pointer-events: none;
       }
 
       .text {
         width: 90%;
         max-width: 30ch;
-        text-align: center;
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+        pointer-events: none;
       }
     }
   }
@@ -271,6 +277,13 @@
         <!-- DATE -->
         {#if $isYGRG || $isAriel}
           <div class="date">{formattedDate(item.startDate, item.endDate)}</div>
+        {/if}
+
+        <!-- TEXT -->
+        {#if $isYGRG}
+          <div class="text">
+            {@html renderBlockText(item.content)}
+          </div>
         {/if}
 
       </div>

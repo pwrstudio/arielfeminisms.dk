@@ -281,12 +281,31 @@
       }
     }
 
+    .close {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      height: 24px;
+      width: 24px;
+      transition: transform 0.3s $easing;
+      cursor: pointer;
+      display: none;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
     &.open {
       width: 50vw;
       transition: transform 0.3s $easing;
       transform: translateX(0);
       opacity: 1;
       cursor: default;
+
+      .close {
+        display: block;
+      }
     }
 
     @include screen-size("small") {
@@ -351,25 +370,6 @@
         font-size: $font-size-mobile-medium;
         position: static;
         top: unset;
-      }
-    }
-
-    .close {
-      position: absolute;
-      right: 20px;
-      top: 15px;
-      height: 24px;
-      width: 24px;
-      transition: transform 0.3s $easing;
-      cursor: pointer;
-      display: none;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-
-      @include screen-size("small") {
-        display: block;
       }
     }
   }
@@ -755,9 +755,13 @@
             </div>
           {/if}
           {#if $isYGRG}
-            {#await latestEvent then latestEvent}
-              <SinglePane slug={latestEvent.slug} {title} />
-            {/await}
+            {#if listing}
+              <Listing single={true} />
+            {:else}
+              {#await latestEvent then latestEvent}
+                <SinglePane slug={latestEvent.slug} {title} />
+              {/await}
+            {/if}
           {/if}
         {/if}
 
