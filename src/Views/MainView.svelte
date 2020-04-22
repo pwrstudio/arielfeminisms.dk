@@ -42,6 +42,7 @@
     showEvents,
     showReadings,
     loggedInUser,
+    activeSection,
     userLoaded
   } from "../stores.js";
 
@@ -207,15 +208,6 @@
         display: none;
       }
 
-      a {
-        &:hover {
-          color: $purple;
-        }
-        &:active {
-          border-bottom: 2px solid $purple;
-        }
-      }
-
       .left {
         float: left;
       }
@@ -235,6 +227,33 @@
           &:hover {
             transform: scale(1.1);
             border-bottom: unset;
+          }
+        }
+      }
+
+      &.ari,
+      &.ariel {
+        a,
+        .pseudo-link {
+          &:hover {
+            color: $purple;
+            border-bottom: 2px solid $purple;
+          }
+          &:active {
+            border-bottom: 2px solid $purple;
+          }
+        }
+      }
+
+      &.ygrg {
+        a,
+        .pseudo-link {
+          &:hover {
+            color: $red;
+            border-bottom: 2px solid $red;
+          }
+          &:active {
+            border-bottom: 2px solid $red;
           }
         }
       }
@@ -572,7 +591,7 @@
       <div class="half left">
 
         <!-- TOP BAR -->
-        <div class="top-bar left" use:links>
+        <div class="top-bar left {$activeSection}" use:links>
 
           <div class="left">
             {#if $isAriel || $isAri}
@@ -687,7 +706,7 @@
     {#if matches || single}
       <div class="half right">
 
-        <div class="top-bar right">
+        <div class="top-bar right {$activeSection}">
           {#if $isAriel || $isAri}
             <span
               on:click={() => {

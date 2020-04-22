@@ -149,10 +149,6 @@
         margin-right: auto;
         pointer-events: none;
       }
-
-      &:hover {
-        color: $purple;
-      }
     }
 
     &.ariel {
@@ -160,6 +156,12 @@
 
       .title {
         text-transform: uppercase;
+      }
+
+      .list-item {
+        &:hover {
+          color: $purple;
+        }
       }
     }
 
@@ -176,6 +178,12 @@
 
         @include screen-size("small") {
           margin-bottom: $line-height * 0.5;
+        }
+      }
+
+      .list-item {
+        &:hover {
+          color: $purple;
         }
       }
     }
@@ -208,6 +216,12 @@
         margin-left: auto;
         margin-right: auto;
         pointer-events: none;
+      }
+    }
+
+    .list-item {
+      &:hover {
+        color: $red !important;
       }
     }
   }

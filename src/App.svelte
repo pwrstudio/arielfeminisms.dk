@@ -392,6 +392,18 @@
       }
     }
   }
+
+  .listing {
+    .text {
+      a {
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
 </style>
 
 <main>
