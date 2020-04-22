@@ -200,9 +200,9 @@
   </div>
   <img
     src={urlFor(image)
-      .height(140)
-      .width(140)
-      .quality(80)
+      .height(240)
+      .width(240)
+      .quality(90)
       .auto('format')
       .url()}
     class="image" />
