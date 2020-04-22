@@ -80,10 +80,8 @@
     .list-item {
       // margin-bottom: $line-height * 3;
       padding-top: $line-height * 3;
-
       display: inline-block;
       width: 100%;
-      cursor: pointer;
 
       @include screen-size("small") {
         margin-bottom: $line-height * 2;

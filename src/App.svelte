@@ -419,9 +419,14 @@
       component={MainView}
       title="ari"
       listing={true} />
+    <Route
+      path="/ari/readings/:slug"
+      component={MainView}
+      title="ari"
+      single={true} />
 
     <!-- YGRG -->
-    <Route path="/ygrg" component={MainView} title="ygrg" single={true} />
+    <Route path="/ygrg" component={MainView} title="ygrg" />
     <Route
       path="/ygrg/profile"
       component={MainView}

@@ -164,9 +164,11 @@
         font-weight: bold;
 
         @include screen-size("small") {
-          margin-right: 10px;
-          margin-left: 10px;
+          margin-right: auto;
+          margin-left: auto;
           margin-top: 20px;
+          width: 90%;
+          max-width: 50ch;
         }
       }
 
@@ -229,15 +231,10 @@
           width: 24px;
           transition: transform 0.3s $easing;
           cursor: pointer;
-          display: none;
 
           &:hover {
             transform: scale(1.1);
             border-bottom: unset;
-          }
-
-          @include screen-size("small") {
-            display: block;
           }
         }
       }
@@ -261,7 +258,6 @@
     opacity: 1;
     z-index: 100;
     overflow-y: hidden;
-    transition: transform 0.3s $easing;
     cursor: pointer;
 
     &.ari,
@@ -366,9 +362,14 @@
       width: 24px;
       transition: transform 0.3s $easing;
       cursor: pointer;
+      display: none;
 
       &:hover {
         transform: scale(1.1);
+      }
+
+      @include screen-size("small") {
+        display: block;
       }
     }
   }
@@ -476,6 +477,10 @@
     position: relative;
     margin-top: $top-bar-height + 20px;
 
+    @include screen-size("small") {
+      margin-top: 30px;
+    }
+
     .filter-input {
       font-size: $font-size-medium;
       width: 100%;
@@ -555,7 +560,7 @@
 
   <!-- LEFT PANE -->
   <MediaQuery query="(min-width: 800px)" let:matches>
-    {#if matches || (!listing && !single)}
+    {#if matches || !single}
       <div class="half left">
 
         <!-- TOP BAR -->
@@ -603,7 +608,7 @@
         <div class="inner-container">
 
           {#if $isAriel || $isAri}
-            <Listing />
+            <Listing {single} />
           {/if}
 
           {#if $isYGRG}
@@ -671,7 +676,7 @@
 
   <!-- RIGHT PANE -->
   <MediaQuery query="(min-width: 800px)" let:matches>
-    {#if matches || (listing || single)}
+    {#if matches || single}
       <div class="half right">
 
         <div class="top-bar right">
@@ -819,8 +824,9 @@
 
       <div
         class="close"
-        on:click={() => {
+        on:click={e => {
           showAbout.set(false);
+          e.stopPropagation();
         }}>
         <Cross />
       </div>

@@ -41,6 +41,7 @@
 
   // *** PROPS
   export let location = {};
+  export let single = false;
 
   // *** VARIABLES
   let listing = "";
@@ -80,6 +81,12 @@
   });
 
   const scrollNavigate = e => {
+    if (single || window.matchMedia("(max-width: 800px)").matches) {
+      const newLink = e.target.dataset.link;
+      window.location = newLink;
+      return;
+    }
+
     const newHash = e.target.dataset.target;
     const targetEl = document.querySelector(newHash);
     if (history.pushState) {
@@ -102,6 +109,7 @@
     @include screen-size("small") {
       padding-bottom: 300px;
       font-size: $font-size-mobile-medium;
+      margin-top: 30px;
     }
 
     .list-item {
@@ -237,7 +245,7 @@
     {#each listing as item}
       <div
         data-target={'#' + item.slug.current}
-        data-link={item.slug.current}
+        data-link={'/' + $activeSection + '/' + $postType + '/' + item.slug.current}
         class="list-item"
         on:click={scrollNavigate}>
 
