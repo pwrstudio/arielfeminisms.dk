@@ -32,12 +32,12 @@
   .tile {
     border: $line-style;
     border-radius: 8px;
-    height: 140px;
-    width: 140px;
+    height: 160px;
+    width: calc(33.3333% - 6px);
     display: block;
     float: left;
-    margin-right: 8px;
-    margin-bottom: 8px;
+    margin-right: 9px;
+    margin-bottom: 9px;
     text-align: center;
     padding-top: 20px;
     font-family: $font-stack-ygrg-regular;
@@ -45,12 +45,26 @@
     position: relative;
     overflow: hidden;
 
+    &:nth-child(3n) {
+      margin-right: 0px;
+    }
+
     @include screen-size("small") {
       font-size: $font-size-mobile-medium;
       border: $mobile-line-style;
-      height: 105px;
-      width: 105px;
+      height: 140px;
       padding-top: 15px;
+      margin-right: 8px;
+      margin-bottom: 8px;
+      width: calc(50% - 4px);
+
+      &:nth-child(3n) {
+        margin-right: 8px;
+      }
+
+      &:nth-child(2n) {
+        margin-right: 0px;
+      }
     }
 
     .bookmark {

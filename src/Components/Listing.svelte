@@ -212,6 +212,11 @@
     max-width: 90%;
     position: relative;
 
+    @include screen-size("small") {
+      width: 100%;
+      max-width: unset;
+    }
+
     .filter-input {
       font-size: $font-size-medium;
       width: 100%;

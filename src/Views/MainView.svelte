@@ -380,6 +380,11 @@
     position: relative;
     float: right;
 
+    @include screen-size("small") {
+      width: 100%;
+      max-width: unset;
+    }
+
     .search-input {
       font-size: $font-size-medium;
       width: 100%;
@@ -478,6 +483,8 @@
     margin-top: $top-bar-height + 20px;
 
     @include screen-size("small") {
+      width: 100%;
+      max-width: unset;
       margin-top: 30px;
     }
 
@@ -533,6 +540,7 @@
   .tile-container {
     display: inline-block;
     padding-bottom: 120px;
+    width: 100%;
   }
 
   .bar {
