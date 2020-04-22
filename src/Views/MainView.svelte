@@ -749,9 +749,16 @@
             {/await}
           {/if}
         {:else}
-          <div class="inner-container" use:links>
-            <FullListing />
-          </div>
+          {#if $isAriel || $isAri}
+            <div class="inner-container" use:links>
+              <FullListing />
+            </div>
+          {/if}
+          {#if $isYGRG}
+            {#await latestEvent then latestEvent}
+              <SinglePane slug={latestEvent.slug} {title} />
+            {/await}
+          {/if}
         {/if}
 
       </div>
