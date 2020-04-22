@@ -110,7 +110,7 @@
 
   .comment-box {
     width: 380px;
-    background: $grey;
+    background: $red;
     padding: 15px;
     padding-top: 10px;
     margin-top: 10px;

@@ -229,10 +229,15 @@
           width: 24px;
           transition: transform 0.3s $easing;
           cursor: pointer;
+          display: none;
 
           &:hover {
             transform: scale(1.1);
             border-bottom: unset;
+          }
+
+          @include screen-size("small") {
+            display: block;
           }
         }
       }
@@ -257,6 +262,7 @@
     z-index: 100;
     overflow-y: hidden;
     transition: transform 0.3s $easing;
+    cursor: pointer;
 
     &.ari,
     &.ariel {
@@ -271,11 +277,20 @@
       transform: translateX(calc(100% - 80px));
     }
 
+    @include screen-size("small") {
+      &.ari,
+      &.ariel,
+      &.ygrg {
+        transform: translateY(100%);
+      }
+    }
+
     &.open {
       width: 50vw;
       transition: transform 0.3s $easing;
       transform: translateX(0);
       opacity: 1;
+      cursor: default;
     }
 
     @include screen-size("small") {
@@ -284,6 +299,10 @@
       height: auto;
       transform: translateY(100%);
       overflow-y: auto;
+
+      &.open {
+        width: 100vw;
+      }
     }
 
     .inner-container {
@@ -548,6 +567,22 @@
             {/if}
             {#if $isYGRG}
               <span
+                on:click={() => {
+                  profile = false;
+                  showAbout.set(!$showAbout);
+                }}
+                class="pseudo-link">
+                ABOUT YGRG
+              </span>
+            {/if}
+          </div>
+
+          <div class="right">
+            {#if $isAriel || $isAri}
+              <a href="/ari" class:active={$isAri}>ARI.INDEX</a>
+            {/if}
+            {#if $isYGRG}
+              <span
                 class="pseudo-link"
                 on:click={() => {
                   showAbout.set(false);
@@ -560,22 +595,7 @@
                 {/if}
               </span>
             {/if}
-          </div>
 
-          <div class="right">
-            {#if $isAriel || $isAri}
-              <a href="/ari" class:active={$isAri}>ARI.INDEX</a>
-            {/if}
-            {#if $isYGRG}
-              <span
-                on:click={() => {
-                  profile = false;
-                  showAbout.set(!$showAbout);
-                }}
-                class="pseudo-link">
-                ABOUT YGRG
-              </span>
-            {/if}
           </div>
 
         </div>
@@ -655,15 +675,16 @@
       <div class="half right">
 
         <div class="top-bar right">
-          <!-- <span
-            on:click={() => {
-              profile = false;
-              showAbout.set(!$showAbout);
-            }}
-            class="pseudo-link">
-            ABOUT
-            {#if $isYGRG}YGRG{/if}
-          </span> -->
+          {#if $isAriel || $isAri}
+            <span
+              on:click={() => {
+                profile = false;
+                showAbout.set(!$showAbout);
+              }}
+              class="pseudo-link">
+              ABOUT
+            </span>
+          {/if}
           <!-- {#if $isAriel}
             <div class="left">
               {#await latestProgram then latestProgram}
@@ -692,7 +713,7 @@
               </div>
             {/if}
           {/if} -->
-          <!-- {#if $isYGRG}
+          {#if $isYGRG}
             <div class="left">
               <a href="/ygrg/events">YGRG EVENT ARCHIVE</a>
             </div>
@@ -703,7 +724,7 @@
                 </a>
               </div>
             {/if}
-          {/if} -->
+          {/if}
         </div>
 
         {#if single}
@@ -726,7 +747,14 @@
 
   <!-- ABOUT PANE -->
   {#await about then about}
-    <div class="about {title}" class:open={$showAbout}>
+    <div
+      class="about {title}"
+      class:open={$showAbout}
+      on:click={() => {
+        if ($showAbout == false) {
+          showAbout.set(true);
+        }
+      }}>
 
       <!-- MAIN TEXT -->
       <div class="inner-container" class:open={$showAbout}>
@@ -747,8 +775,8 @@
                 class="link">
                 CONTACT
               </a>
-              <span class="bar">|</span>
-              <span class="link">NEWSLETTER ARIEL</span>
+              <!-- <span class="bar">|</span>
+              <span class="link">NEWSLETTER ARIEL</span> -->
             </div>
           {/if}
           {#if $isAri}
@@ -781,21 +809,21 @@
                 class="link">
                 CONTACT
               </a>
-              <span class="bar">|</span>
-              <span class="link">NEWSLETTER YGRG</span>
+              <!-- <span class="bar">|</span>
+              <span class="link">NEWSLETTER YGRG</span> -->
             </div>
           {/if}
         </div>
 
       </div>
 
-      <!-- <div
+      <div
         class="close"
         on:click={() => {
           showAbout.set(false);
         }}>
         <Cross />
-      </div> -->
+      </div>
 
     </div>
   {/await}
@@ -804,7 +832,12 @@
   <div class="sign-in" class:open={profile} use:links>
     <SignIn />
 
-    <a href="/ygrg" class="close">
+    <a
+      href="/ygrg"
+      class="close"
+      on:click={() => {
+        showAbout.set(false);
+      }}>
       <Cross />
     </a>
 

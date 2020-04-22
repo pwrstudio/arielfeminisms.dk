@@ -145,10 +145,6 @@
       &:hover {
         color: $purple;
       }
-
-      &:active {
-        text-decoration: underline;
-      }
     }
 
     &.ariel {
@@ -241,6 +237,7 @@
     {#each listing as item}
       <div
         data-target={'#' + item.slug.current}
+        data-link={item.slug.current}
         class="list-item"
         on:click={scrollNavigate}>
 

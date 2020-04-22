@@ -400,7 +400,7 @@
     <!-- ARIEL -->
     <Route path="/" component={MainView} title="ariel" />
     <Route path="/ariel" component={MainView} title="ariel" />
-    <!-- <Route
+    <Route
       path="/ariel/program"
       component={MainView}
       title="ariel"
@@ -409,16 +409,16 @@
       path="/ariel/program/:slug"
       component={MainView}
       title="ariel"
-      single={true} /> -->
+      single={true} />
 
     <!-- ARI -->
     <Route path="/ari" component={MainView} title="ari" />
-    <!-- <Route path="/ari/:slug" component={MainView} title="ari" single={true} /> -->
-    <!-- <Route
+    <Route path="/ari/:slug" component={MainView} title="ari" single={true} />
+    <Route
       path="/ari/readings"
       component={MainView}
       title="ari"
-      listing={true} /> -->
+      listing={true} />
 
     <!-- YGRG -->
     <Route path="/ygrg" component={MainView} title="ygrg" single={true} />

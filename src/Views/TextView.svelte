@@ -211,15 +211,28 @@
     height: 100vh;
     margin: 0;
     padding: 0;
-    background: white;
+    background: $grey;
     z-index: 100;
+
+    &.denied {
+      background: $red-gradient;
+    }
+  }
+
+  .top-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    background: $red-gradient-vertical;
   }
 
   .pdf-viewer {
     position: absolute;
-    top: 70px;
+    top: 90px;
     right: 60px;
-    height: calc(100vh - 70px);
+    height: calc(100vh - 90px);
     width: calc(100vw - 500px);
 
     @include screen-size("small") {
@@ -255,14 +268,14 @@
     position: absolute;
     left: 20px;
     top: 20px;
-    color: white;
+    color: black;
     font-family: $font-stack-ygrg-regular;
   }
 
   .menu-bar {
     position: absolute;
     right: 60px;
-    top: 40px;
+    top: 55px;
     height: 20px;
     overflow: visible;
     width: calc(100vw - 480px);
@@ -283,12 +296,6 @@
         margin-left: 5px;
       }
 
-      &.print {
-      }
-
-      &.bookmark {
-      }
-
       svg {
         height: 20px;
 
@@ -302,7 +309,7 @@
   .comment-container {
     position: absolute;
     left: 20px;
-    top: 70px;
+    top: 90px;
     width: 400px;
     height: calc(100vh - 70px);
     overflow-y: auto;
@@ -320,7 +327,7 @@
     width: 380px;
     overflow-y: auto;
     height: 140px;
-    background: $red-gradient;
+    // background: $red-gradient;
     padding-bottom: 10px;
     padding-top: 10px;
 
@@ -347,18 +354,18 @@
     .comment-input {
       font-size: $font-size-medium;
       width: 100%;
-      border: 2px solid white;
+      border: 2px solid black;
       outline: none;
       line-height: $line-height;
       height: $line-height * 6;
       padding: 5px;
       border-radius: 5px;
-      background: $red-gradient;
+      background: $grey;
       resize: none;
-      color: white;
+      color: black;
 
       &::placeholder {
-        color: white;
+        color: rgba(0, 0, 0, 0.6);
       }
 
       @include screen-size("small") {
@@ -387,7 +394,7 @@
     svg {
       polygon {
         fill: none;
-        stroke: white;
+        stroke: black;
         stroke-miterlimit: 10;
         stroke-width: 2px;
       }
@@ -396,16 +403,8 @@
     &.marked {
       svg {
         polygon {
-          fill: white;
+          fill: black;
         }
-      }
-    }
-  }
-
-  .download {
-    svg {
-      polygon {
-        fill: white;
       }
     }
   }
@@ -413,7 +412,7 @@
   .page-info {
     float: left;
     font-weight: 200;
-    color: white;
+    color: black;
     font-family: $font-stack-ygrg-regular;
     position: absolute;
     left: 50%;
@@ -462,9 +461,11 @@
   }
 </style>
 
-<div class="text-view" use:links>
+<div class="text-view" class:denied={!$loggedInUser} use:links>
 
   {#if $loggedInUser}
+    <div class="top-gradient" />
+
     {#await text then text}
 
       <MetaData post={text} />
