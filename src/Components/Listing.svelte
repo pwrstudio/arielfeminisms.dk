@@ -83,7 +83,6 @@
   const scrollNavigate = e => {
     if (single || window.matchMedia("(max-width: 800px)").matches) {
       const newLink = e.target.dataset.link;
-      window.alert(newLink);
       window.location = newLink;
       return;
     }
