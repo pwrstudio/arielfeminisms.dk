@@ -587,7 +587,9 @@
 
   <!-- LEFT PANE -->
   <MediaQuery query="(min-width: 800px)" let:matches>
-    {#if matches || !single}
+    <!-- Show if desktop -->
+    <!-- OR if NOT single and NOT YGRG-listing -->
+    {#if matches || (!single && !(listing && $isYGRG))}
       <div class="half left">
 
         <!-- TOP BAR -->
@@ -703,7 +705,10 @@
 
   <!-- RIGHT PANE -->
   <MediaQuery query="(min-width: 800px)" let:matches>
-    {#if matches || single}
+    <!-- Show if desktop -->
+    <!-- OR if single view  -->
+    <!-- OR if YGRG and listing -->
+    {#if matches || single || (listing && $isYGRG)}
       <div class="half right">
 
         <div class="top-bar right {$activeSection}">

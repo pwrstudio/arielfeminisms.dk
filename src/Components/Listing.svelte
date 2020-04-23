@@ -216,11 +216,11 @@
         margin-right: auto;
         pointer-events: none;
       }
-    }
 
-    .list-item {
-      &:hover {
-        color: $red !important;
+      .list-item {
+        &:hover {
+          color: $red !important;
+        }
       }
     }
   }
@@ -295,7 +295,7 @@
         <!-- TEXT -->
         {#if $isYGRG}
           <div class="text">
-            {@html renderBlockText(item.content)}
+            {@html toPlainText(item.content)}
           </div>
         {/if}
 
