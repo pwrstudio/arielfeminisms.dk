@@ -43,7 +43,7 @@
 
     jwt.then(jwt => {
       const url =
-        "https://arielfeminisms.netlify.app/.netlify/functions/comment?id=" +
+        "https://arielfeminisms.dk/.netlify/functions/comment?id=" +
         encodeURIComponent(commentId);
 
       fetch(url, {
@@ -53,11 +53,10 @@
         })
       })
         .then(response => {
-          console.log("SUCCESS");
+          console.log("Comment Deleted");
         })
         .catch(err => {
-          console.log("ERROR");
-          console.error(err);
+          Sentry.captureException(err);
         });
     });
   };
@@ -69,7 +68,7 @@
 
     jwt.then(jwt => {
       const url =
-        "https://arielfeminisms.netlify.app/.netlify/functions/comment?comment=" +
+        "https://arielfeminisms.dk/.netlify/functions/comment?comment=" +
         encodeURIComponent("EDITED: XXXX") +
         "&id=" +
         encodeURIComponent(commentId);
@@ -81,12 +80,11 @@
         })
       })
         .then(response => {
-          console.log("SUCCESS");
+          console.log("Comment edited");
           newComment = "";
         })
         .catch(err => {
-          console.log("ERROR");
-          console.error(err);
+          Sentry.captureException(err);
         });
     });
   };
@@ -94,14 +92,12 @@
   let avatar = loadData("*[_type == 'userAvatar' && _id == $id][0]", {
     id: authorId
   });
-  console.dir(avatar);
   avatar
     .then(a => {
-      console.dir(a);
       avatarImage = a.image;
     })
     .catch(err => {
-      console.dir(err);
+      Sentry.captureException(err);
     });
 </script>
 

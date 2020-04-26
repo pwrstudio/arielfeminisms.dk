@@ -49,24 +49,18 @@
 
   $: {
     if ($loggedInUser) {
-      console.log($loggedInUser.id);
       let avatar = loadData("*[_type == 'userAvatar' && _id == $id][0]", {
         id: $loggedInUser.id
       });
-      console.dir(avatar);
       avatar
         .then(a => {
-          console.dir(a);
           avatarImage = a.image;
         })
         .catch(err => {
-          console.dir(err);
+          Sentry.captureException(err);
         });
     }
   }
-
-  // *** CONSTANTS
-  // const user = auth.currentUser();
 
   // *** DOM REFERENCES
   let bioEl = {};
@@ -96,7 +90,7 @@
       })
       .catch(err => {
         processing = false;
-        console.dir(err);
+        Sentry.captureException(err);
         msgSignIn = "Sign in failed: " + err.json.error_description;
       });
   };
@@ -125,7 +119,7 @@
       })
       .catch(err => {
         processing = false;
-        console.dir(err.json.msg);
+        Sentry.captureException(err);
         msgSignUp = "Account creation failed. " + get(err, "json.msg", "");
       });
   };
@@ -135,15 +129,14 @@
     user
       .logout()
       .then(response => {
-        console.log("User logged out");
         msgSignUp = false;
         msgSignIn = "Logged out";
         Cookies.remove("ygrgLoggedInUser");
         loggedInUser.set(false);
       })
-      .catch(error => {
-        console.log("Failed to logout user: %o", error);
-        throw error;
+      .catch(err => {
+        Sentry.captureException(err);
+        throw err;
       });
   };
 
@@ -158,11 +151,10 @@
       .update({ data: { biography: newBiography } })
       .then(user => {
         console.log("Updated user biography %s", user);
-        console.dir(user);
       })
-      .catch(error => {
-        console.log("Failed to update user: %o", error);
-        throw error;
+      .catch(err => {
+        Sentry.captureException(err);
+        throw err;
       });
 
     bioUpdateDone = true;
@@ -170,17 +162,14 @@
 
   const addedfile = file => {
     if (!$loggedInUser) return false;
-    console.dir(file);
 
     let jwt = $loggedInUser.jwt();
 
     jwt.then(jwt => {
-      const url =
-        "https://arielfeminisms.netlify.app/.netlify/functions/avatar/";
+      const url = "https://arielfeminisms.dk/.netlify/functions/avatar/";
 
       setTimeout(() => {
         const scaledImage = resizebase64(file.dataURL, 200);
-        console.dir(scaledImage);
         avatarImage = scaledImage;
 
         fetch(url, {
@@ -191,12 +180,10 @@
           body: scaledImage
         })
           .then(response => {
-            console.log("SUCCESS");
-            console.dir(response);
+            console.log("Avatar uploaded");
           })
           .catch(err => {
-            console.log("ERROR");
-            console.error(err);
+            Sentry.captureException(err);
           });
       }, 1000);
     });

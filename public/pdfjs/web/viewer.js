@@ -1763,7 +1763,7 @@
     exports.PDFViewerApplication = PDFViewerApplication;
     var validateFileURL;
     {
-      var HOSTED_VIEWER_ORIGINS = ['null', 'https://arielfeminisms.netlify.app', 'http://arielfeminisms.netlify.app', 'https://arielfeminisms.netlify.com', 'http://arielfeminisms.netlify.com', 'http://localhost:5000', 'https://cdn.sanity.io', 'http://mozilla.github.io', 'https://mozilla.github.io'];
+      var HOSTED_VIEWER_ORIGINS = ['null', 'https://arielfeminisms.dk', 'https://arielfeminisms.netlify.app', 'http://arielfeminisms.netlify.app', 'https://arielfeminisms.netlify.com', 'http://arielfeminisms.netlify.com', 'http://localhost:5000', 'https://cdn.sanity.io', 'http://mozilla.github.io', 'https://mozilla.github.io'];
 
       validateFileURL = function validateFileURL(file) {
 

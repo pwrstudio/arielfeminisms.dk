@@ -3,7 +3,7 @@ import { format, getYear, formatDistanceToNow } from "date-fns";
 
 
 export const auth = new GoTrue({
-    APIUrl: "https://arielfeminisms.netlify.app/.netlify/identity",
+    APIUrl: "https://arielfeminisms.dk/.netlify/identity",
     setCookie: true
 });
 

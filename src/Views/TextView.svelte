@@ -84,8 +84,6 @@
     { slug: slug }
   );
 
-  console.dir(text);
-
   const getCurrentPage = () => {
     if (pdfViewerIframe) {
       currentPage = get(
@@ -122,8 +120,6 @@
     setInterval(getCurrentPage, 200);
     setInterval(getTotalPages, 2000);
 
-    console.dir(t);
-
     // LOGIC
     submitComment = () => {
       if (!$loggedInUser) return false;
@@ -136,7 +132,7 @@
         getCurrentPage();
 
         const url =
-          "https://arielfeminisms.netlify.app/.netlify/functions/comment?comment=" +
+          "https://arielfeminisms.dk/.netlify/functions/comment?comment=" +
           encodeURIComponent(newComment) +
           "&id=" +
           encodeURIComponent(t.id) +
@@ -160,8 +156,7 @@
             );
           })
           .catch(err => {
-            console.log("ERROR");
-            console.error(err);
+            Sentry.captureException(err);
           });
       });
     };
@@ -182,9 +177,9 @@
           console.log("Updated user bookmarks %s", user);
           marked = get(user, "user_metadata.bookmarks", []).includes(t.id);
         })
-        .catch(error => {
-          console.log("Failed to update user: %o", error);
-          throw error;
+        .catch(err => {
+          Sentry.captureException(err);
+          throw err;
         });
     };
   });

@@ -41,10 +41,12 @@
     auth
       .confirm(confirmationToken)
       .then(response => {
-        console.log("Confirmation email sent", JSON.stringify({ response }));
+        console.log("Email code confirmed:", JSON.stringify({ response }));
         navigate("/ygrg/profile/");
       })
-      .catch(e => console.log(e));
+      .catch(err => {
+        Sentry.captureException(err);
+      });
   }
 
   if (userCookie) {
@@ -58,7 +60,7 @@
       })
       .catch(err => {
         userLoaded.set(true);
-        console.log("Sign in failed: " + err.json.error_description);
+        Sentry.captureException(err);
       });
   } else {
     userLoaded.set(true);
