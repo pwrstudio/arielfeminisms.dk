@@ -44,7 +44,7 @@
         .height(1200)
         .width(1200)
         .url()
-    : "xxxx";
+    : "https://arielfeminisms.dk/ariel-logo.jpg";
 </script>
 
 <svelte:head>
