@@ -365,7 +365,7 @@
       color: black;
 
       &::placeholder {
-        color: rgba(0, 0, 0, 0.6);
+        color: $muted-grey;
       }
 
       @include screen-size("small") {
@@ -463,10 +463,10 @@
 
 <div class="text-view" class:denied={!$loggedInUser} use:links>
 
-  {#if $loggedInUser}
-    <div class="top-gradient" />
+  {#await text then text}
 
-    {#await text then text}
+    {#if $loggedInUser}
+      <div class="top-gradient" />
 
       <MetaData post={text} />
 
@@ -563,14 +563,14 @@
           </div>
         </div>
       </div>
+    {:else}
+      <div class="pop-over">
+        <p>Please sign in to read the text and comment</p>
+        <a href="/ygrg/profile" class="black-button">Sign in</a>
+      </div>
+    {/if}
 
-    {/await}
-  {:else}
-    <div class="pop-over">
-      <p>Please sign in to read the text and comment</p>
-      <a href="/ygrg/profile" class="black-button">Sign in</a>
-    </div>
-  {/if}
+  {/await}
 
   <a href="/ygrg" class="close">
     <Cross />

@@ -230,13 +230,13 @@
       height: $line-height * 2.5;
       padding: 5px;
       border-radius: 5px;
-      background: white;
+      background: transparent;
       border: 2px solid white;
       color: black;
       margin-bottom: $line-height;
 
       &::placeholder {
-        color: rgba(0, 0, 0, 0.6);
+        color: $muted-grey;
       }
 
       &.disabled {
@@ -276,7 +276,7 @@
       }
 
       &.done {
-        background: white;
+        background: transparent;
         color: black;
         pointer-events: none;
       }
@@ -343,7 +343,8 @@
       height: $line-height * 2.5;
       padding: 5px;
       border-radius: 5px;
-      background: white;
+      background: transparent;
+
       border: 2px solid black;
       color: black;
       margin-bottom: $line-height;
@@ -359,7 +360,8 @@
 
       &.read-only {
         pointer-events: none;
-        background: white;
+        background: transparent;
+        color: $muted-grey;
       }
 
       @include screen-size("small") {
@@ -376,7 +378,7 @@
       line-height: $line-height;
       padding: 5px;
       border-radius: 5px;
-      background: white;
+      background: transparent;
       border: 2px solid black;
       color: black;
       margin-bottom: $line-height;
