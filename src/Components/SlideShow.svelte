@@ -104,7 +104,11 @@
   }
 </style>
 
-<div class="carousel slideshow" bind:this={slideShowEl} class:loaded>
+<div
+  class="carousel slideshow"
+  bind:this={slideShowEl}
+  class:loaded
+  class:solo={slideArray.length === 1}>
   {#each slideArray as slide}
     <div class="carousel-cell slideshow__slide" class:free={isTextNavigation}>
       {#if isTextNavigation}

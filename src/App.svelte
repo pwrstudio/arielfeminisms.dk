@@ -409,6 +409,16 @@
       }
     }
   }
+
+  .solo {
+    .flickity-page-dots {
+      opacity: 0;
+    }
+
+    .flickity-button {
+      opacity: 0;
+    }
+  }
 </style>
 
 <main>
