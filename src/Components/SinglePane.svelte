@@ -34,6 +34,10 @@
     { slug: slug }
   );
 
+  single.then(t => {
+    console.dir(t);
+  });
+
   let currentIndex = 0;
 </script>
 
@@ -213,7 +217,8 @@
 
   {#await single then single}
 
-    <MetaData post={{ title: toPlainText(single.title) }} />
+    <MetaData
+      post={{ title: toPlainText(single.title), image: get(single, 'slideshow[0].img', false), content: single.content }} />
 
     {#if get(single, 'slideshow.length', 0) > 0}
       <div class="slideshow-container">

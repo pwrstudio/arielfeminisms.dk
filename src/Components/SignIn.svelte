@@ -188,6 +188,13 @@
       }, 1000);
     });
   };
+
+  // const recoverPassword = () => {
+  //   auth
+  //     .requestPasswordRecovery(email)
+  //     .then(response => console.log("Recovery email sent", { response }))
+  //     .catch(error => console.log("Error sending recovery mail: %o", error));
+  // };
 </script>
 
 <style lang="scss">
@@ -424,6 +431,11 @@
             autocomplete="current-password"
             class:disabled={processing}
             placeholder="password"
+            on:keydown={e => {
+              if (e.key === 'Enter') {
+                signIn();
+              }
+            }}
             bind:value={password} />
         </fieldset>
         <fieldset>
@@ -435,9 +447,6 @@
             </div>
           {/if}
         </fieldset>
-        <fieldset>
-          <!-- <div class='action' class="small">Recover password</div> -->
-        </fieldset>
         {#if !processing}
           <fieldset>
             <div
@@ -448,6 +457,9 @@
               Create account
             </div>
           </fieldset>
+          <!-- <fieldset>
+            <div class="action small">Recover password</div>
+          </fieldset> -->
         {/if}
       </form>
     {/if}

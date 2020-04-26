@@ -38,13 +38,14 @@
         })
       : defaultDescription;
 
-  const image = has(post, "mainImage")
-    ? urlFor(post.mainImage)
-        .quality(80)
-        .height(1200)
-        .width(1200)
-        .url()
-    : "https://arielfeminisms.dk/ariel-logo.jpg";
+  const image =
+    has(post, "image") && post.image
+      ? urlFor(post.image)
+          .quality(80)
+          .height(800)
+          .width(800)
+          .url()
+      : "https://arielfeminisms.dk/ariel-logo.jpg";
 </script>
 
 <svelte:head>

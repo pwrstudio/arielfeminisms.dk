@@ -581,7 +581,9 @@
   }
 </style>
 
-<MetaData post={{ title: title.toUpperCase() }} />
+{#if !single}
+  <MetaData post={{ title: title.toUpperCase() }} />
+{/if}
 
 <div class="main-view" class:listing class:single in:fade>
 
@@ -722,34 +724,6 @@
               ABOUT
             </span>
           {/if}
-          <!-- {#if $isAriel}
-            <div class="left">
-              {#await latestProgram then latestProgram}
-                <a href="/ariel/program/{latestProgram.slug}">PROGRAM</a>
-              {/await}
-            </div>
-            {#if slug}
-              <div class="right">
-                <a href="/ariel/program" class="close">
-                  <Cross />
-                </a>
-              </div>
-            {/if}
-          {/if} -->
-          <!-- {#if $isAri}
-            <div class="left">
-              {#await latestReading then latestReading}
-                <a href="/ari/readings/{latestReading.slug}">READINGS</a>
-              {/await}
-            </div>
-            {#if slug}
-              <div class="right">
-                <a href="/ari/readings" class="close">
-                  <Cross />
-                </a>
-              </div>
-            {/if}
-          {/if} -->
           {#if $isYGRG}
             <div class="left">
               <a href="/ygrg/events">YGRG EVENT ARCHIVE</a>
