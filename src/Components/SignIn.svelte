@@ -136,7 +136,6 @@
       })
       .catch(err => {
         Sentry.captureException(err);
-        throw err;
       });
   };
 
@@ -154,7 +153,6 @@
       })
       .catch(err => {
         Sentry.captureException(err);
-        throw err;
       });
 
     bioUpdateDone = true;

@@ -179,7 +179,6 @@
         })
         .catch(err => {
           Sentry.captureException(err);
-          throw err;
         });
     };
   });
