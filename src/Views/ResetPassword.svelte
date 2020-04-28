@@ -28,9 +28,17 @@
 
   const changePassword = e => {
     if (newPassword === repeatPassword) {
-      navigate("/ygrg/profile/");
+      const user = auth.currentUser();
+      user
+        .update({ password: newPassword })
+        .then(user => {
+          window.alert("Password updated");
+          console.log("Updated user %s", user);
+          navigate("/ygrg/profile/");
+        })
+        .catch(err => Sentry.captureException(err));
     } else {
-      window.alert("The two passwords do not match. Try again. ");
+      window.alert("The two passwords do not match. Try again.");
       newPassword = "";
       repeatPassword = "";
     }
