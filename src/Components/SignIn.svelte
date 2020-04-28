@@ -46,6 +46,8 @@
   let myDropzone = {};
   let avatarImage = false;
   let bioUpdateDone = false;
+  let recoverActive = false;
+  let emailRecovery = "";
 
   $: {
     if ($loggedInUser) {
@@ -125,21 +127,25 @@
   };
 
   const logOut = () => {
+    processing = true;
     const user = auth.currentUser();
     user
       .logout()
       .then(response => {
+        processing = false;
         msgSignUp = false;
         msgSignIn = "Logged out";
         Cookies.remove("ygrgLoggedInUser");
         loggedInUser.set(false);
       })
       .catch(err => {
+        processing = false;
         Sentry.captureException(err);
       });
   };
 
   const updateProfile = () => {
+    processing = true;
     const user = auth.currentUser();
 
     if (!user) return false;
@@ -149,13 +155,14 @@
     user
       .update({ data: { biography: newBiography } })
       .then(user => {
+        processing = false;
+        bioUpdateDone = true;
         console.log("Updated user biography %s", user);
       })
       .catch(err => {
+        processing = false;
         Sentry.captureException(err);
       });
-
-    bioUpdateDone = true;
   };
 
   const addedfile = file => {
@@ -187,12 +194,20 @@
     });
   };
 
-  // const recoverPassword = () => {
-  //   auth
-  //     .requestPasswordRecovery(email)
-  //     .then(response => console.log("Recovery email sent", { response }))
-  //     .catch(error => console.log("Error sending recovery mail: %o", error));
-  // };
+  const recoverPassword = () => {
+    processing = true;
+
+    auth
+      .requestPasswordRecovery(emailRecovery)
+      .then(response => {
+        processing = false;
+        emailRecovery = "";
+        console.log("Recovery email sent", { response });
+        msgSignIn = "Recovery email sent";
+        recoverActive = false;
+      })
+      .catch(err => Sentry.captureException(err));
+  };
 </script>
 
 <style lang="scss">
@@ -265,6 +280,22 @@
 
       &:hover {
         background: rgba(40, 40, 40, 1);
+      }
+
+      &.minor {
+        background: transparent;
+        width: auto;
+        line-height: 1.2em;
+        height: auto;
+        float: right;
+        color: black;
+        border-bottom: 2px solid black;
+        border-radius: 0;
+
+        &:hover {
+          background: transparent;
+          border-bottom: 2px solid transparent;
+        }
       }
 
       &.done {
@@ -405,7 +436,7 @@
 
   {#if $userLoaded}
     <!-- SIGN IN  -->
-    {#if !$loggedInUser && !signUpActive}
+    {#if !$loggedInUser && !signUpActive && !recoverActive}
       <form class="sign-in">
         {#if msgSignIn}
           <fieldset
@@ -455,15 +486,46 @@
               Create account
             </div>
           </fieldset>
-          <!-- <fieldset>
-            <div class="action small">Recover password</div>
-          </fieldset> -->
+          <fieldset>
+            <div
+              class="action minor"
+              on:click={() => {
+                recoverActive = true;
+              }}>
+              Recover password
+            </div>
+          </fieldset>
         {/if}
       </form>
     {/if}
 
+    <!-- RECOVER PASSWORD -->
+    {#if recoverActive}
+      <form>
+        <fieldset>
+          <input
+            type="text"
+            autocomplete="username"
+            class:disabled={processing}
+            placeholder="Email"
+            bind:value={emailRecovery} />
+        </fieldset>
+        <fieldset>
+          {#if !processing}
+            <div class="action" on:click={recoverPassword}>
+              Send recovery email
+            </div>
+          {:else}
+            <div class="loading">
+              <Ellipse />
+            </div>
+          {/if}
+        </fieldset>
+      </form>
+    {/if}
+
     <!-- SIGN UP -->
-    {#if signUpActive}
+    {#if signUpActive && !recoverActive}
       <form>
         {#if msgSignUp}
           <fieldset
@@ -576,7 +638,11 @@
         </fieldset>
 
         <fieldset>
-          <div class="action small">Delete Account</div>
+          <div class="action small">Change password</div>
+        </fieldset>
+
+        <fieldset>
+          <div class="action minor">Delete Account</div>
         </fieldset>
 
       </form>

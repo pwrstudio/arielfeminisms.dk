@@ -35,21 +35,37 @@
 
   const userCookie = Cookies.get("ygrgLoggedInUser");
 
-  if (
-    window.location.hash &&
-    window.location.hash.includes("confirmation_token")
-  ) {
-    const confirmationToken = window.location.hash.substring(20);
+  if (window.location.hash) {
+    // CONFIRMATION
+    if (window.location.hash.includes("confirmation_token")) {
+      const confirmationToken = window.location.hash.substring(20);
 
-    auth
-      .confirm(confirmationToken)
-      .then(response => {
-        console.log("Email code confirmed:", JSON.stringify({ response }));
-        navigate("/ygrg/profile/");
-      })
-      .catch(err => {
-        Sentry.captureException(err);
-      });
+      auth
+        .confirm(confirmationToken)
+        .then(response => {
+          console.log("Email code confirmed:", JSON.stringify({ response }));
+          navigate("/ygrg/profile/");
+        })
+        .catch(err => {
+          Sentry.captureException(err);
+        });
+    }
+
+    // RECOVERY
+    if (window.location.hash.includes("recovery_token")) {
+      const recoveryToken = window.location.hash.substring(16);
+
+      auth
+        .recover(recoveryToken)
+        .then(response => {
+          console.log("Logged in as %s", JSON.stringify({ response }));
+          loggedInUser.set(auth.currentUser());
+          console.dir(auth.currentUser());
+          userLoaded.set(true);
+          navigate("/ygrg/profile/");
+        })
+        .catch(err => Sentry.captureException(err));
+    }
   }
 
   if (userCookie) {
