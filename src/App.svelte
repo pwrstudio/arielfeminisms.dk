@@ -32,6 +32,7 @@
   // ** VIEWS
   import MainView from "./Views/MainView.svelte";
   import TextView from "./Views/TextView.svelte";
+  import ResetPassword from "./Views/ResetPassword.svelte";
 
   const userCookie = Cookies.get("ygrgLoggedInUser");
 
@@ -62,7 +63,7 @@
           loggedInUser.set(auth.currentUser());
           console.dir(auth.currentUser());
           userLoaded.set(true);
-          navigate("/ygrg/profile/");
+          navigate("/ygrg/reset-password/");
         })
         .catch(err => Sentry.captureException(err));
     }
@@ -475,6 +476,10 @@
 
     <!-- YGRG -->
     <Route path="/ygrg" component={MainView} title="ygrg" />
+    <Route
+      path="/ygrg/reset-password"
+      component={ResetPassword}
+      title="reset" />
     <Route
       path="/ygrg/profile"
       component={MainView}

@@ -638,7 +638,9 @@
         </fieldset>
 
         <fieldset>
-          <div class="action small">Change password</div>
+          <a href="/ygrg/reset-password" class="action small">
+            Change password
+          </a>
         </fieldset>
 
         <fieldset>
