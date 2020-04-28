@@ -86,18 +86,6 @@
     };
   });
 
-  const generalInformation = loadData('*[_id == "generalInformation"][0]', {});
-
-  const latestReading = loadData(
-    '*[_type == "reading"] | order(startDate desc) [0] {"slug": slug.current}',
-    {}
-  );
-
-  const latestProgram = loadData(
-    '*[_type == "program"] | order(startDate desc) [0] {"slug": slug.current}',
-    {}
-  );
-
   const latestEvent = loadData(
     '*[_type == "event"] | order(startDate desc) [0] {"slug": slug.current}',
     {}
