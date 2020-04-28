@@ -52,8 +52,7 @@
   let currentIndex = 0;
 
   onMount(async () => {
-    console.log(window.location.hash);
-    if (window.location.hash) {
+    if (window.location.hash && !window.location.hash.includes("=")) {
       setTimeout(() => {
         const targetEl = document.querySelector(window.location.hash);
         if (targetEl) {

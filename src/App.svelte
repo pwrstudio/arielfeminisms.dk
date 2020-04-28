@@ -35,7 +35,10 @@
 
   const userCookie = Cookies.get("ygrgLoggedInUser");
 
-  if (window.location.hash) {
+  if (
+    window.location.hash &&
+    window.location.hash.includes("confirmation_token")
+  ) {
     const confirmationToken = window.location.hash.substring(20);
 
     auth
