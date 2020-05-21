@@ -6,7 +6,6 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { onMount } from "svelte";
   import { links } from "svelte-routing";
   import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade } from "svelte/transition";
@@ -58,6 +57,7 @@
   let filterReadings = () => {};
   let fuseReadings = {};
   let queryReadingsFilter = "";
+  let newHash = window.location.hash;
   const optionsReadingsFilter = {
     keys: ["plainText"],
     shouldSort: true,
@@ -86,7 +86,7 @@
       window.location = newLink;
       return;
     }
-    const newHash = e.target.dataset.target;
+    newHash = e.target.dataset.target;
     const targetEl = document.querySelector(newHash);
     if (history.pushState) {
       history.pushState(null, null, newHash);
@@ -113,6 +113,7 @@
 
     .list-item {
       margin-bottom: $line-height * 3;
+      line-height: $line-height * 1.1;
       display: inline-block;
       width: 100%;
       cursor: pointer;
@@ -121,9 +122,12 @@
         margin-bottom: $line-height * 2;
       }
 
+      &.active {
+        text-decoration: underline;
+      }
+
       .title {
         text-align: center;
-        // margin-bottom: $line-height;
         pointer-events: none;
 
         @include screen-size("small") {
@@ -271,6 +275,7 @@
         data-target={'#' + item.slug.current}
         data-link={'/' + $activeSection + '/' + $postType + '/' + item.slug.current}
         class="list-item"
+        class:active={newHash == '#' + item.slug.current}
         on:click={scrollNavigate}>
 
         <!-- TITLE -->
