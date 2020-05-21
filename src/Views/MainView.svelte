@@ -308,7 +308,7 @@
       transition: transform 0.3s $easing;
       transform: translateX(0);
       opacity: 1;
-      cursor: default;
+      // cursor: default;
 
       .close {
         display: block;
@@ -761,9 +761,7 @@
       class="about {title}"
       class:open={$showAbout}
       on:click={() => {
-        if ($showAbout == false) {
-          showAbout.set(true);
-        }
+        showAbout.set(!$showAbout);
       }}>
 
       <!-- MAIN TEXT -->
@@ -825,15 +823,6 @@
           {/if}
         </div>
 
-      </div>
-
-      <div
-        class="close"
-        on:click={e => {
-          showAbout.set(false);
-          e.stopPropagation();
-        }}>
-        <Cross />
       </div>
 
     </div>
