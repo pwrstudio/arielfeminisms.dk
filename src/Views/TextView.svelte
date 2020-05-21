@@ -471,20 +471,20 @@
         <!-- <button on:click={getSelection}>Get selection</button> -->
         <div class="comment">
           <textarea
-            class:disabled={!$loggedInUser}
             bind:value={newComment}
             class="comment-input"
             type="text"
             placeholder="Make a comment..." />
-          <div class="comment-icon" class:disabled={!$loggedInUser}>
+          <div class="comment-icon">
             <SubmitArrow />
           </div>
-          <button
-            class="black-button"
-            disabled={!$loggedInUser}
-            on:click={submitComment}>
+          <button class="black-button" on:click={submitComment}>
             Send comment
           </button>
+        </div>
+
+        <div class="description">
+          {@html renderBlockText(text.content)}
         </div>
 
         <div class="comment-list">
@@ -530,7 +530,6 @@
           <!-- BOOKMARK -->
           <div
             class="menu-bar-item bookmark"
-            class:disabled={!$loggedInUser}
             class:marked
             on:click={submitBookmark}>
             <svg

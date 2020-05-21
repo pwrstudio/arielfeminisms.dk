@@ -495,7 +495,7 @@
       component={MainView}
       title="ygrg"
       single={true} />
-    <Route path="/ygrg/texts/:slug" component={TextView} title="ygrg" />
+    <Route path="/ygrg/texts/:slug" component={TextView} />
 
     <!-- FALLBACK -->
     <Route component={MainView} title="ariel" />
