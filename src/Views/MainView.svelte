@@ -603,7 +603,7 @@
 
           <div class="right">
             {#if $isAriel || $isAri}
-              <a href="/ari" class:active={$isAri}>ARI.INDEX</a>
+              <a href="/ari" class:active={$isAri}>ARI. INDEX</a>
             {/if}
             {#if $isYGRG}
               <span
