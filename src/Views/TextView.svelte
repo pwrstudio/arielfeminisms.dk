@@ -80,7 +80,7 @@
   // }
 
   const text = loadData(
-    "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title, image, relatedTexts[]->{title, image, slug}}",
+    "*[slug.current == $slug][0]{'id': _id, 'pdfFile': pdfFile.asset->url, title, image, content, relatedTexts[]->{title, image, slug}}",
     { slug: slug }
   );
 
