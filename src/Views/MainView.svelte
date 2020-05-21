@@ -181,16 +181,17 @@
     }
 
     .top-bar {
-      position: absolute;
+      position: fixed;
       top: 0;
       height: $top-bar-height;
-      width: 100%;
+      width: calc(50vw - 80px);
       line-height: $top-bar-height;
       padding-left: 30px;
       padding-right: 30px;
       font-weight: bold;
       font-size: $font-size-large;
       user-select: none;
+      z-index: 1000;
 
       @include screen-size("small") {
         display: none;
@@ -263,7 +264,7 @@
     width: 80px;
     z-index: 1000;
     opacity: 1;
-    z-index: 100;
+    z-index: 10000;
     overflow-y: hidden;
     cursor: pointer;
 
@@ -285,21 +286,6 @@
       &.ariel,
       &.ygrg {
         transform: translateY(100%);
-      }
-    }
-
-    .close {
-      position: absolute;
-      right: 20px;
-      top: 15px;
-      height: 24px;
-      width: 24px;
-      transition: transform 0.3s $easing;
-      cursor: pointer;
-      display: none;
-
-      &:hover {
-        transform: scale(1.1);
       }
     }
 
