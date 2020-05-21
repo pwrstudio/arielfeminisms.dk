@@ -111,6 +111,8 @@
   text.then(t => {
     marked = get($loggedInUser, "user_metadata.bookmarks", []).includes(t.id);
 
+    console.dir(t);
+
     comments = loadData(
       "*[_type == 'ygrgComment' && textReference._ref == $id] | order(_createdAt desc)",
       { id: t.id }
@@ -483,9 +485,11 @@
           </button>
         </div>
 
-        <div class="description">
-          {@html renderBlockText(text.content)}
-        </div>
+        {#if text.content}
+          <div class="description">
+            {@html renderBlockText(text.content)}
+          </div>
+        {/if}
 
         <div class="comment-list">
           {#await comments then comments}
