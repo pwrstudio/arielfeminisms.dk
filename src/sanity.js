@@ -25,7 +25,7 @@ const serializers = {
         link: props =>
             h(
                 'a',
-                { target: '_blank', rel: 'noreferrer', href: props.mark.href },
+                { href: props.mark.href },
                 props.children
             )
     }
