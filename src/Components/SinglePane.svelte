@@ -250,12 +250,14 @@
     {/if}
 
     <div class="bottom-text">
+
       <!-- // *** TITLE -->
       <div class="title">
         {#if single.title}
           {@html renderBlockText(single.title)}
         {/if}
       </div>
+
       <!-- // *** ARTIST(S) -->
       {#if $isAriel}
         <div class="artist">
@@ -264,12 +266,14 @@
           {/each}
         </div>
       {/if}
+
       <!-- // *** DATE -->
       {#if $isYGRG || $isAriel}
         <div class="date">
           {formattedDate(single.startDate, single.endDate)}
         </div>
       {/if}
+
       <!-- TEXT -->
       {#if single.content}
         <div class="text">

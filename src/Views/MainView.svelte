@@ -769,8 +769,8 @@
                 class="link">
                 CONTACT
               </a>
-              <!-- <span class="bar">|</span>
-              <span class="link">NEWSLETTER ARIEL</span> -->
+              <span class="bar">|</span>
+              <a href="/ariel/mailinglist" class="link">NEWSLETTER ARIEL</a>
             </div>
           {/if}
           {#if $isAri}
@@ -803,8 +803,8 @@
                 class="link">
                 CONTACT
               </a>
-              <!-- <span class="bar">|</span>
-              <span class="link">NEWSLETTER YGRG</span> -->
+              <span class="bar">|</span>
+              <a href="/ygrg/mailinglist" class="link">NEWSLETTER YGRG</a>
             </div>
           {/if}
         </div>

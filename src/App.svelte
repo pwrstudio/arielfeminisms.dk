@@ -33,6 +33,7 @@
   import MainView from "./Views/MainView.svelte";
   import TextView from "./Views/TextView.svelte";
   import ResetPassword from "./Views/ResetPassword.svelte";
+  import MailingListSignUp from "./Views/MailingListSignUp.svelte";
 
   const userCookie = Cookies.get("ygrgLoggedInUser");
 
@@ -459,6 +460,10 @@
       component={MainView}
       title="ariel"
       single={true} />
+    <Route
+      path="/ariel/mailinglist"
+      component={MailingListSignUp}
+      title="ariel" />
 
     <!-- ARI -->
     <Route path="/ari" component={MainView} title="ari" />
@@ -496,6 +501,10 @@
       title="ygrg"
       single={true} />
     <Route path="/ygrg/texts/:slug" component={TextView} />
+    <Route
+      path="/ygrg/mailinglist"
+      component={MailingListSignUp}
+      title="ygrg" />
 
     <!-- FALLBACK -->
     <Route component={MainView} title="ariel" />
