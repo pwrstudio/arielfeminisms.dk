@@ -224,6 +224,8 @@
 
   .description {
     cursor: pointer;
+    width: 360px;
+    margin-top: 20px;
   }
 
   .top-gradient {
