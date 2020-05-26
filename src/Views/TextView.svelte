@@ -8,7 +8,7 @@
   // *** IMPORT
   import { onMount, onDestroy } from "svelte";
   import { Route, links } from "svelte-routing";
-  import { loadData, renderBlockText } from "../sanity.js";
+  import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade, slide } from "svelte/transition";
   import { format, getYear } from "date-fns";
   import get from "lodash/get";
@@ -56,6 +56,7 @@
   let marked = false;
   let currentPage = false;
   let totalPages = false;
+  let fullDescription = false;
 
   // $: currentPage = get(
   //   pdfViewerIframe,
@@ -106,6 +107,12 @@
 
   const getSelection = () => {
     console.dir(pdfViewerIframe.contentWindow.getSelection());
+  };
+
+  const truncate = (str, n) => {
+    return str.length > n
+      ? str.substr(0, n - 1) + " (Read more &hellip;)"
+      : str;
   };
 
   text.then(t => {
@@ -213,6 +220,10 @@
     &.denied {
       background: $red-gradient;
     }
+  }
+
+  .description {
+    cursor: pointer;
   }
 
   .top-gradient {
@@ -323,7 +334,7 @@
     width: 380px;
     overflow-y: auto;
     height: 140px;
-    // background: $red-gradient;
+    background: $grey;
     padding-bottom: 10px;
     padding-top: 10px;
 
@@ -486,8 +497,17 @@
         </div>
 
         {#if text.content}
-          <div class="description">
-            {@html renderBlockText(text.content)}
+          <div
+            class="description"
+            on:click={e => {
+              fullDescription = !fullDescription;
+            }}>
+            {#if fullDescription}
+              {@html renderBlockText(text.content)}
+            {:else}
+              {@html truncate(toPlainText(text.content), 300)}
+            {/if}
+
           </div>
         {/if}
 
