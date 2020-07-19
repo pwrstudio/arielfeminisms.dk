@@ -36,7 +36,7 @@
     "fuse.js": "^3.4.6",
     "get-video-id": "^3.1.4",
     "gotrue-js": "^0.9.25",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "resize-base64": "^1.0.12",
     "svelte-dropzone": "^1.0.6",
     "svelte-media-query": "^0.0.4",
