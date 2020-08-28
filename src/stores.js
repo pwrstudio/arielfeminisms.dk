@@ -10,6 +10,7 @@ export const showEvents = writable(false)
 export const showReadings = writable(false)
 export const loggedInUser = writable(false)
 export const userLoaded = writable(false)
+export const malwareActive = writable(false)
 
 export const activeSection = derived(
     [isAriel, isAri, isYGRG], ([$isAriel, $isAri, $isYGRG]) => {

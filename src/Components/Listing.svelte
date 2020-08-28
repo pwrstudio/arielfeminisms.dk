@@ -35,7 +35,8 @@
     showReadings,
     activeSection,
     postType,
-    loggedInUser
+    loggedInUser,
+    malwareActive
   } from "../stores.js";
 
   // *** PROPS
@@ -87,6 +88,10 @@
       return;
     }
     newHash = e.target.dataset.target;
+    console.log(newHash);
+    if (newHash == "#will-you-feel-comfortable-in-my-corner") {
+      malwareActive.set(true);
+    }
     const targetEl = document.querySelector(newHash);
     if (history.pushState) {
       history.pushState(null, null, newHash);

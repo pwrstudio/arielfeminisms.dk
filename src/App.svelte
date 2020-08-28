@@ -15,6 +15,7 @@
   import ArielNavigation from "./Components/ArielNavigation.svelte";
   import YGRGNavigation from "./Components/YGRGNavigation.svelte";
   import TopBar from "./Components/TopBar.svelte";
+  import MalwareEngine from "./Components/MalwareEngine.svelte";
 
   // *** GLOBALS
   import { auth } from "./global.js";
@@ -26,7 +27,8 @@
     isAri,
     isText,
     loggedInUser,
-    userLoaded
+    userLoaded,
+    malwareActive
   } from "./stores.js";
 
   // ** VIEWS
@@ -442,9 +444,32 @@
       opacity: 0;
     }
   }
+
+  main {
+    transition: opacity 0.2s ease-out;
+    &.blurred {
+      opacity: 0.2;
+      pointer-events: none;
+    }
+  }
+
+  .malware-box {
+    .text {
+      .big {
+        font-size: 2em;
+        line-height: 0.8em;
+      }
+    }
+  }
+
+  .strike {
+    display: inline-block;
+    border-bottom: 7px solid black;
+    height: 22px;
+  }
 </style>
 
-<main>
+<main class:blurred={$malwareActive}>
 
   <Router>
     <!-- ARIEL -->
@@ -525,3 +550,7 @@
   {/if}
 
 </main>
+
+{#if $malwareActive}
+  <MalwareEngine />
+{/if}

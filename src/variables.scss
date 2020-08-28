@@ -13,13 +13,12 @@ $purple-gradient: linear-gradient(-90deg, $purple 0%, $grey 100%);
 $red-gradient-vertical: linear-gradient(180deg, $red 0%, $grey 100%);
 $purple-gradient-vertical: linear-gradient(180deg, $purple 0%, $grey 100%);
 
-
 // Typography
 $scale-factor: 0.9;
 $mobile-scale-factor: 0.75;
-$font-stack-ariel: 'Univers LT Std', 'Helvetica Neue', helvetica, 'arial', sans-serif;
-$font-stack-ygrg-regular: 'Coconat', 'Times', serif;
-$font-stack-ygrg-extended: 'Coconat Ext', 'Times', serif;
+$font-stack-ariel: "Univers LT Std", "Helvetica Neue", helvetica, "arial", sans-serif;
+$font-stack-ygrg-regular: "Coconat", "Times", serif;
+$font-stack-ygrg-extended: "Coconat Ext", "Times", serif;
 $font-size-small: 10px * $scale-factor;
 $font-size-medium: 16px * $scale-factor;
 $font-size-large: 20px * $scale-factor;
@@ -48,21 +47,21 @@ $easing: cubic-bezier(0.23, 1, 0.32, 1);
 
 // Responsive
 $breakpoints: (
-  'small': (
-    max-width: 800px
+  "small": (
+    max-width: 800px,
   ),
-  'medium': (
-    max-width: 1000px
+  "medium": (
+    max-width: 1000px,
   ),
-  'large': (
-    max-width: 1600px
+  "large": (
+    max-width: 1600px,
   ),
-  'short': (
-    max-height: 700px
+  "short": (
+    max-height: 700px,
   ),
-  'wide': (
-    min-width: 1200px
-  )
+  "wide": (
+    min-width: 1200px,
+  ),
 );
 
 /// Responsive manager.
@@ -72,11 +71,7 @@ $breakpoints: (
 @mixin screen-size($breakpoint) {
   $raw-query: map-get($breakpoints, $breakpoint);
   @if $raw-query {
-    $query: if(
-      type-of($raw-query) == 'string',
-      unquote($raw-query),
-      inspect($raw-query)
-    );
+    $query: if(type-of($raw-query) == "string", unquote($raw-query), inspect($raw-query));
     @media #{$query} {
       @content;
     }
