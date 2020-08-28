@@ -68,6 +68,7 @@
   };
 
   listing.then(results => {
+    console.dir(listing);
     filteredListing = results;
     results.forEach(r => {
       r.plainText = toPlainText(r.content);

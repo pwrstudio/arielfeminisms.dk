@@ -59,7 +59,7 @@
           avatarImage = a.image;
         })
         .catch(err => {
-          Sentry.captureException(err);
+          console.error(err);
         });
     }
   }
@@ -92,7 +92,7 @@
       })
       .catch(err => {
         processing = false;
-        Sentry.captureException(err);
+        console.error(err);
         msgSignIn = "Sign in failed: " + err.json.error_description;
       });
   };
@@ -121,7 +121,7 @@
       })
       .catch(err => {
         processing = false;
-        Sentry.captureException(err);
+        console.error(err);
         msgSignUp = "Account creation failed. " + get(err, "json.msg", "");
       });
   };
@@ -140,7 +140,7 @@
       })
       .catch(err => {
         processing = false;
-        Sentry.captureException(err);
+        console.error(err);
       });
   };
 
@@ -161,7 +161,7 @@
       })
       .catch(err => {
         processing = false;
-        Sentry.captureException(err);
+        console.error(err);
       });
   };
 
@@ -188,7 +188,7 @@
             console.log("Avatar uploaded");
           })
           .catch(err => {
-            Sentry.captureException(err);
+            console.error(err);
           });
       }, 1000);
     });
@@ -206,7 +206,7 @@
         msgSignIn = "Recovery email sent";
         recoverActive = false;
       })
-      .catch(err => Sentry.captureException(err));
+      .catch(err => console.error(err));
   };
 </script>
 

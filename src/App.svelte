@@ -51,7 +51,7 @@
           navigate("/ygrg/profile/");
         })
         .catch(err => {
-          Sentry.captureException(err);
+          console.error(err);
         });
     }
 
@@ -68,7 +68,7 @@
           userLoaded.set(true);
           navigate("/ygrg/reset-password/");
         })
-        .catch(err => Sentry.captureException(err));
+        .catch(err => console.error(err));
     }
   }
 
@@ -83,7 +83,7 @@
       })
       .catch(err => {
         userLoaded.set(true);
-        Sentry.captureException(err);
+        console.error(err);
       });
   } else {
     userLoaded.set(true);

@@ -53,7 +53,7 @@
           });
         }
       } catch (err) {
-        Sentry.captureException(err);
+        console.error(err);
       }
     }, 1000);
   });

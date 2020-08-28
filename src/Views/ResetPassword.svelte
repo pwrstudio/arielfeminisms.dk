@@ -36,7 +36,7 @@
           console.log("Updated user %s", user);
           navigate("/ygrg/profile/");
         })
-        .catch(err => Sentry.captureException(err));
+        .catch(err => console.error(err));
     } else {
       window.alert("The two passwords do not match. Try again.");
       newPassword = "";

@@ -72,7 +72,7 @@ export const loadData = async (query, params) => {
         return res
 
     } catch (err) {
-        Sentry.captureException(err)
+        console.error(err)
         return Promise.reject(new Error(404));
     }
 }

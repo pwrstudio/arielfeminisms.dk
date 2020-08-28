@@ -165,7 +165,7 @@
             );
           })
           .catch(err => {
-            Sentry.captureException(err);
+            console.error(err);
           });
       });
     };
@@ -187,7 +187,7 @@
           marked = get(user, "user_metadata.bookmarks", []).includes(t.id);
         })
         .catch(err => {
-          Sentry.captureException(err);
+          console.error(err);
         });
     };
   });

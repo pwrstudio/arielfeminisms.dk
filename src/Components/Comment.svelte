@@ -56,7 +56,7 @@
           console.log("Comment Deleted");
         })
         .catch(err => {
-          Sentry.captureException(err);
+          console.error(err);
         });
     });
   };
@@ -84,7 +84,7 @@
           newComment = "";
         })
         .catch(err => {
-          Sentry.captureException(err);
+          console.error(err);
         });
     });
   };
@@ -97,7 +97,7 @@
       avatarImage = a.image;
     })
     .catch(err => {
-      Sentry.captureException(err);
+      console.error(err);
     });
 </script>
 
