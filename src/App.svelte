@@ -469,6 +469,11 @@
     display: inline-block;
     border-bottom: 7px solid black;
     height: 22px;
+
+    @include screen-size('small') {
+      height: 18px;
+    }
+
   }
 </style>
 
