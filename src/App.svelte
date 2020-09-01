@@ -458,6 +458,9 @@
       .big {
         font-size: 2em;
         line-height: 0.8em;
+        @include screen-size('small') {
+          font-size: 1.5em;
+        }
       }
     }
   }

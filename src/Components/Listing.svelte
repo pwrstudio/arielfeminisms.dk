@@ -6,7 +6,7 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { links } from "svelte-routing";
+  import { links, navigate } from "svelte-routing";
   import { loadData, renderBlockText, toPlainText } from "../sanity.js";
   import { fade } from "svelte/transition";
   import MediaQuery from "svelte-media-query";
@@ -86,7 +86,10 @@ import Router from "svelte-routing/src/Router.svelte";
   const scrollNavigate = e => {
     if (single || window.matchMedia("(max-width: 800px)").matches) {
       const newLink = e.target.dataset.link;
-      window.location = newLink;
+      if (newLink == "/ariel/program/will-you-feel-comfortable-in-my-corner") {
+        malwareActive.set(true);
+      }
+      navigate(newLink)
       return;
     }
     newHash = e.target.dataset.target;
