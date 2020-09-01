@@ -259,7 +259,7 @@
       </div>
 
       <!-- // *** ARTIST(S) -->
-      {#if $isAriel}
+      {#if $isAriel && Array.isArray(single.artists)}
         <div class="artist">
           {#each single.artists as a, i}
             {#if i != single.artists.length - 1}{a + ', '}{:else}{a}{/if}
