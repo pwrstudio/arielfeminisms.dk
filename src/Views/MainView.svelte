@@ -6,31 +6,31 @@
   // # # # # # # # # # # # # # # #
 
   // *** IMPORT
-  import { onMount } from "svelte";
-  import { links, navigate } from "svelte-routing";
-  import { loadData, renderBlockText, toPlainText } from "../sanity.js";
-  import { fade } from "svelte/transition";
-  import MediaQuery from "svelte-media-query";
-  import Fuse from "fuse.js";
-  import get from "lodash/get";
+  import { onMount } from "svelte"
+  import { links, navigate } from "svelte-routing"
+  import { loadData, renderBlockText, toPlainText } from "../sanity.js"
+  import { fade } from "svelte/transition"
+  import MediaQuery from "svelte-media-query"
+  import Fuse from "fuse.js"
+  import get from "lodash/get"
 
   // *** GLOBALS
-  import { formattedDate } from "../global.js";
+  import { formattedDate } from "../global.js"
 
   // *** COMPONENTS
-  import SinglePane from "../Components/SinglePane.svelte";
-  import SignIn from "../Components/SignIn.svelte";
-  import TextTile from "../Components/TextTile.svelte";
-  import MetaData from "../Components/MetaData.svelte";
-  import Listing from "../Components/Listing.svelte";
-  import FullListing from "../Components/FullListing.svelte";
+  import SinglePane from "../Components/SinglePane.svelte"
+  import SignIn from "../Components/SignIn.svelte"
+  import TextTile from "../Components/TextTile.svelte"
+  import MetaData from "../Components/MetaData.svelte"
+  import Listing from "../Components/Listing.svelte"
+  import FullListing from "../Components/FullListing.svelte"
 
   // *** GRAPHICS
-  import ArielLogo from "../Graphics/ArielLogo.svelte";
-  import AriLogo from "../Graphics/AriLogo.svelte";
-  import Cross from "../Graphics/Cross.svelte";
-  import SubmitArrow from "../Graphics/SubmitArrow.svelte";
-  import Ellipse from "../Graphics/Ellipse.svelte";
+  import ArielLogo from "../Graphics/ArielLogo.svelte"
+  import AriLogo from "../Graphics/AriLogo.svelte"
+  import Cross from "../Graphics/Cross.svelte"
+  import SubmitArrow from "../Graphics/SubmitArrow.svelte"
+  import Ellipse from "../Graphics/Ellipse.svelte"
 
   // *** STORES
   import {
@@ -43,65 +43,335 @@
     showReadings,
     loggedInUser,
     activeSection,
-    userLoaded
-  } from "../stores.js";
+    userLoaded,
+  } from "../stores.js"
 
   // *** PROPS
-  export let title = "";
-  export let slug = "";
-  export let location = {};
-  export let listing = false;
-  export let single = false;
-  export let profile = false;
+  export let title = ""
+  export let slug = ""
+  export let location = {}
+  export let listing = false
+  export let single = false
+  export let profile = false
 
   // Set globals
-  showAbout.set(false);
-  isAriel.set(title === "ariel");
-  isAri.set(title === "ari");
-  isYGRG.set(title === "ygrg");
+  showAbout.set(false)
+  isAriel.set(title === "ariel")
+  isAri.set(title === "ari")
+  isYGRG.set(title === "ygrg")
 
   // TEXTS
-  const texts = loadData('*[_type == "ygrgText"] | order(_createdAt desc)', {});
-  let filteredTexts = [];
-  let filterTexts = () => {};
-  let fuseTexts = {};
-  let queryTextsFilter = "";
+  const texts = loadData('*[_type == "ygrgText"] | order(_createdAt desc)', {})
+  let filteredTexts = []
+  let filterTexts = () => {}
+  let fuseTexts = {}
+  let queryTextsFilter = ""
   const optionsTextsFilter = {
     keys: ["title"],
     tokenize: true,
     matchAllTokens: true,
     shouldSort: true,
     threshold: 0.2,
-    minMatchCharLength: 2
-  };
+    minMatchCharLength: 2,
+  }
 
   texts.then(results => {
-    filteredTexts = results;
-    fuseTexts = new Fuse(results, optionsTextsFilter);
+    filteredTexts = results
+    fuseTexts = new Fuse(results, optionsTextsFilter)
     filterTexts = () => {
       filteredTexts =
         queryTextsFilter.length == 0
           ? results
-          : fuseTexts.search(queryTextsFilter);
-    };
-  });
+          : fuseTexts.search(queryTextsFilter)
+    }
+  })
 
   const latestEvent = loadData(
     '*[_type == "event"] | order(startDate desc) [0] {"slug": slug.current}',
     {}
-  );
+  )
 
   // ABOUT
-  let aboutQuery = "";
-  if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]';
-  if ($isAri) aboutQuery = '*[_id == "aboutAri"][0]';
-  if ($isYGRG) aboutQuery = '*[_id == "aboutYGRG"][0]';
-  const about = loadData(aboutQuery, {});
+  let aboutQuery = ""
+  if ($isAriel) aboutQuery = '*[_id == "aboutAriel"][0]'
+  if ($isAri) aboutQuery = '*[_id == "aboutAri"][0]'
+  if ($isYGRG) aboutQuery = '*[_id == "aboutYGRG"][0]'
+  const about = loadData(aboutQuery, {})
 
   onMount(async () => {
-    window.scrollTo(0, 0);
-  });
+    window.scrollTo(0, 0)
+  })
 </script>
+
+{#if !single}
+  <MetaData post={{ title: title.toUpperCase() }} />
+{/if}
+
+<div class="main-view" class:listing class:single in:fade>
+  <!-- LEFT PANE -->
+  <MediaQuery query="(min-width: 800px)" let:matches>
+    <!-- Show if desktop -->
+    <!-- OR if NOT single and NOT YGRG-listing -->
+    {#if matches || (!single && !(listing && $isYGRG))}
+      <div class="half left">
+        <!-- TOP BAR -->
+        <div class="top-bar left {$activeSection}" use:links>
+          <div class="left">
+            {#if $isAriel || $isAri}
+              <a href="/" class:active={$isAriel}>ARIEL</a>
+            {/if}
+            {#if $isYGRG}
+              <span
+                on:click={() => {
+                  profile = false
+                  showAbout.set(!$showAbout)
+                }}
+                class="pseudo-link"
+              >
+                ABOUT YGRG
+              </span>
+            {/if}
+          </div>
+
+          <div class="right">
+            {#if $isAriel || $isAri}
+              <a href="/ari" class:active={$isAri}>ARI. INDEX</a>
+            {/if}
+            {#if $isYGRG}
+              <span
+                class="pseudo-link"
+                on:click={() => {
+                  showAbout.set(false)
+                  navigate("/ygrg/profile")
+                }}
+              >
+                {#if $userLoaded}
+                  {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
+                {:else}
+                  <Ellipse />
+                {/if}
+              </span>
+            {/if}
+          </div>
+        </div>
+
+        <div class="inner-container">
+          {#if $isAriel || $isAri}
+            <Listing {single} />
+          {/if}
+
+          {#if $isYGRG}
+            <div class="filter">
+              <input
+                class="filter-input"
+                type="text"
+                bind:value={queryTextsFilter}
+                on:keyup={filterTexts}
+                placeholder="Search in the YGRG Archive..."
+              />
+              {#if queryTextsFilter.length == 0}
+                <div on:click={filterTexts} class="filter-icon">
+                  <SubmitArrow />
+                </div>
+              {/if}
+
+              {#if queryTextsFilter.length > 0}
+                <div
+                  on:click={() => {
+                    queryTextsFilter = ""
+                    filterTexts()
+                  }}
+                  class="filter-clear"
+                >
+                  <Cross />
+                </div>
+              {/if}
+            </div>
+
+            <div class="text-counter">
+              {#if queryTextsFilter.length > 0}
+                {filteredTexts.length} found matching '{queryTextsFilter}'
+              {:else}{filteredTexts.length} texts in Archive{/if}
+            </div>
+
+            <div class="tile-container" use:links>
+              {#each filteredTexts.filter( text => get($loggedInUser, "user_metadata.bookmarks", []).includes(text._id) ) as t}
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt}
+                  image={t.image}
+                  marked={true}
+                />
+              {/each}
+              {#each filteredTexts.filter(text => !get($loggedInUser, "user_metadata.bookmarks", []).includes(text._id)) as t}
+                <TextTile
+                  id={t._id}
+                  title={t.title}
+                  slug={t.slug.current}
+                  date={t._createdAt}
+                  image={t.image}
+                  marked={false}
+                />
+              {/each}
+            </div>
+          {/if}
+        </div>
+      </div>
+    {/if}
+  </MediaQuery>
+
+  <!-- RIGHT PANE -->
+  <MediaQuery query="(min-width: 800px)" let:matches>
+    <!-- Show if desktop -->
+    <!-- OR if single view  -->
+    <!-- OR if YGRG and listing -->
+    {#if matches || single || (listing && $isYGRG)}
+      <div class="half right">
+        <div class="top-bar right {$activeSection}">
+          {#if $isAriel || $isAri}
+            <span
+              on:click={() => {
+                profile = false
+                showAbout.set(!$showAbout)
+              }}
+              class="pseudo-link"
+            >
+              ABOUT
+            </span>
+          {/if}
+          {#if $isYGRG}
+            <div class="left">
+              <a href="/ygrg/events">YGRG EVENT ARCHIVE</a>
+            </div>
+            {#if slug}
+              <div class="right">
+                <a href="/ygrg/events" class="close">
+                  <Cross />
+                </a>
+              </div>
+            {/if}
+          {/if}
+        </div>
+
+        {#if single}
+          {#if slug}
+            <SinglePane {slug} {title} />
+          {:else}
+            {#await latestEvent then latestEvent}
+              <SinglePane slug={latestEvent.slug} {title} />
+            {/await}
+          {/if}
+        {:else}
+          {#if $isAriel || $isAri}
+            <div class="inner-container" use:links>
+              <FullListing />
+            </div>
+          {/if}
+          {#if $isYGRG}
+            {#if listing}
+              <Listing single={true} />
+            {:else}
+              {#await latestEvent then latestEvent}
+                <SinglePane slug={latestEvent.slug} {title} />
+              {/await}
+            {/if}
+          {/if}
+        {/if}
+      </div>
+    {/if}
+  </MediaQuery>
+
+  <!-- ABOUT PANE -->
+  {#await about then about}
+    <div
+      class="about {title}"
+      class:open={$showAbout}
+      on:click={() => {
+        showAbout.set(!$showAbout)
+      }}
+    >
+      <!-- MAIN TEXT -->
+      <div class="inner-container" class:open={$showAbout}>
+        <div class="text">
+          {@html renderBlockText(about.content)}
+        </div>
+
+        <!-- BOTTOM TEXT -->
+        <div class="bottom-text" use:links>
+          {#if $isAriel}
+            <!-- <div class="line">
+              <span>NIELS HEMMINGSENS GADE 8–10 1153 CPH K</span>
+            </div> -->
+            <div class="line">
+              <a
+                href="mailto:arielfeminisms@gmail.com"
+                target="_blank"
+                class="link"
+              >
+                CONTACT
+              </a>
+              <span class="bar">|</span>
+              <a href="/ariel/mailinglist" class="link">NEWSLETTER ARIEL</a>
+            </div>
+          {/if}
+          {#if $isAri}
+            <div class="line">
+              <a href="/ari/readings" class="link">ARI. READINGS</a>
+              <span class="bar">|</span>
+              <span>THE WOMEN´S BUILDING</span>
+            </div>
+            <div class="line">
+              <span>FREE ACCESS</span>
+              <span class="bar">|</span>
+              <a
+                href="mailto:arielfeminisms@gmail.com"
+                target="_blank"
+                class="link"
+              >
+                SIGN UP
+              </a>
+            </div>
+          {/if}
+          {#if $isYGRG}
+            <div class="line">
+              <a href="/ygrg/events" class="link">YGRG ARCHIVE</a>
+              <span class="bar">|</span>
+              <a href="/ygrg/profile" class="link">SIGN IN / SIGN UP</a>
+            </div>
+            <div class="line">
+              <a
+                href="mailto:younggirlreadinggroup@gmail.com"
+                target="_blank"
+                class="link"
+              >
+                CONTACT
+              </a>
+              <span class="bar">|</span>
+              <a href="/ygrg/mailinglist" class="link">NEWSLETTER YGRG</a>
+            </div>
+          {/if}
+        </div>
+      </div>
+    </div>
+  {/await}
+
+  <!-- SIGN IN -->
+  <div class="sign-in" class:open={profile} use:links>
+    <SignIn />
+
+    <a
+      href="/ygrg"
+      class="close"
+      on:click={() => {
+        showAbout.set(false)
+      }}
+    >
+      <Cross />
+    </a>
+  </div>
+</div>
 
 <style lang="scss">
   @import "../variables.scss";
@@ -427,7 +697,9 @@
     }
 
     &.open {
-      transition: transform 0.2s $easing, opacity 0.3s $easing;
+      transition:
+        transform 0.2s $easing,
+        opacity 0.3s $easing;
       transform: translateX(0);
       opacity: 1;
     }
@@ -554,279 +826,3 @@
     margin-bottom: 4px;
   }
 </style>
-
-{#if !single}
-  <MetaData post={{ title: title.toUpperCase() }} />
-{/if}
-
-<div class="main-view" class:listing class:single in:fade>
-
-  <!-- LEFT PANE -->
-  <MediaQuery query="(min-width: 800px)" let:matches>
-    <!-- Show if desktop -->
-    <!-- OR if NOT single and NOT YGRG-listing -->
-    {#if matches || (!single && !(listing && $isYGRG))}
-      <div class="half left">
-
-        <!-- TOP BAR -->
-        <div class="top-bar left {$activeSection}" use:links>
-
-          <div class="left">
-            {#if $isAriel || $isAri}
-              <a href="/" class:active={$isAriel}>ARIEL</a>
-            {/if}
-            {#if $isYGRG}
-              <span
-                on:click={() => {
-                  profile = false;
-                  showAbout.set(!$showAbout);
-                }}
-                class="pseudo-link">
-                ABOUT YGRG
-              </span>
-            {/if}
-          </div>
-
-          <div class="right">
-            {#if $isAriel || $isAri}
-              <a href="/ari" class:active={$isAri}>ARI. INDEX</a>
-            {/if}
-            {#if $isYGRG}
-              <span
-                class="pseudo-link"
-                on:click={() => {
-                  showAbout.set(false);
-                  navigate('/ygrg/profile');
-                }}>
-                {#if $userLoaded}
-                  {#if $loggedInUser}MY PROFILE{:else}SIGN IN{/if}
-                {:else}
-                  <Ellipse />
-                {/if}
-              </span>
-            {/if}
-
-          </div>
-
-        </div>
-
-        <div class="inner-container">
-
-          {#if $isAriel || $isAri}
-            <Listing {single} />
-          {/if}
-
-          {#if $isYGRG}
-            <div class="filter">
-              <input
-                class="filter-input"
-                type="text"
-                bind:value={queryTextsFilter}
-                on:keyup={filterTexts}
-                placeholder="Search in the YGRG Archive..." />
-              {#if queryTextsFilter.length == 0}
-                <div on:click={filterTexts} class="filter-icon">
-                  <SubmitArrow />
-                </div>
-              {/if}
-
-              {#if queryTextsFilter.length > 0}
-                <div
-                  on:click={() => {
-                    queryTextsFilter = '';
-                    filterTexts();
-                  }}
-                  class="filter-clear">
-                  <Cross />
-                </div>
-              {/if}
-            </div>
-
-            <div class="text-counter">
-              {#if queryTextsFilter.length > 0}
-                {filteredTexts.length} found matching '{queryTextsFilter}'
-              {:else}{filteredTexts.length} texts in Archive{/if}
-            </div>
-
-            <div class="tile-container" use:links>
-              {#each filteredTexts.filter(text =>
-                get($loggedInUser, 'user_metadata.bookmarks', []).includes(
-                  text._id
-                )
-              ) as t}
-                <TextTile
-                  id={t._id}
-                  title={t.title}
-                  slug={t.slug.current}
-                  date={t._createdAt}
-                  image={t.image}
-                  marked={true} />
-              {/each}
-              {#each filteredTexts.filter(text => !get($loggedInUser, 'user_metadata.bookmarks', []).includes(text._id)) as t}
-                <TextTile
-                  id={t._id}
-                  title={t.title}
-                  slug={t.slug.current}
-                  date={t._createdAt}
-                  image={t.image}
-                  marked={false} />
-              {/each}
-            </div>
-          {/if}
-        </div>
-
-      </div>
-    {/if}
-  </MediaQuery>
-
-  <!-- RIGHT PANE -->
-  <MediaQuery query="(min-width: 800px)" let:matches>
-    <!-- Show if desktop -->
-    <!-- OR if single view  -->
-    <!-- OR if YGRG and listing -->
-    {#if matches || single || (listing && $isYGRG)}
-      <div class="half right">
-
-        <div class="top-bar right {$activeSection}">
-          {#if $isAriel || $isAri}
-            <span
-              on:click={() => {
-                profile = false;
-                showAbout.set(!$showAbout);
-              }}
-              class="pseudo-link">
-              ABOUT
-            </span>
-          {/if}
-          {#if $isYGRG}
-            <div class="left">
-              <a href="/ygrg/events">YGRG EVENT ARCHIVE</a>
-            </div>
-            {#if slug}
-              <div class="right">
-                <a href="/ygrg/events" class="close">
-                  <Cross />
-                </a>
-              </div>
-            {/if}
-          {/if}
-        </div>
-
-        {#if single}
-          {#if slug}
-            <SinglePane {slug} {title} />
-          {:else}
-            {#await latestEvent then latestEvent}
-              <SinglePane slug={latestEvent.slug} {title} />
-            {/await}
-          {/if}
-        {:else}
-          {#if $isAriel || $isAri}
-            <div class="inner-container" use:links>
-              <FullListing />
-            </div>
-          {/if}
-          {#if $isYGRG}
-            {#if listing}
-              <Listing single={true} />
-            {:else}
-              {#await latestEvent then latestEvent}
-                <SinglePane slug={latestEvent.slug} {title} />
-              {/await}
-            {/if}
-          {/if}
-        {/if}
-
-      </div>
-    {/if}
-  </MediaQuery>
-
-  <!-- ABOUT PANE -->
-  {#await about then about}
-    <div
-      class="about {title}"
-      class:open={$showAbout}
-      on:click={() => {
-        showAbout.set(!$showAbout);
-      }}>
-
-      <!-- MAIN TEXT -->
-      <div class="inner-container" class:open={$showAbout}>
-        <div class="text">
-          {@html renderBlockText(about.content)}
-        </div>
-
-        <!-- BOTTOM TEXT -->
-        <div class="bottom-text" use:links>
-          {#if $isAriel}
-            <div class="line">
-              <span>NIELS HEMMINGSENS GADE 8–10 1153 CPH K</span>
-            </div>
-            <div class="line">
-              <a
-                href="mailto:arielfeminisms@gmail.com"
-                target="_blank"
-                class="link">
-                CONTACT
-              </a>
-              <span class="bar">|</span>
-              <a href="/ariel/mailinglist" class="link">NEWSLETTER ARIEL</a>
-            </div>
-          {/if}
-          {#if $isAri}
-            <div class="line">
-              <a href="/ari/readings" class="link">ARI. READINGS</a>
-              <span class="bar">|</span>
-              <span>THE WOMEN´S BUILDING</span>
-            </div>
-            <div class="line">
-              <span>FREE ACCESS</span>
-              <span class="bar">|</span>
-              <a
-                href="mailto:arielfeminisms@gmail.com"
-                target="_blank"
-                class="link">
-                SIGN UP
-              </a>
-            </div>
-          {/if}
-          {#if $isYGRG}
-            <div class="line">
-              <a href="/ygrg/events" class="link">YGRG ARCHIVE</a>
-              <span class="bar">|</span>
-              <a href="/ygrg/profile" class="link">SIGN IN / SIGN UP</a>
-            </div>
-            <div class="line">
-              <a
-                href="mailto:younggirlreadinggroup@gmail.com"
-                target="_blank"
-                class="link">
-                CONTACT
-              </a>
-              <span class="bar">|</span>
-              <a href="/ygrg/mailinglist" class="link">NEWSLETTER YGRG</a>
-            </div>
-          {/if}
-        </div>
-
-      </div>
-
-    </div>
-  {/await}
-
-  <!-- SIGN IN -->
-  <div class="sign-in" class:open={profile} use:links>
-    <SignIn />
-
-    <a
-      href="/ygrg"
-      class="close"
-      on:click={() => {
-        showAbout.set(false);
-      }}>
-      <Cross />
-    </a>
-
-  </div>
-
-</div>
