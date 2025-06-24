@@ -45,7 +45,7 @@ export default {
 		production &&
 		babel({
 			extensions: ['.js', '.mjs', '.html', '.svelte'],
-			runtimeHelpers: true,
+			babelHelpers: 'runtime',
 			exclude: ['node_modules/@babel/**', 'node_modules/core-js/**'],
 			presets: [
 				[
